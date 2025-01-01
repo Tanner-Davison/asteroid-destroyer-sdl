@@ -56,9 +56,10 @@ On Windows (using Visual Studio):
 
 ```bash
 .\build\Debug\sdl-first-game.exe
-# On Linux/macOS (or a Unix-like system):
 ```
+
 ```bash
+# On Linux/macOS (or a Unix-like system):
 ./build/sdl-first-game
 ```
 Ensure that the SDL2.dll file is in the same folder as the executable on Windows, or ensure that the necessary SDL2 shared libraries are available on Unix-like systems.
