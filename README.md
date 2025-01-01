@@ -2,6 +2,8 @@
 
 # SDL First Game
 
+# Used with Neovim
+
 This project is a basic C++ game setup using SDL2 for graphics, input handling, and window management. The project is configured with CMake for building and Visual Studio for compiling on Windows.
 
 ## Prerequisites
@@ -64,11 +66,18 @@ On Windows (using Visual Studio):
 Ensure that the SDL2.dll file is in the same folder as the executable on Windows, or ensure that the necessary SDL2 shared libraries are available on Unix-like systems.
 
 Code Structure
+
 CMakeLists.txt: CMake build configuration.
+
 src/main.cpp: The main C++ entry point of the application.
+
 include/: Folder where header files (if any) are placed.
+
 lib/: Folder containing the SDL2 libraries.
+
 bin/: Folder where SDL2.dll is placed for runtime.
+
+
 Notes
 The project is configured to use SDL2 with the C++ standard set to C++23.
 The #define SDL_MAIN_HANDLED is used to prevent SDL2 from overriding the main function.
