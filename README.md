@@ -79,8 +79,8 @@ bin/: Folder where SDL2.dll is placed for runtime.
 Notes
 The project is configured to use SDL2 with the C++ standard set to C++23.
 The #define SDL_MAIN_HANDLED is used to prevent SDL2 from overriding the main function.
-The project supports Visual Studio build tools but can be configured to work with other platforms with some changes to the build system.
+
 
 License
-This project is licensed under the MIT License - see the LICENSE file for details.
+MIT
 
