@@ -1,6 +1,4 @@
-# sdl-window
-
-# SDL First Game
+# SDL Window Program
 
 # Used with Neovim
 
