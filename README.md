@@ -23,7 +23,7 @@ git clone https://github.com/your-username/sdl-first-game.git
 cd sdl-first-game
 Install SDL2
 ```
-Make sure that you have the SDL2 library installed. You can download it from the official SDL2 website.
+Make sure that you have the SDL2 library installed. You can download it from the official SDL2 website. [or here](https://github.com/libsdl-org/SDL/releases)
 
 If you are using vcpkg to manage dependencies, you can install SDL2 with the following command:
 
