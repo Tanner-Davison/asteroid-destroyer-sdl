@@ -56,7 +56,7 @@ On Windows (using Visual Studio):
 
 ```bash
 .\build\Debug\sdl-first-game.exe
-On Linux/macOS (or a Unix-like system):
+# On Linux/macOS (or a Unix-like system):
 ```
 ```bash
 ./build/sdl-first-game
