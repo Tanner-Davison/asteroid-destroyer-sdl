@@ -3,8 +3,8 @@
 #include <direct.h>
 #include <stdio.h>
 // Define constants
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+const int SCREEN_WIDTH = 1000;
+const int SCREEN_HEIGHT = 600;
 
 // Define global variables
 SDL_Window *gWindow = NULL;
@@ -34,13 +34,12 @@ bool init() {
   }
   return success;
 }
-bool loadMedia() {
+bool loadMedia(const char *path) {
   bool success = true;
 
-  gHelloWorld = SDL_LoadBMP("build/Debug/hello_world.bmp");
+  gHelloWorld = SDL_LoadBMP(path);
   if (gHelloWorld == NULL) {
-    printf("Unable to load image %s! SDL Error: %s\n",
-           "build/Debug/hello_world.bmp", SDL_GetError());
+    printf("Unable to load image %s! SDL Error: %s\n", &path, SDL_GetError());
     success = false;
   }
 

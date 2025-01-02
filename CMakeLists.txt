@@ -31,11 +31,13 @@ else()
 endif()
 # Copy hello_world.bmp to the build directory
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E echo "Copying hello_world.bmp to ${CMAKE_CURRENT_BINARY_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E echo "Copying BMP files to ${CMAKE_CURRENT_BINARY_DIR}"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/hello_world.bmp
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>/hello_world.bmp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/hello_world.bmp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/hello_world.bmp
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
+
 # Copy SDL2.dll to the output directory (for runtime)
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different

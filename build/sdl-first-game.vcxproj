@@ -119,9 +119,9 @@
     <PostBuildEvent>
       <Message>	</Message>
       <Command>setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E echo "Copying hello_world.bmp to E:/source/repos/sdl-first-game/build"
+"C:\Program Files\CMake\bin\cmake.exe" -E echo "Copying BMP files to E:/source/repos/sdl-first-game/build"
 if %errorlevel% neq 0 goto :cmEnd
-"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different E:/source/repos/sdl-first-game/src/hello_world.bmp E:/source/repos/sdl-first-game/build/Debug/hello_world.bmp
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different E:/source/repos/sdl-first-game/src/hello_world.bmp E:/source/repos/sdl-first-game/src/hello_worl.bmp E:/source/repos/sdl-first-game/build/Debug
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -188,9 +188,9 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <PostBuildEvent>
       <Message>	</Message>
       <Command>setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E echo "Copying hello_world.bmp to E:/source/repos/sdl-first-game/build"
+"C:\Program Files\CMake\bin\cmake.exe" -E echo "Copying BMP files to E:/source/repos/sdl-first-game/build"
 if %errorlevel% neq 0 goto :cmEnd
-"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different E:/source/repos/sdl-first-game/src/hello_world.bmp E:/source/repos/sdl-first-game/build/Release/hello_world.bmp
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different E:/source/repos/sdl-first-game/src/hello_world.bmp E:/source/repos/sdl-first-game/src/hello_worl.bmp E:/source/repos/sdl-first-game/build/Release
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -257,9 +257,9 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <PostBuildEvent>
       <Message>	</Message>
       <Command>setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E echo "Copying hello_world.bmp to E:/source/repos/sdl-first-game/build"
+"C:\Program Files\CMake\bin\cmake.exe" -E echo "Copying BMP files to E:/source/repos/sdl-first-game/build"
 if %errorlevel% neq 0 goto :cmEnd
-"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different E:/source/repos/sdl-first-game/src/hello_world.bmp E:/source/repos/sdl-first-game/build/MinSizeRel/hello_world.bmp
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different E:/source/repos/sdl-first-game/src/hello_world.bmp E:/source/repos/sdl-first-game/src/hello_worl.bmp E:/source/repos/sdl-first-game/build/MinSizeRel
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -325,9 +325,9 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <PostBuildEvent>
       <Message>	</Message>
       <Command>setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E echo "Copying hello_world.bmp to E:/source/repos/sdl-first-game/build"
+"C:\Program Files\CMake\bin\cmake.exe" -E echo "Copying BMP files to E:/source/repos/sdl-first-game/build"
 if %errorlevel% neq 0 goto :cmEnd
-"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different E:/source/repos/sdl-first-game/src/hello_world.bmp E:/source/repos/sdl-first-game/build/RelWithDebInfo/hello_world.bmp
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different E:/source/repos/sdl-first-game/src/hello_world.bmp E:/source/repos/sdl-first-game/src/hello_worl.bmp E:/source/repos/sdl-first-game/build/RelWithDebInfo
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
