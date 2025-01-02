@@ -4,6 +4,14 @@
 
 This project is a basic C++ game setup using SDL2 for graphics, input handling, and window management. The project is configured with CMake for building and Visual Studio for compiling on Windows.
 
+# Compilation Notes for Self
+
+clang looks for compilation databases in this order:
+
+1. compile_commands.json
+2. compile_flags.txt
+3. .clangd\ configuration file
+
 ## Prerequisites
 
 Before you can build and run this project, you need to have the following installed:
@@ -23,6 +31,7 @@ git clone https://github.com/your-username/sdl-first-game.git
 cd sdl-first-game
 Install SDL2
 ```
+
 Make sure that you have the SDL2 library installed. You can download it from the official SDL2 website. [or here](https://github.com/libsdl-org/SDL/releases)
 
 If you are using vcpkg to manage dependencies, you can install SDL2 with the following command:
@@ -31,6 +40,7 @@ If you are using vcpkg to manage dependencies, you can install SDL2 with the fol
 vcpkg install sdl2
 Make sure to link the SDL2 include and lib directories properly in your project if you're not using a package manager.
 ```
+
 Build the Project
 Generate CMake build files:
 
@@ -39,6 +49,7 @@ Open the project folder in your terminal and run:
 ```bash
 cmake -S . -B build
 ```
+
 Build the project:
 
 After generating the build files, run:
@@ -46,6 +57,7 @@ After generating the build files, run:
 ```bash
 cmake --build build
 ```
+
 This will compile your project using Visual Studio's build system.
 
 Running the Project
@@ -61,6 +73,7 @@ On Windows (using Visual Studio):
 # On Linux/macOS (or a Unix-like system):
 ./build/sdl-first-game
 ```
+
 Ensure that the SDL2.dll file is in the same folder as the executable on Windows, or ensure that the necessary SDL2 shared libraries are available on Unix-like systems.
 
 Code Structure
@@ -75,12 +88,9 @@ lib/: Folder containing the SDL2 libraries.
 
 bin/: Folder where SDL2.dll is placed for runtime.
 
-
 Notes
 The project is configured to use SDL2 with the C++ standard set to C++23.
 The #define SDL_MAIN_HANDLED is used to prevent SDL2 from overriding the main function.
 
-
 License
 MIT
-

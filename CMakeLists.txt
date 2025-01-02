@@ -14,7 +14,11 @@ set(CMAKE_EXE_LINKER_FLAGS "/SUBSYSTEM:CONSOLE")
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 # Include SDL2 headers
-target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/)
+# target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/)
+target_include_directories(${PROJECT_NAME} PRIVATE 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/SDL2
+)
 # Link SDL2 library
 find_library(SDL2_LIB SDL2 PATHS ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64)
 if (SDL2_LIB)
