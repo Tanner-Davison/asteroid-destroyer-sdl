@@ -17,7 +17,7 @@ int main(int argc, char *args[]) {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
   } else {
     // Create window
-    window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED,
+    window = SDL_CreateWindow("Tanners-SDL-Window", SDL_WINDOWPOS_UNDEFINED,
                               SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
                               SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
     if (window == NULL) {
