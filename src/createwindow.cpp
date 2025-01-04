@@ -7,8 +7,8 @@
 #include <stdexcept>
 #include <stdio.h>
 // Define constants
-const int SCREEN_WIDTH = 600;
-const int SCREEN_HEIGHT = 450;
+const int SCREEN_WIDTH = 900;
+const int SCREEN_HEIGHT = 900;
 
 // Define global variables
 SDL_Window *gWindow = NULL;

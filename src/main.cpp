@@ -10,16 +10,20 @@ int main(int argc, char *args[]) {
   }
 
   // Rectangle position variables
-  int rectX = 100; // Starting X position
-  int rectY = 100; // Y position
+  float velocityX = 0.0f;
+  float velocityY = 0.0f;
+  float acceleration = 0.9f;
+  float deceleration = 0.8f;
+  float maxSpeed = 20.0f;
+  int rectX = 100;
+  int rectY = 100;
   const int rectWidth = 50;
   const int rectHeight = 50;
-  const int SPEED = 5; // Pixels per frame
 
   SDL_Event e;
   bool quit = false;
   Uint32 lastTime = SDL_GetTicks();
-  const float FPS = 60.0f;
+  const float FPS = 120.0f;
   const float frameDelay = 1000.0f / FPS;
 
   while (!quit) {
@@ -36,23 +40,54 @@ int main(int argc, char *args[]) {
     // Handle keyboard state
     const Uint8 *keyState = SDL_GetKeyboardState(NULL);
     if (keyState[SDL_SCANCODE_RIGHT]) {
-      rectX += SPEED; // Move right
+      velocityX += (acceleration);
+    } else if (keyState[SDL_SCANCODE_LEFT]) {
+      velocityX -= acceleration;
+    } else {
+      velocityX *= deceleration;
     }
-    if (keyState[SDL_SCANCODE_LEFT]) {
-      rectX -= SPEED;
-    }
+
     if (keyState[SDL_SCANCODE_UP]) {
-      rectY -= SPEED;
+      velocityY -= acceleration;
+    } else if (keyState[SDL_SCANCODE_DOWN]) {
+      velocityY += acceleration;
+    } else {
+      velocityY *= deceleration;
     }
-    if (keyState[SDL_SCANCODE_DOWN]) {
-      rectY += SPEED;
+
+    // Clamp velocity to max speed
+    velocityX = std::max(-maxSpeed, std::min(maxSpeed, velocityX));
+    velocityY = std::max(-maxSpeed, std::min(maxSpeed, velocityY));
+
+    // Calculate next position
+    float nextX = rectX + velocityX;
+    float nextY = rectY + velocityY;
+
+    // Handle bounds and update position
+    if (nextX <= 0) {
+      rectX = 0;
+      velocityX = 0;
+    } else if (nextX >= SCREEN_WIDTH - rectWidth) {
+      rectX = SCREEN_WIDTH - rectWidth;
+      velocityX = 0;
+    } else {
+      rectX = static_cast<int>(nextX);
+    }
+
+    if (nextY <= 0) {
+      rectY = 0;
+      velocityY = 0;
+    } else if (nextY >= SCREEN_HEIGHT - rectHeight) {
+      rectY = SCREEN_HEIGHT - rectHeight;
+      velocityY = 0;
+    } else {
+      rectY = static_cast<int>(nextY);
     }
 
     // Render
     SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
     SDL_RenderClear(gRenderer);
 
-    // Draw rectangle at updated position
     SDL_SetRenderDrawColor(gRenderer, 255, 255, 255, 255);
     SDL_Rect rect = {rectX, rectY, rectWidth, rectHeight};
     SDL_RenderFillRect(gRenderer, &rect);
@@ -64,7 +99,6 @@ int main(int argc, char *args[]) {
     if (frameDelay > frameTime) {
       SDL_Delay(frameDelay - frameTime);
     }
-
     lastTime = currentTime;
   }
 
