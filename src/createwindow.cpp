@@ -1,15 +1,20 @@
 // creatingwindow.cpp
 #include "createwindow.hpp"
+#include "SDL_render.h"
+#include "SDL_video.h"
 #include <direct.h>
+#include <iostream>
+#include <stdexcept>
 #include <stdio.h>
 // Define constants
-const int SCREEN_WIDTH = 1000;
-const int SCREEN_HEIGHT = 600;
+const int SCREEN_WIDTH = 600;
+const int SCREEN_HEIGHT = 450;
 
 // Define global variables
 SDL_Window *gWindow = NULL;
 SDL_Surface *gScreenSurface = NULL;
 SDL_Surface *gHelloWorld = NULL;
+SDL_Renderer *gRenderer = NULL;
 
 bool init() {
   // Initialization flag
@@ -24,12 +29,15 @@ bool init() {
     gWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED,
                                SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH,
                                SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+
     if (gWindow == NULL) {
       printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
       success = false;
     } else {
+      gRenderer = SDL_CreateRenderer(gWindow, -1, SDL_RENDERER_ACCELERATED);
+
       // Get window surface
-      gScreenSurface = SDL_GetWindowSurface(gWindow);
+      // gScreenSurface = SDL_GetWindowSurface(gWindow);
     }
   }
   return success;
@@ -39,17 +47,21 @@ bool loadMedia(const char *path) {
 
   gHelloWorld = SDL_LoadBMP(path);
   if (gHelloWorld == NULL) {
-    printf("Unable to load image %s! SDL Error: %s\n", &path, SDL_GetError());
+    printf("Unable to load image %s! SDL Error: %s\n", path, SDL_GetError());
     success = false;
   }
 
   return success;
 }
+
 void close() {
   // Deallocate surface
   SDL_FreeSurface(gHelloWorld);
   gHelloWorld = NULL;
 
+  // Destroy Renderer
+  SDL_DestroyRenderer(gRenderer);
+  gRenderer = NULL;
   // Destroy window
   SDL_DestroyWindow(gWindow);
   gWindow = NULL;
