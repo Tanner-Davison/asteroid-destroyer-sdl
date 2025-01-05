@@ -10,14 +10,14 @@ private:
   int rectX;
   int rectY;
   // player size
-  const int rectWidth = 50;
-  const int rectHeight = 50;
+  const int rectWidth = 35;
+  const int rectHeight = 35;
   // physics Properties
   float velocityX;
   float velocityY;
   const float MAX_VELOCITY = 8.0f;  // Fixed maximum velocity
   const float ACCELERATION = 1.0f;  // Fixed acceleration rate
-  const float DECELERATION = 0.92f; // Consistent deceleration
+  const float DECELERATION = 0.82f; // Consistent deceleration
   // player movement
   bool isMovingUp;
   bool isMovingDown;
