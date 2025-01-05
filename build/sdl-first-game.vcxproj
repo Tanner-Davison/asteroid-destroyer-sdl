@@ -418,6 +418,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   <ItemGroup>
     <ClCompile Include="E:\source\repos\sdl-first-game\src\main.cpp" />
     <ClCompile Include="E:\source\repos\sdl-first-game\src\createwindow.cpp" />
+    <ClCompile Include="E:\source\repos\sdl-first-game\src\Player.cpp" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

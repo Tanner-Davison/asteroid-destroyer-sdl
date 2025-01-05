@@ -9,6 +9,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(SOURCES
     src/main.cpp
     src/createwindow.cpp
+    src/Player.cpp
 )
 # Headers
 set(CMAKE_EXE_LINKER_FLAGS "/SUBSYSTEM:CONSOLE")
