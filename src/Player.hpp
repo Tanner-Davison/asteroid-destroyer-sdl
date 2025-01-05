@@ -40,7 +40,8 @@ public:
   Player(float x, float y);
   Player(float x, float y, int width, int height);
   ~Player();
-
+  // Player input
+  void handlePlayerInput(const Uint8 *keyState);
   // Core functions
   void renderPlayer(SDL_Renderer *renderer);
   void handleInput(bool up, bool down, bool left, bool right, bool shooting);

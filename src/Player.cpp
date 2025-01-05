@@ -41,6 +41,7 @@ void Player::setPlayerPos(int x, int y) {
 }
 
 void Player::updatePlayerPos() {
+
   rectX = static_cast<int>(rectXf);
   rectY = static_cast<int>(rectYf);
 }
@@ -101,6 +102,14 @@ void Player::handleInput(bool up, bool down, bool left, bool right,
   float nextX = rectXf + velocityX;
   float nextY = rectYf + velocityY;
   handleBounds(nextX, nextY);
+}
+// PlayerInput
+void Player::handlePlayerInput(const Uint8 *keyState) {
+  handleInput(keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP],
+              keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN],
+              keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT],
+              keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT],
+              keyState[SDL_SCANCODE_SPACE]);
 }
 
 std::pair<int, int> Player::getPosition() const {

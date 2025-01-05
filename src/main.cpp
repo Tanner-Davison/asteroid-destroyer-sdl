@@ -48,21 +48,11 @@ int main(int argc, char *args[]) {
     }
 
     const Uint8 *keyState = SDL_GetKeyboardState(NULL);
-
     // timestep update
     while (accumulator >= FIXED_TIME_STEP) {
-      player.handleInput(keyState[SDL_SCANCODE_UP], keyState[SDL_SCANCODE_DOWN],
-                         keyState[SDL_SCANCODE_LEFT],
-                         keyState[SDL_SCANCODE_RIGHT],
-                         keyState[SDL_SCANCODE_SPACE]);
-      player2.handleInput(
-          keyState[SDL_SCANCODE_UP], keyState[SDL_SCANCODE_DOWN],
-          keyState[SDL_SCANCODE_LEFT], keyState[SDL_SCANCODE_RIGHT],
-          keyState[SDL_SCANCODE_SPACE]);
-      player3.handleInput(
-          keyState[SDL_SCANCODE_UP], keyState[SDL_SCANCODE_DOWN],
-          keyState[SDL_SCANCODE_LEFT], keyState[SDL_SCANCODE_RIGHT],
-          keyState[SDL_SCANCODE_SPACE]);
+      player.handlePlayerInput(keyState);
+      player2.handlePlayerInput(keyState);
+      player3.handlePlayerInput(keyState);
 
       accumulator -= FIXED_TIME_STEP;
     }
