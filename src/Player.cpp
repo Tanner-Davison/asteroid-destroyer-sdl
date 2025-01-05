@@ -5,14 +5,14 @@
 Player::Player()
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
       isMovingRight(false), shooting(false), rectXf(100.0f), rectYf(100.0f),
-      rectX(100), rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(35),
-      rectHeight(35) {};
+      rectX(100), rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(15),
+      rectHeight(15) {};
 
 Player::Player(float x, float y)
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
       isMovingRight(false), shooting(false), rectXf(x), rectYf(y), rectX(100),
-      rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(35),
-      rectHeight(35) {};
+      rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(15),
+      rectHeight(15) {};
 
 Player::Player(float x, float y, int width, int height)
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
@@ -29,7 +29,7 @@ void Player::renderPlayer(SDL_Renderer *renderer) {
   SDL_RenderFillRect(renderer, &rect);
 
   // Render weapon // updates position
-  weapon.update((rectX - 4) + rectWidth / 2, rectY - 10);
+  weapon.update((rectX - 2) + rectWidth / 2, rectY - 6);
   weapon.render(renderer);
 }
 

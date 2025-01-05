@@ -9,8 +9,8 @@ private:
   float x, y;
   float velocityX;
   float velocityY;
-  static const int WIDTH = 5;
-  static const int HEIGHT = 5;
+  static const int WIDTH = 3;
+  static const int HEIGHT = 3;
 
 public:
   Bullet(float startX, float startY, float velX, float velY);
@@ -21,11 +21,12 @@ public:
 
 class Weapon {
   std::vector<Bullet> bullets;
-  float x, y;
-  float cooldown = 250.0f;
-  Uint32 lastShotTime = 0; // Ticks from SDL
-  float bulletSpeed = 600.0f;
-  float angle = (-M_PI / 2);
+  float x;
+  float y;
+  float cooldown;
+  Uint32 lastShotTime;
+  float bulletSpeed;
+  float angle;
 
 public:
   Weapon();

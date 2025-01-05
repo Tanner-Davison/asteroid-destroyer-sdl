@@ -19,7 +19,9 @@ bool Bullet::isOffScreen() const {
 }
 ////////////////////////// WEAPON  Impls///////////////////////////////////
 
-Weapon::Weapon() : x(0), y(0), cooldown(250.0f), lastShotTime(0) {};
+Weapon::Weapon()
+    : x(0), y(0), cooldown(350.0f), lastShotTime(300), bulletSpeed(600.0f),
+      angle(-M_PI / 2) {};
 
 void Weapon::update(float playerX, float playerY) {
   // -4 and -27
@@ -45,7 +47,7 @@ void Weapon::render(SDL_Renderer *renderer) {
   }
 
   // Optionally render the weapon itself
-  SDL_Rect weaponRect = {static_cast<int>(x), static_cast<int>(y), 10, 10};
+  SDL_Rect weaponRect = {static_cast<int>(x), static_cast<int>(y), 5, 5};
   SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
   SDL_RenderFillRect(renderer, &weaponRect);
 }
