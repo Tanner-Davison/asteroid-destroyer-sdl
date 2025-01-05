@@ -1,5 +1,6 @@
 #include "SDL_render.h"
 #include "SDL_scancode.h"
+#include "SDL_timer.h"
 #define SDL_MAIN_HANDLED
 #include "Player.hpp"
 #include "createwindow.hpp"
@@ -11,6 +12,11 @@ int main(int argc, char *args[]) {
   }
 
   Player player;
+  Player player2((player.getPosition().first * 0.5f),
+                 (player.getPosition().second));
+  Player player3((player2.getPosition().first * 0.82f),
+                 (player2.getPosition().second * -0.5f), 20, 20);
+
   SDL_Event e;
   bool quit = false;
 
@@ -49,6 +55,14 @@ int main(int argc, char *args[]) {
                          keyState[SDL_SCANCODE_LEFT],
                          keyState[SDL_SCANCODE_RIGHT],
                          keyState[SDL_SCANCODE_SPACE]);
+      player2.handleInput(
+          keyState[SDL_SCANCODE_UP], keyState[SDL_SCANCODE_DOWN],
+          keyState[SDL_SCANCODE_LEFT], keyState[SDL_SCANCODE_RIGHT],
+          keyState[SDL_SCANCODE_SPACE]);
+      player3.handleInput(
+          keyState[SDL_SCANCODE_UP], keyState[SDL_SCANCODE_DOWN],
+          keyState[SDL_SCANCODE_LEFT], keyState[SDL_SCANCODE_RIGHT],
+          keyState[SDL_SCANCODE_SPACE]);
 
       accumulator -= FIXED_TIME_STEP;
     }
@@ -57,6 +71,8 @@ int main(int argc, char *args[]) {
     SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
     SDL_RenderClear(gRenderer);
     player.renderPlayer(gRenderer);
+    player2.renderPlayer(gRenderer);
+    player3.renderPlayer(gRenderer);
     SDL_RenderPresent(gRenderer);
 
     // Frame rate capping

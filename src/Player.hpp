@@ -15,8 +15,8 @@ private:
   int rectY;
 
   // Player size
-  const int rectWidth = 35;
-  const int rectHeight = 35;
+  int rectWidth = 30;
+  int rectHeight = 30;
 
   // Physics Properties
   float velocityX;
@@ -37,6 +37,8 @@ private:
 
 public:
   Player();
+  Player(float x, float y);
+  Player(float x, float y, int width, int height);
   ~Player();
 
   // Core functions

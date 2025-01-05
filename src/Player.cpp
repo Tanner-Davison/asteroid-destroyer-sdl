@@ -5,7 +5,20 @@
 Player::Player()
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
       isMovingRight(false), shooting(false), rectXf(100.0f), rectYf(100.0f),
-      rectX(100), rectY(100), velocityX(0.0f), velocityY(0.0f) {};
+      rectX(100), rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(35),
+      rectHeight(35) {};
+
+Player::Player(float x, float y)
+    : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
+      isMovingRight(false), shooting(false), rectXf(x), rectYf(y), rectX(100),
+      rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(35),
+      rectHeight(35) {};
+
+Player::Player(float x, float y, int width, int height)
+    : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
+      isMovingRight(false), shooting(false), rectXf(x), rectYf(y), rectX(100),
+      rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(width),
+      rectHeight(height) {};
 
 Player::~Player() = default;
 
@@ -15,10 +28,8 @@ void Player::renderPlayer(SDL_Renderer *renderer) {
   SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
   SDL_RenderFillRect(renderer, &rect);
 
-  // Render weapon
-  weapon.update(rectX + rectWidth / 2,
-                rectY + rectHeight /
-                            2); // Update weapon position to center of player
+  // Render weapon // updates position
+  weapon.update((rectX - 4) + rectWidth / 2, rectY - 10);
   weapon.render(renderer);
 }
 

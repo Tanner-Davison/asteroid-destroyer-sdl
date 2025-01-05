@@ -22,8 +22,9 @@ bool Bullet::isOffScreen() const {
 Weapon::Weapon() : x(0), y(0), cooldown(250.0f), lastShotTime(0) {};
 
 void Weapon::update(float playerX, float playerY) {
-  x = playerX - 4;
-  y = playerY - 27;
+  // -4 and -27
+  this->x = playerX;
+  this->y = playerY;
 
   // update bullets
   float deltaTime = 1.0f / 60.0f;

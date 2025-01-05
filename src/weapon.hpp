@@ -24,7 +24,7 @@ class Weapon {
   float x, y;
   float cooldown = 250.0f;
   Uint32 lastShotTime = 0; // Ticks from SDL
-  float bulletSpeed = 400.0f;
+  float bulletSpeed = 600.0f;
   float angle = (-M_PI / 2);
 
 public:
