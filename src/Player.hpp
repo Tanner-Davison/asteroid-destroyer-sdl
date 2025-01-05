@@ -49,6 +49,7 @@ public:
   // Position management
   void setPlayerPos(int x, int y);
   void updatePlayerPos();
+  void updatePlayerPos(int x, int y);
   void handleBounds(float nextX, float nextY);
   std::pair<int, int> getPosition() const;
 
