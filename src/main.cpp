@@ -3,36 +3,6 @@
 #define SDL_MAIN_HANDLED
 #include "Player.hpp"
 #include "createwindow.hpp"
-///
-/// UNUSED AS OF RIGHT NOW
-// void checkCollision(Player &player1, Player &player2) {
-//   // Get positions and dimensions of both players
-//   auto [p1X, p1Y] = player1.getPosition();
-//   int p1Width = player1.getWidth();
-//   int p1Height = player1.getHeight();
-
-//   auto [p2X, p2Y] = player2.getPosition();
-//   int p2Width = player2.getWidth();
-//   int p2Height = player2.getHeight();
-
-//   // Check for collision using axis-aligned bounding boxes (AABB)
-//   bool xOverlap = (p1X < p2X + p2Width) && (p1X + p1Width > p2X);
-//   bool yOverlap = (p1Y < p2Y + p2Height) && (p1Y + p1Height > p2Y);
-
-//   if (xOverlap && yOverlap) {
-//     // Resolve collision
-//     if (p1X >= SCREEN_WIDTH - p1Width) {
-//       player2.setPlayerPos(p1X - p2Width - 5, p2Y); // Push left
-//     } else {
-//       player2.setPlayerPos(p1X + p1Width + 5, p2Y); // Push right
-//     }
-
-//     // Ensure player2 respects bounds
-//     player2.handleBounds(player2.getPosition().first,
-//                          player2.getPosition().second);
-//   }
-// }
-//
 
 int main(int argc, char *args[]) {
   if (!init()) {
