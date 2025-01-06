@@ -1,8 +1,6 @@
 // creatingwindow.hpp
 #pragma once
 #include <SDL2/SDL.h>
-#include <stdio.h>
-#include <string>
 
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
