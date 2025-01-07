@@ -1,4 +1,5 @@
 #pragma once
+#include "SDL_rect.h"
 #include "weapon.hpp"
 #include <utility>
 
@@ -54,6 +55,33 @@ public:
   void updatePlayerPos();
   void updatePlayerPos(int x, int y);
   void handleBounds(float nextX, float nextY);
+  bool checkCollision(const SDL_Rect &a, const SDL_Rect &b) {
+    // Get edges of rectangle A
+    int leftA = a.x;
+    int rightA = a.x + a.w;
+    int topA = a.y;
+    int bottomA = a.y + a.h;
+
+    // Get edges of rectangle B
+    int leftB = b.x;
+    int rightB = b.x + b.w;
+    int topB = b.y;
+    int bottomB = b.y + b.h;
+
+    // Check if any edges don't overlap
+    if (bottomA <= topB)
+      return false;
+    if (topA >= bottomB)
+      return false;
+    if (rightA <= leftB)
+      return false;
+    if (leftA >= rightB)
+      return false;
+
+    // If none of the above, they overlap
+    return true;
+  }
+
   std::pair<int, int> getPosition() const;
 
   // Getters for size (if needed)

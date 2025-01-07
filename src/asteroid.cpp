@@ -51,3 +51,8 @@ void Asteroid::update() {
   if (angle < 0)
     angle += 360;
 }
+
+int Asteroid::getRectX() const { return this->rectX; }
+int Asteroid::getRectY() const { return this->rectY; }
+int Asteroid::getRectWidth() const { return this->rectWidth; }
+int Asteroid::getRectHeight() const { return this->rectHeight; }

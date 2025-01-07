@@ -75,6 +75,21 @@ int main(int argc, char *args[]) {
     // check collision
     // checkCollision(player, player2);
 
+    SDL_Rect playerRect = {player.getPosition().first,
+                           player.getPosition().second, player.getWidth(),
+                           player.getHeight()};
+
+    for (const auto &asteroid : asteroids) {
+      SDL_Rect asteroidRect = {asteroid.getRectX(), asteroid.getRectY(),
+                               asteroid.getRectWidth(),
+                               asteroid.getRectHeight()};
+
+      if (player.checkCollision(playerRect, asteroidRect)) {
+        // Handle collision
+        // IDEAS player loses life, game over, etc.
+        quit = true;
+      }
+    }
     // Frame rate capping
     Uint32 endTime = SDL_GetTicks();
     float elapsedMS = endTime - currentTime;

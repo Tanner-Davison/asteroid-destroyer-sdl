@@ -26,4 +26,8 @@ public:
   ~Asteroid();
   void renderAsteroid(SDL_Renderer *renderer);
   void update();
+  int getRectX() const;
+  int getRectY() const;
+  int getRectWidth() const;
+  int getRectHeight() const;
 };
