@@ -11,6 +11,7 @@ set(SOURCES
     src/createwindow.cpp
     src/Player.cpp
     src/weapon.cpp
+    src/asteroid.cpp
 )
 
 # Headers

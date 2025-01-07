@@ -15,6 +15,8 @@ SDL_Window *gWindow = NULL;
 SDL_Surface *gScreenSurface = NULL;
 SDL_Surface *gHelloWorld = NULL;
 SDL_Renderer *gRenderer = NULL;
+std::random_device GameRNG::rd;
+std::mt19937 GameRNG::gen(GameRNG::rd());
 
 bool init() {
   // Initialization flag

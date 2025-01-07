@@ -2,8 +2,9 @@
 #include "SDL_timer.h"
 #define SDL_MAIN_HANDLED
 #include "Player.hpp"
+#include "asteroid.hpp"
 #include "createwindow.hpp"
-
+#include <vector>
 int main(int argc, char *args[]) {
   if (!init()) {
     printf("Failed to initialize!\n");
@@ -15,16 +16,16 @@ int main(int argc, char *args[]) {
                  (player.getPosition().second));
   Player player3((player2.getPosition().first * 0.74f),
                  (player2.getPosition().second - 9.0f));
-
+  std::vector<Asteroid> asteroids{3};
   SDL_Event e;
   bool quit = false;
 
-  // Fixed timestep variables
+  // timestep var
   const float FIXED_TIME_STEP = 1.0f / 120.0f; // Match your 120 FPS
   float accumulator = 0.0f;
   Uint32 lastTime = SDL_GetTicks();
 
-  // Your existing frame rate cap
+  // frame rate cap
   const float FPS = 120.0f;
   const float frameDelay = 1000.0f / FPS;
 
@@ -32,7 +33,7 @@ int main(int argc, char *args[]) {
     Uint32 currentTime = SDL_GetTicks();
     float deltaTime = (currentTime - lastTime) / 1000.0f;
 
-    // Cap maximum frame time to prevent spiral of death
+    // Cap max frame time to prevent spiral of death
     if (deltaTime > 0.25f) {
       deltaTime = 0.25f;
     }
@@ -56,13 +57,20 @@ int main(int argc, char *args[]) {
       accumulator -= FIXED_TIME_STEP;
     }
 
+    for (auto &asteroid : asteroids) {
+      asteroid.update();
+    }
     // Render
     SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
     SDL_RenderClear(gRenderer);
     player.renderPlayer(gRenderer);
     player2.renderPlayer(gRenderer);
     player3.renderPlayer(gRenderer);
-    SDL_RenderPresent(gRenderer);
+    for (auto &asteroid : asteroids) {
+      asteroid.renderAsteroid(gRenderer);
+    }
+
+    SDL_RenderPresent(gRenderer); // FINAL FRAME
 
     // check collision
     // checkCollision(player, player2);

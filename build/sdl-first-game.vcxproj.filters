@@ -13,6 +13,9 @@
     <ClCompile Include="E:\source\repos\sdl-first-game\src\weapon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="E:\source\repos\sdl-first-game\src\asteroid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="E:\source\repos\sdl-first-game\CMakeLists.txt" />

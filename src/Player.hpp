@@ -22,7 +22,7 @@ private:
   float velocityX;
   float velocityY;
   const float MAX_VELOCITY = 3.1f; // Fixed maximum velocity
-  const float ACCELERATION = .55f; // Fixed acceleration rate
+  const float ACCELERATION = .75f; // Fixed acceleration rate
   const float DECELERATION = .992; // Consistent deceleration
   //
   //

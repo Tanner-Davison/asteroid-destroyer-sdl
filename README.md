@@ -1,5 +1,33 @@
 # SDL Window Program
 
+# Project notes for self
+
+## POSITION
+
+x: Players x-coordinets
+y: Players y-coordinates
+
+velocityX: Players speed along the x-axis
+velocityY: Players speed along the y-axis
+
+## MOVEMENT
+
+speed: the base speed of the player
+
+acceleration: How quick the player can change speed
+
+maxSpeed: the max speed the player can reach
+
+isMoving: A boolean variable to track whether the player is currently moving
+
+facingDirection: A variable to track the direction the player is facing, can be an angle, a vector, or a enum for representing
+
+directions like "Up" , "Down", "Left" and "Right".
+
+angle: current rotation angle in degrees
+
+rotationSpeed: degrees per frame
+
 # Used with Neovim
 
 This project is a basic C++ game setup using SDL2 for graphics, input handling, and window management. The project is configured with CMake for building and Visual Studio for compiling on Windows.
