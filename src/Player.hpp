@@ -50,9 +50,9 @@ public:
   ~Player();
   // Player input
   void handlePlayerInput(const Uint8 *keyState);
+  void handleInput(bool up, bool down, bool left, bool right, bool shooting);
   // Core functions
   void renderPlayer(SDL_Renderer *renderer);
-  void handleInput(bool up, bool down, bool left, bool right, bool shooting);
 
   // Position management
   void setPlayerPos(int x, int y);
