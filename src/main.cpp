@@ -5,17 +5,41 @@
 #include "asteroid.hpp"
 #include "createwindow.hpp"
 #include <vector>
+
 int main(int argc, char *args[]) {
   if (!init()) {
     printf("Failed to initialize!\n");
     return 1;
   }
 
+  int imgFlags = IMG_INIT_PNG;
+  // Initializing SDL_Image w/ png
+  if (!(IMG_Init(imgFlags) & imgFlags)) {
+    printf("SDL_image could not initialize! SDL_image Error: %s\n",
+           IMG_GetError());
+    return 1;
+  }
+
   Player player;
+  if (!player.loadTexture("src/spaceship.png", gRenderer)) {
+    printf("Failed to load player texture!\n");
+    return 1;
+  }
+
   Player player2((player.getPosition().first * 0.5f),
                  (player.getPosition().second));
+  if (!player2.loadTexture("src/spaceship.png", gRenderer)) {
+    printf("Failed to load player2 texture!\n");
+    return 1;
+  }
+
   Player player3((player2.getPosition().first * 0.74f),
                  (player2.getPosition().second - 9.0f));
+  if (!player3.loadTexture("src/spaceship.png", gRenderer)) {
+    printf("Failed to load player3 texture!\n");
+    return 1;
+  }
+
   std::vector<Asteroid> asteroids{3};
   SDL_Event e;
   bool quit = false;

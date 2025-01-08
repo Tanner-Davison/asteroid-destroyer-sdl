@@ -27,6 +27,13 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 # Link SDL2 library
+find_library(SDL2_IMAGE_LIB SDL2_image PATHS ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64)
+if (SDL2_IMAGE_LIB)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_IMAGE_LIB})
+else()
+    message(FATAL_ERROR "SDL2_image library not found in ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64")
+endif()
+#Link SDL2 library
 find_library(SDL2_LIB SDL2 PATHS ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64)
 if (SDL2_LIB)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIB})
@@ -43,6 +50,16 @@ endif()
 # )
 
 # Copy SDL2.dll to the output directory (for runtime)
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    ${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2_image.dll
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>
+)
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/spaceship.png
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>
+)
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
     ${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2.dll

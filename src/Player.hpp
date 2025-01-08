@@ -1,6 +1,7 @@
 #pragma once
 #include "SDL_rect.h"
 #include "weapon.hpp"
+#include <SDL_image.h>
 #include <utility>
 
 struct SDL_Renderer;
@@ -26,7 +27,10 @@ private:
   const float ACCELERATION = .75f; // Fixed acceleration rate
   const float DECELERATION = .992; // Consistent deceleration
   //
-  //
+  // TEXTURES
+  SDL_Texture *mTexture;
+  int textureWidth;
+  int textureHeight;
   //
 
   // Movement state
@@ -55,7 +59,10 @@ public:
   void updatePlayerPos();
   void updatePlayerPos(int x, int y);
   void handleBounds(float nextX, float nextY);
+  bool loadTexture(const char *path, SDL_Renderer *renderer);
+  void cleanup(); // texture;
   bool checkCollision(const SDL_Rect &a, const SDL_Rect &b) {
+
     // Get edges of rectangle A
     int leftA = a.x;
     int rightA = a.x + a.w;

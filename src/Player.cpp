@@ -1,32 +1,38 @@
 #include "Player.hpp"
+#include "SDL_render.h"
 #include "createwindow.hpp"
 #include <SDL.h>
 
 Player::Player()
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
       isMovingRight(false), shooting(false), rectXf(100.0f), rectYf(100.0f),
-      rectX(100), rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(15),
-      rectHeight(15) {};
+      rectX(100), rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(30),
+      rectHeight(30), mTexture(nullptr), textureWidth(0), textureHeight(0) {};
 
 Player::Player(float x, float y)
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
       isMovingRight(false), shooting(false), rectXf(x), rectYf(y), rectX(100),
-      rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(15),
-      rectHeight(15) {};
+      rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(30),
+      rectHeight(30), mTexture(nullptr), textureWidth(0), textureHeight(0) {};
 
 Player::Player(float x, float y, int width, int height)
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
       isMovingRight(false), shooting(false), rectXf(x), rectYf(y), rectX(100),
       rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(width),
-      rectHeight(height) {};
+      rectHeight(height), mTexture(nullptr), textureWidth(0),
+      textureHeight(0) {};
 
-Player::~Player() = default;
+Player::~Player() { cleanup(); };
 
 void Player::renderPlayer(SDL_Renderer *renderer) {
   // Render player rectangle
   SDL_Rect rect = {rectX, rectY, rectWidth, rectHeight};
-  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-  SDL_RenderFillRect(renderer, &rect);
+  if (mTexture != nullptr) {
+    SDL_RenderCopy(renderer, mTexture, nullptr, &rect);
+  } else {
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderFillRect(renderer, &rect);
+  }
 
   // Render weapon // updates position
   weapon.update((rectX - 2) + rectWidth / 2, rectY - 6);
@@ -69,7 +75,38 @@ void Player::handleBounds(float nextX, float nextY) {
 
   updatePlayerPos();
 }
-
+bool Player::loadTexture(const char *path, SDL_Renderer *renderer) {
+  // Step 1: Free Existing Texture if any ERROR HANDLING
+  if (mTexture != nullptr) {
+    SDL_DestroyTexture(mTexture);
+    mTexture = nullptr;
+  }
+  // Load Image
+  SDL_Surface *loadedSurface = IMG_Load(path);
+  if (loadedSurface == nullptr) {
+    printf("Unable to laod image %s! SDL_image Error: %s\n", path,
+           IMG_GetError());
+    return false;
+  }
+  mTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+  if (mTexture == nullptr) {
+    printf("Unable to create Texture %s! SDL Error: %s\n", path,
+           SDL_GetError());
+    return false;
+  }
+  // Main implementation
+  textureWidth = loadedSurface->w;
+  textureHeight = loadedSurface->h;
+  // free loaded surface since it is no longer needed!
+  SDL_FreeSurface(loadedSurface);
+  return true;
+}
+void Player::cleanup() {
+  if (mTexture != nullptr) {
+    SDL_DestroyTexture(mTexture);
+    mTexture = nullptr;
+  }
+}
 void Player::handleInput(bool up, bool down, bool left, bool right,
                          bool isShooting) {
   // Movement handling
@@ -103,6 +140,7 @@ void Player::handleInput(bool up, bool down, bool left, bool right,
   float nextY = rectYf + velocityY;
   handleBounds(nextX, nextY);
 }
+
 // PlayerInput
 void Player::handlePlayerInput(const Uint8 *keyState) {
   handleInput(keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP],
