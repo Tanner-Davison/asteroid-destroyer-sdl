@@ -17,8 +17,8 @@ private:
   int rectY;
 
   // Player size
-  int rectWidth = 15;
-  int rectHeight = 15;
+  int rectWidth = 45;
+  int rectHeight = 45;
 
   // Physics Properties
   float velocityX;
@@ -61,33 +61,7 @@ public:
   void handleBounds(float nextX, float nextY);
   bool loadTexture(const char *path, SDL_Renderer *renderer);
   void cleanup(); // texture;
-  bool checkCollision(const SDL_Rect &a, const SDL_Rect &b) {
-
-    // Get edges of rectangle A
-    int leftA = a.x;
-    int rightA = a.x + a.w;
-    int topA = a.y;
-    int bottomA = a.y + a.h;
-
-    // Get edges of rectangle B
-    int leftB = b.x;
-    int rightB = b.x + b.w;
-    int topB = b.y;
-    int bottomB = b.y + b.h;
-
-    // Check if any edges don't overlap
-    if (bottomA <= topB)
-      return false;
-    if (topA >= bottomB)
-      return false;
-    if (rightA <= leftB)
-      return false;
-    if (leftA >= rightB)
-      return false;
-
-    // If none of the above, they overlap
-    return true;
-  }
+  bool checkCollision(const SDL_Rect &a, const SDL_Rect &b);
 
   std::pair<int, int> getPosition() const;
 

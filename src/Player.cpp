@@ -12,9 +12,10 @@ Player::Player()
 Player::Player(float x, float y)
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
       isMovingRight(false), shooting(false), rectXf(x), rectYf(y), rectX(100),
-      rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(50),
-      rectHeight(50), mTexture(nullptr), textureWidth(0), textureHeight(0) {};
-
+      rectY(100), velocityX(0.0f), velocityY(0.0f), mTexture(nullptr),
+      textureWidth(0), textureHeight(0) {};
+// rectWidth(50)
+// rectHeight(50)
 Player::Player(float x, float y, int width, int height)
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
       isMovingRight(false), shooting(false), rectXf(x), rectYf(y), rectX(100),
@@ -147,9 +148,35 @@ void Player::handlePlayerInput(const Uint8 *keyState) {
               keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN],
               keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT],
               keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT],
-              keyState[SDL_SCANCODE_SPACE]);
+              keyState[SDL_SCANCODE_SPACE]),
+      keyState[SDL_SCANCODE_LSHIFT];
 }
 
 std::pair<int, int> Player::getPosition() const {
   return std::make_pair(rectX, rectY);
+}
+bool checkCollision(const SDL_Rect &a, const SDL_Rect &b) {
+  int leftA = a.x;
+  int rightA = a.x + a.w;
+  int topA = a.y;
+  int bottomA = a.y + a.h;
+
+  // Get edges of rectangle B
+  int leftB = b.x;
+  int rightB = b.x + b.w;
+  int topB = b.y;
+  int bottomB = b.y + b.h;
+
+  // Check if any edges don't overlap
+  if (bottomA <= topB)
+    return false;
+  if (topA >= bottomB)
+    return false;
+  if (rightA <= leftB)
+    return false;
+  if (leftA >= rightB)
+    return false;
+
+  // If none of the above, they overlap
+  return true;
 }
