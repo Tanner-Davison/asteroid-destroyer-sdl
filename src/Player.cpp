@@ -6,14 +6,14 @@
 Player::Player()
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
       isMovingRight(false), shooting(false), rectXf(100.0f), rectYf(100.0f),
-      rectX(100), rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(30),
-      rectHeight(30), mTexture(nullptr), textureWidth(0), textureHeight(0) {};
+      rectX(100), rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(50),
+      rectHeight(50), mTexture(nullptr), textureWidth(0), textureHeight(0) {};
 
 Player::Player(float x, float y)
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
       isMovingRight(false), shooting(false), rectXf(x), rectYf(y), rectX(100),
-      rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(30),
-      rectHeight(30), mTexture(nullptr), textureWidth(0), textureHeight(0) {};
+      rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(50),
+      rectHeight(50), mTexture(nullptr), textureWidth(0), textureHeight(0) {};
 
 Player::Player(float x, float y, int width, int height)
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),

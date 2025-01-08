@@ -64,7 +64,7 @@ bool loadMedia(const char *path) {
            IMG_GetError());
     success = false;
   } else {
-    // Convert surface to texture
+    // Converting surface to texture
     SDL_Texture *newTexture =
         SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     if (newTexture == NULL) {
@@ -72,8 +72,7 @@ bool loadMedia(const char *path) {
              SDL_GetError());
       success = false;
     }
-    // Free the loaded surface as we don't need it anymore
-    SDL_FreeSurface(loadedSurface);
+    SDL_FreeSurface(loadedSurface); // I no longer need surface
   }
 
   return success;
@@ -87,7 +86,11 @@ void close() {
   SDL_DestroyRenderer(gRenderer);
   gRenderer = NULL;
 
-  // Destroy window
+  /*
+   Destroy Window-
+    this is destroyed using SDLs system since SDL's memory is handled in 'C'
+    calling destroy would throw an error
+    */
   SDL_DestroyWindow(gWindow);
   gWindow = NULL;
 

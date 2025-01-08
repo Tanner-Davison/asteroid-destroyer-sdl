@@ -23,9 +23,9 @@ private:
   // Physics Properties
   float velocityX;
   float velocityY;
-  const float MAX_VELOCITY = 3.1f; // Fixed maximum velocity
-  const float ACCELERATION = .75f; // Fixed acceleration rate
-  const float DECELERATION = .992; // Consistent deceleration
+  const float MAX_VELOCITY = 3.4f;  // Fixed maximum velocity
+  const float ACCELERATION = .78f;  // Fixed acceleration rate
+  const float DECELERATION = .9930; // Consistent deceleration
   //
   // TEXTURES
   SDL_Texture *mTexture;
