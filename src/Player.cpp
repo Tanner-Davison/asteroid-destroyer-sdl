@@ -5,23 +5,24 @@
 
 Player::Player()
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
-      isMovingRight(false), shooting(false), rectXf(100.0f), rectYf(100.0f),
-      rectX(100), rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(50),
-      rectHeight(50), mTexture(nullptr), textureWidth(0), textureHeight(0) {};
+      isMovingRight(false), shooting(false), ACCELERATION(BASE_ACCELERATION),
+      rectXf(100.0f), rectYf(100.0f), rectX(100), rectY(100), velocityX(0.0f),
+      velocityY(0.0f), rectWidth(50), rectHeight(50), boost(false),
+      mTexture(nullptr), textureWidth(0), textureHeight(0) {};
 
 Player::Player(float x, float y)
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
-      isMovingRight(false), shooting(false), rectXf(x), rectYf(y), rectX(100),
-      rectY(100), velocityX(0.0f), velocityY(0.0f), mTexture(nullptr),
-      textureWidth(0), textureHeight(0) {};
+      isMovingRight(false), shooting(false), boost(false), rectXf(x), rectYf(y),
+      ACCELERATION(BASE_ACCELERATION), rectX(100), rectY(100), velocityX(0.0f),
+      velocityY(0.0f), mTexture(nullptr), textureWidth(0), textureHeight(0) {};
 // rectWidth(50)
 // rectHeight(50)
 Player::Player(float x, float y, int width, int height)
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
-      isMovingRight(false), shooting(false), rectXf(x), rectYf(y), rectX(100),
-      rectY(100), velocityX(0.0f), velocityY(0.0f), rectWidth(width),
-      rectHeight(height), mTexture(nullptr), textureWidth(0),
-      textureHeight(0) {};
+      isMovingRight(false), shooting(false), boost(false), rectXf(x), rectYf(y),
+      ACCELERATION(BASE_ACCELERATION), rectX(100), rectY(100), velocityX(0.0f),
+      velocityY(0.0f), rectWidth(width), rectHeight(height), mTexture(nullptr),
+      textureWidth(0), textureHeight(0) {};
 
 Player::~Player() { cleanup(); };
 
@@ -109,12 +110,14 @@ void Player::cleanup() {
   }
 }
 void Player::handleInput(bool up, bool down, bool left, bool right,
-                         bool isShooting) {
+                         bool isShooting, bool boost) {
+  ACCELERATION = boost ? BOOST_ACCELERATION : BASE_ACCELERATION;
+  float CurrentMaxVelocity = boost ? MAX_VELOCITY * 1.5f : MAX_VELOCITY;
   // Movement handling
   if (right) {
-    velocityX = std::min(velocityX + ACCELERATION, MAX_VELOCITY);
+    velocityX = std::min(velocityX + ACCELERATION, CurrentMaxVelocity);
   } else if (left) {
-    velocityX = std::max(velocityX - ACCELERATION, -MAX_VELOCITY);
+    velocityX = std::max(velocityX - ACCELERATION, -CurrentMaxVelocity);
   } else {
     velocityX *= DECELERATION;
     if (abs(velocityX) < 0.3f) {
@@ -122,9 +125,9 @@ void Player::handleInput(bool up, bool down, bool left, bool right,
     }
   }
   if (down) {
-    velocityY = std::min(velocityY + ACCELERATION, MAX_VELOCITY);
+    velocityY = std::min(velocityY + ACCELERATION, CurrentMaxVelocity);
   } else if (up) {
-    velocityY = std::max(velocityY - ACCELERATION, -MAX_VELOCITY);
+    velocityY = std::max(velocityY - ACCELERATION, -CurrentMaxVelocity);
   } else {
     velocityY *= DECELERATION;
     if (abs(velocityY) < 0.3f) {
@@ -148,14 +151,13 @@ void Player::handlePlayerInput(const Uint8 *keyState) {
               keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN],
               keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT],
               keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT],
-              keyState[SDL_SCANCODE_SPACE]),
-      keyState[SDL_SCANCODE_LSHIFT];
+              keyState[SDL_SCANCODE_SPACE], keyState[SDL_SCANCODE_LSHIFT]);
 }
 
 std::pair<int, int> Player::getPosition() const {
   return std::make_pair(rectX, rectY);
 }
-bool checkCollision(const SDL_Rect &a, const SDL_Rect &b) {
+bool Player::checkCollision(const SDL_Rect &a, const SDL_Rect &b) {
   int leftA = a.x;
   int rightA = a.x + a.w;
   int topA = a.y;
