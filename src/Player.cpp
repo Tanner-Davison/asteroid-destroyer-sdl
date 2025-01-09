@@ -187,7 +187,8 @@ bool Player::checkCollision(const SDL_Rect &a, const SDL_Rect &b) {
   // If none of the above, they overlap
   return true;
 }
-Weapon Player::getWeapon() const { return this->weapon; }
+const Weapon &Player::getWeapon() const { return weapon; }
+Weapon &Player::getWeapon() { return weapon; }
 void Player::cleanup() {
   if (mTexture != nullptr) {
     SDL_DestroyTexture(mTexture);

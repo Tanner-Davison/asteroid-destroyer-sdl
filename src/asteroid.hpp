@@ -43,5 +43,5 @@ public:
   int getRectHeight() const;
   void destroy();
   bool isDestroyed() const;
-  bool checkCollision(const SDL_Rect &a, const SDL_Rect &b);
+  bool checkStartCollision(const SDL_Rect &a, const SDL_Rect &b);
 };

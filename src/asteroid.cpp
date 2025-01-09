@@ -31,7 +31,7 @@ Asteroid::Asteroid(const std::vector<std::unique_ptr<Player>> &players)
 
       // Check for collision (this assumes you have a checkCollision function or
       // use SDL to compare rects)
-      if (checkCollision(asteroidRect, playerRect)) {
+      if (checkStartCollision(asteroidRect, playerRect)) {
         validPosition = false; // Re-generate if collision is detected
         break;
       }
@@ -140,6 +140,6 @@ int Asteroid::getRectWidth() const { return this->rectWidth; }
 int Asteroid::getRectHeight() const { return this->rectHeight; }
 void Asteroid::destroy() { destroyed = true; }
 bool Asteroid::isDestroyed() const { return destroyed; }
-bool Asteroid::checkCollision(const SDL_Rect &a, const SDL_Rect &b) {
+bool Asteroid::checkStartCollision(const SDL_Rect &a, const SDL_Rect &b) {
   return SDL_HasIntersection(&a, &b) != SDL_FALSE;
 }
