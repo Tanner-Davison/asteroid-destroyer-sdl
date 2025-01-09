@@ -6,7 +6,7 @@ Bullet::Bullet(float startX, float startY, float velX, float velY)
 void Bullet::render(SDL_Renderer *renderer) {
   SDL_Rect bulletRect = {static_cast<int>(x), static_cast<int>(y), WIDTH,
                          HEIGHT};
-  SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); // Color: White
+  SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255); // Color: White
   SDL_RenderFillRect(renderer, &bulletRect);
 }
 void Bullet::update(float deltaTime) {

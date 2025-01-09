@@ -37,9 +37,11 @@ int main(int argc, char *args[]) {
       return 1;
     }
   }
+  // In main, when creating asteroids
   std::vector<Asteroid> asteroids;
-  for (int i = 0; i < 3; i++) {
-    asteroids.emplace_back();
+  for (int i = 0; i < 19; i++) {
+    asteroids.emplace_back(
+        players); // Pass the reference to players vector correctly
     if (!asteroids.back().loadTexture("src/asteroid.png", gRenderer)) {
       printf("Failed to load asteroid texture for asteroid %d\n", i);
       return 1;

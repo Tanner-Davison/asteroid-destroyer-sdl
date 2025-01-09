@@ -10,8 +10,8 @@ private:
   float x, y;
   float velocityX;
   float velocityY;
-  static const int WIDTH = 3;
-  static const int HEIGHT = 3;
+  static const int WIDTH = 2;
+  static const int HEIGHT = 45;
   bool active;
 
 public:
