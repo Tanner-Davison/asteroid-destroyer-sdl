@@ -1,4 +1,5 @@
 #pragma once
+#include "SDL_render.h"
 struct SDL_Renderer;
 
 class Asteroid {
@@ -11,7 +12,10 @@ private:
   // player size
   int rectWidth;
   int rectHeight;
-
+  // TEXTURES
+  SDL_Texture *mTexture;
+  int textureWidth;
+  int textureHeight;
   // movement
   double angle;
   double rotationSpeed;
@@ -28,6 +32,7 @@ public:
   Asteroid &operator=(const Asteroid &other);
   ~Asteroid();
   void renderAsteroid(SDL_Renderer *renderer);
+  bool loadTexture(const char *path, SDL_Renderer *renderer);
   void update();
   int getRectX() const;
   int getRectY() const;
