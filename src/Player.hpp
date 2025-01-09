@@ -28,7 +28,7 @@ private:
   const float BOOST_ACCELERATION = 1.5f; // FIXED BOOST_ACCELERATION
   const float DECELERATION = .9930;      // FIXED Consistent deceleration
   float ACCELERATION = .78f;
-
+  SDL_Rect playerRect;
   // TEXTURES
   SDL_Texture *mTexture;
   int textureWidth;

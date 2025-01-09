@@ -48,6 +48,8 @@ Before you can build and run this project, you need to have the following instal
   - Download SDL2 from [SDL2 Downloads](https://www.libsdl.org/download-2.0.php) or use a package manager to install it (e.g., vcpkg, or brew on macOS).
   - SDL2.dll must be placed in the `bin` directory for the project to run properly.
 
+## How
+
 ## Setup
 
 ### Clone the Repository

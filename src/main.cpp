@@ -19,27 +19,22 @@ int main(int argc, char *args[]) {
            IMG_GetError());
     return 1;
   }
+  float centerX = SCREEN_WIDTH / 2.0f;
+  float bottomY = SCREEN_HEIGHT - 100.0f;
+  const int PLAYER_SPACING = 50;
 
-  Player player;
-  if (!player.loadTexture("src/spaceship.png", gRenderer)) {
-    printf("Failed to load player texture!\n");
-    return 1;
-  }
+  Player player(centerX - static_cast<float>(PLAYER_SPACING) / 2, bottomY);
+  Player player2(centerX + static_cast<float>(PLAYER_SPACING) / 2, bottomY);
 
-  Player player2((player.getPosition().first * 0.5f),
-                 (player.getPosition().second));
-  if (!player2.loadTexture("src/spaceship.png", gRenderer)) {
-    printf("Failed to load player2 texture!\n");
-    return 1;
-  }
+  Player player3(centerX, bottomY - static_cast<float>(PLAYER_SPACING));
 
-  Player player3((player2.getPosition().first * 0.74f),
-                 (player2.getPosition().second - 9.0f));
-  if (!player3.loadTexture("src/spaceship.png", gRenderer)) {
-    printf("Failed to load player3 texture!\n");
-    return 1;
-  }
   std::vector<Player *> players{&player, &player2, &player3};
+  for (auto *player : players) {
+    if (!player->loadTexture("src/spaceship.png", gRenderer)) {
+      printf("Failed to load player3 texture\n");
+      return 1;
+    }
+  }
   std::vector<Asteroid> asteroids;
   for (int i = 0; i < 3; i++) {
     asteroids.emplace_back();
@@ -49,7 +44,7 @@ int main(int argc, char *args[]) {
   bool quit = false;
 
   // timestep var
-  const float FIXED_TIME_STEP = 1.0f / 120.0f; // Match your 120 FPS
+  const float FIXED_TIME_STEP = 1.0f / 120.0f; //(8.33ms)
   float accumulator = 0.0f;
   Uint32 lastTime = SDL_GetTicks();
 
@@ -130,9 +125,7 @@ int main(int argc, char *args[]) {
     }
 
     SDL_RenderPresent(gRenderer); // FINAL FRAME
-
-    // check collision
-    // checkCollision(player, player2);
+                                  // collison detection_______
     std::vector<Player *> playersToRemove;
     for (Player *player : players) { // Note: use -> with pointers
       SDL_Rect playerRect = {player->getPosition().first, // Use -> instead of .
