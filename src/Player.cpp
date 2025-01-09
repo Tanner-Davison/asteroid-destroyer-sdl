@@ -103,12 +103,7 @@ bool Player::loadTexture(const char *path, SDL_Renderer *renderer) {
   SDL_FreeSurface(loadedSurface);
   return true;
 }
-void Player::cleanup() {
-  if (mTexture != nullptr) {
-    SDL_DestroyTexture(mTexture);
-    mTexture = nullptr;
-  }
-}
+
 void Player::handleInput(bool up, bool down, bool left, bool right,
                          bool isShooting, bool boost) {
   ACCELERATION = boost ? BOOST_ACCELERATION : BASE_ACCELERATION;
@@ -181,4 +176,11 @@ bool Player::checkCollision(const SDL_Rect &a, const SDL_Rect &b) {
 
   // If none of the above, they overlap
   return true;
+}
+Weapon Player::getWeapon() const { return this->weapon; }
+void Player::cleanup() {
+  if (mTexture != nullptr) {
+    SDL_DestroyTexture(mTexture);
+    mTexture = nullptr;
+  }
 }
