@@ -55,11 +55,14 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     ${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2_image.dll
     $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
+# Copy SDL2.dll to the output directory (for runtime)
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
     ${CMAKE_CURRENT_SOURCE_DIR}/src/spaceship.png
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/asteroid.png
     $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
+
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
     ${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2.dll

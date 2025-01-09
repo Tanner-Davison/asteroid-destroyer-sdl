@@ -1,9 +1,13 @@
 #include "asteroid.hpp"
+#include "SDL_image.h"
+#include "SDL_render.h"
+#include "SDL_surface.h"
 #include "createwindow.hpp"
 #include <SDL.h>
 #include <random>
 
-Asteroid::Asteroid() : rectXf(0), rectYf(0), rectWidth(100), rectHeight(100) {
+Asteroid::Asteroid()
+    : rectXf(0), rectYf(0), rectWidth(100), rectHeight(100), mTexture(nullptr) {
   std::uniform_int_distribution<> disX(0, SCREEN_WIDTH - rectWidth);
   std::uniform_int_distribution<> disY(0, SCREEN_HEIGHT - rectHeight);
 
@@ -24,7 +28,8 @@ Asteroid::Asteroid(const Asteroid &other)
       rectY(other.rectY), rectWidth(other.rectWidth),
       rectHeight(other.rectHeight), velocityX(other.velocityX),
       velocityY(other.velocityY), angle(other.angle),
-      rotationSpeed(other.rotationSpeed), destroyed(other.destroyed) {}
+      rotationSpeed(other.rotationSpeed), destroyed(other.destroyed),
+      mTexture(other.mTexture) {}
 
 // Copy assignment operator
 Asteroid &Asteroid::operator=(const Asteroid &other) {
@@ -40,14 +45,43 @@ Asteroid &Asteroid::operator=(const Asteroid &other) {
     angle = other.angle;
     rotationSpeed = other.rotationSpeed;
     destroyed = other.destroyed;
+    mTexture = other.mTexture;
   }
   return *this;
 }
 Asteroid::~Asteroid() = default;
 void Asteroid::renderAsteroid(SDL_Renderer *renderer) {
   SDL_Rect rect = {rectX, rectY, rectWidth, rectHeight};
-  SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255); // Medium gray
-  SDL_RenderFillRect(renderer, &rect);
+  if (mTexture != nullptr) {
+    SDL_RenderCopy(renderer, mTexture, NULL, &rect);
+  } else {
+    SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255); // Medium gray
+    SDL_RenderFillRect(renderer, &rect);
+  }
+}
+bool Asteroid::loadTexture(const char *path, SDL_Renderer *renderer) {
+  if (this->mTexture != nullptr) {
+    SDL_DestroyTexture(mTexture);
+    mTexture = nullptr;
+  }
+  // load Texture
+  SDL_Surface *loadedSurface = IMG_Load(path);
+  if (loadedSurface == nullptr) {
+    printf("Unable to load image %s! SDL_image Error %s\n", path,
+           IMG_GetError());
+    return false;
+  }
+  mTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+  if (mTexture == nullptr) {
+    printf("Unable to create Texture %s! SDL Error: %s\n", path,
+           SDL_GetError());
+    return false;
+  }
+  // main implementation
+  textureWidth = loadedSurface->w;
+  textureHeight = loadedSurface->h;
+  SDL_FreeSurface(loadedSurface);
+  return true;
 }
 void Asteroid::update() {
   // Update position

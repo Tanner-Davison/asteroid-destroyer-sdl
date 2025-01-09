@@ -25,15 +25,14 @@ private:
   float velocityY;
   const float MAX_VELOCITY = 3.4f;       // Fixed maximum velocity
   const float BASE_ACCELERATION = .60f;  // FIXED
-  const float BOOST_ACCELERATION = 1.5f; // FIXED BOOST_ACCELERATION
+  const float BOOST_ACCELERATION = 3.5f; // FIXED BOOST_ACCELERATION
   const float DECELERATION = .9930;      // FIXED Consistent deceleration
   float ACCELERATION = .78f;
-
+  SDL_Rect playerRect;
   // TEXTURES
   SDL_Texture *mTexture;
   int textureWidth;
   int textureHeight;
-
   // MOVEMENT STATE
   bool isMovingUp;
   bool isMovingDown;

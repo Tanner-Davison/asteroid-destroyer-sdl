@@ -8,13 +8,21 @@ Player::Player()
       isMovingRight(false), shooting(false), ACCELERATION(BASE_ACCELERATION),
       rectXf(100.0f), rectYf(100.0f), rectX(100), rectY(100), velocityX(0.0f),
       velocityY(0.0f), rectWidth(50), rectHeight(50), boost(false),
-      mTexture(nullptr), textureWidth(0), textureHeight(0) {};
+      mTexture(nullptr), textureWidth(0), textureHeight(0) {
+  playerRect = {this->getPosition().first, this->getPosition().second,
+                this->getWidth(), this->getHeight()};
+};
 
 Player::Player(float x, float y)
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
       isMovingRight(false), shooting(false), boost(false), rectXf(x), rectYf(y),
-      ACCELERATION(BASE_ACCELERATION), rectX(100), rectY(100), velocityX(0.0f),
-      velocityY(0.0f), mTexture(nullptr), textureWidth(0), textureHeight(0) {};
+      ACCELERATION(BASE_ACCELERATION), rectX(static_cast<int>(x)),
+      rectY(static_cast<int>(y)), // Fixed!
+      velocityX(0.0f), velocityY(0.0f), mTexture(nullptr), textureWidth(0),
+      textureHeight(0) {
+  playerRect = {this->getPosition().first, this->getPosition().second,
+                this->getWidth(), this->getHeight()};
+};
 // rectWidth(50)
 // rectHeight(50)
 Player::Player(float x, float y, int width, int height)
@@ -22,10 +30,12 @@ Player::Player(float x, float y, int width, int height)
       isMovingRight(false), shooting(false), boost(false), rectXf(x), rectYf(y),
       ACCELERATION(BASE_ACCELERATION), rectX(100), rectY(100), velocityX(0.0f),
       velocityY(0.0f), rectWidth(width), rectHeight(height), mTexture(nullptr),
-      textureWidth(0), textureHeight(0) {};
+      textureWidth(0), textureHeight(0) {
+  playerRect = {this->getPosition().first, this->getPosition().second,
+                this->getWidth(), this->getHeight()};
+};
 
 Player::~Player() { cleanup(); };
-
 void Player::renderPlayer(SDL_Renderer *renderer) {
   // Render player rectangle
   SDL_Rect rect = {rectX, rectY, rectWidth, rectHeight};
@@ -107,7 +117,7 @@ bool Player::loadTexture(const char *path, SDL_Renderer *renderer) {
 void Player::handleInput(bool up, bool down, bool left, bool right,
                          bool isShooting, bool boost) {
   ACCELERATION = boost ? BOOST_ACCELERATION : BASE_ACCELERATION;
-  float CurrentMaxVelocity = boost ? MAX_VELOCITY * 1.5f : MAX_VELOCITY;
+  float CurrentMaxVelocity = boost ? MAX_VELOCITY * 2.5f : MAX_VELOCITY;
   // Movement handling
   if (right) {
     velocityX = std::min(velocityX + ACCELERATION, CurrentMaxVelocity);

@@ -128,7 +128,7 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different E:/source/repos/sdl-first-game/src/spaceship.png E:/source/repos/sdl-first-game/build/Debug
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different E:/source/repos/sdl-first-game/src/spaceship.png E:/source/repos/sdl-first-game/src/asteroid.png E:/source/repos/sdl-first-game/build/Debug
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -204,7 +204,7 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different E:/source/repos/sdl-first-game/src/spaceship.png E:/source/repos/sdl-first-game/build/Release
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different E:/source/repos/sdl-first-game/src/spaceship.png E:/source/repos/sdl-first-game/src/asteroid.png E:/source/repos/sdl-first-game/build/Release
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -280,7 +280,7 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different E:/source/repos/sdl-first-game/src/spaceship.png E:/source/repos/sdl-first-game/build/MinSizeRel
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different E:/source/repos/sdl-first-game/src/spaceship.png E:/source/repos/sdl-first-game/src/asteroid.png E:/source/repos/sdl-first-game/build/MinSizeRel
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
@@ -355,7 +355,7 @@ exit /b %1
 :cmDone
 if %errorlevel% neq 0 goto :VCEnd
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different E:/source/repos/sdl-first-game/src/spaceship.png E:/source/repos/sdl-first-game/build/RelWithDebInfo
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_if_different E:/source/repos/sdl-first-game/src/spaceship.png E:/source/repos/sdl-first-game/src/asteroid.png E:/source/repos/sdl-first-game/build/RelWithDebInfo
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
