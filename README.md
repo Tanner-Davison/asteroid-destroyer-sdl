@@ -57,7 +57,7 @@ Before you can build and run this project, you need to have the following instal
 First, clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/your-username/sdl-first-game.git
+git clone https://github.com/Tanner-Davison/sdl-first-game.git
 cd sdl-first-game
 Install SDL2
 ```
