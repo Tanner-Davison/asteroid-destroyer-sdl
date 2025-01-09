@@ -23,13 +23,13 @@ private:
   // PHYSICS PROPERTIES
   float velocityX;
   float velocityY;
-  const float MAX_VELOCITY = 3.4f;       // Fixed maximum velocity
-  const float BASE_ACCELERATION = .60f;  // FIXED
-  const float BOOST_ACCELERATION = 3.5f; // FIXED BOOST_ACCELERATION
-  const float DECELERATION = .9930;      // FIXED Consistent deceleration
+  const float MAX_VELOCITY = 3.4f;       // Maximum velocity
+  const float BASE_ACCELERATION = .60f;  // BASE_ACCELERATION
+  const float BOOST_ACCELERATION = 3.5f; // BOOST_ACCELERATION
+  const float DECELERATION = .9930;      // DECELERATION
   float ACCELERATION = .78f;
-  SDL_Rect playerRect;
   // TEXTURES
+  SDL_Rect playerRect;
   SDL_Texture *mTexture;
   int textureWidth;
   int textureHeight;
@@ -62,14 +62,14 @@ public:
   void updatePlayerPos(int x, int y);
   void handleBounds(float nextX, float nextY);
   bool loadTexture(const char *path, SDL_Renderer *renderer);
-  void cleanup(); // so far texture is my only one needed to clean;
+  void cleanup(); // Texture
   bool checkCollision(const SDL_Rect &a, const SDL_Rect &b);
 
   const Weapon &getWeapon() const;
   Weapon &getWeapon();
   std::pair<int, int> getPosition() const;
 
-  // Getters for size (if needed)
+  // get sizes
   int getWidth() const { return rectWidth; }
   int getHeight() const { return rectHeight; }
 };

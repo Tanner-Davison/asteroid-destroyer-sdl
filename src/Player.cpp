@@ -17,14 +17,11 @@ Player::Player(float x, float y)
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
       isMovingRight(false), shooting(false), boost(false), rectXf(x), rectYf(y),
       ACCELERATION(BASE_ACCELERATION), rectX(static_cast<int>(x)),
-      rectY(static_cast<int>(y)), // Fixed!
-      velocityX(0.0f), velocityY(0.0f), mTexture(nullptr), textureWidth(0),
-      textureHeight(0) {
+      rectY(static_cast<int>(y)), velocityX(0.0f), velocityY(0.0f),
+      mTexture(nullptr), textureWidth(0), textureHeight(0) {
   playerRect = {this->getPosition().first, this->getPosition().second,
                 this->getWidth(), this->getHeight()};
 };
-// rectWidth(50)
-// rectHeight(50)
 Player::Player(float x, float y, int width, int height)
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
       isMovingRight(false), shooting(false), boost(false), rectXf(x), rectYf(y),
@@ -37,7 +34,6 @@ Player::Player(float x, float y, int width, int height)
 
 Player::~Player() { cleanup(); };
 void Player::renderPlayer(SDL_Renderer *renderer) {
-  // Render player rectangle
   SDL_Rect rect = {rectX, rectY, rectWidth, rectHeight};
   if (mTexture != nullptr) {
     SDL_RenderCopy(renderer, mTexture, nullptr, &rect);
@@ -45,7 +41,6 @@ void Player::renderPlayer(SDL_Renderer *renderer) {
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderFillRect(renderer, &rect);
   }
-
   // Render weapon // updates position
   weapon.update((rectX - 2) + rectWidth / 2, rectY - 6);
   weapon.render(renderer);
@@ -88,7 +83,7 @@ void Player::handleBounds(float nextX, float nextY) {
   updatePlayerPos();
 }
 bool Player::loadTexture(const char *path, SDL_Renderer *renderer) {
-  // Step 1: Free Existing Texture if any ERROR HANDLING
+  // Free Existing Texture * ERROR HANDLING *
   if (mTexture != nullptr) {
     SDL_DestroyTexture(mTexture);
     mTexture = nullptr;
@@ -109,7 +104,7 @@ bool Player::loadTexture(const char *path, SDL_Renderer *renderer) {
   // Main implementation
   textureWidth = loadedSurface->w;
   textureHeight = loadedSurface->h;
-  // free loaded surface since it is no longer needed!
+  // Free the survface!!
   SDL_FreeSurface(loadedSurface);
   return true;
 }
@@ -163,12 +158,13 @@ std::pair<int, int> Player::getPosition() const {
   return std::make_pair(rectX, rectY);
 }
 bool Player::checkCollision(const SDL_Rect &a, const SDL_Rect &b) {
+  // edges recA
   int leftA = a.x;
   int rightA = a.x + a.w;
   int topA = a.y;
   int bottomA = a.y + a.h;
 
-  // Get edges of rectangle B
+  // edges recB
   int leftB = b.x;
   int rightB = b.x + b.w;
   int topB = b.y;

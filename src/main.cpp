@@ -41,8 +41,7 @@ int main(int argc, char *args[]) {
   // In main, when creating asteroids
   std::vector<Asteroid> asteroids;
   for (int i = 0; i < 19; i++) {
-    asteroids.emplace_back(
-        players); // Pass the reference to players vector correctly
+    asteroids.emplace_back(players);
     if (!asteroids.back().loadTexture("src/asteroid.png", gRenderer)) {
       printf("Failed to load asteroid texture for asteroid %d\n", i);
       return 1;
@@ -72,7 +71,6 @@ int main(int argc, char *args[]) {
 
     accumulator += deltaTime;
 
-    // e handle
     while (SDL_PollEvent(&e)) {
       if (e.type == SDL_QUIT) {
         quit = true;
@@ -88,15 +86,12 @@ int main(int argc, char *args[]) {
 
       // Update asteroids and check bullet collisions
 
-      // In your main game loop:
       std::vector<size_t> asteroidsToRemove;
       for (auto &asteroid : asteroids) {
         SDL_Rect asteroidRect = {asteroid.getRectX(), asteroid.getRectY(),
                                  asteroid.getRectWidth(),
                                  asteroid.getRectHeight()};
-
-        bool asteroidHit = false; // Flag to break outer loop
-        // Check bullet collisions for each player
+        bool asteroidHit = false;
         for (auto &player : players) {
           auto bulletIndex =
               player->getWeapon().checkBulletCollision(asteroidRect);
@@ -110,11 +105,9 @@ int main(int argc, char *args[]) {
           }
         }
         if (asteroidHit)
-          break; // Stop checking more asteroids after a hit
+          break;
       }
-
-      // Mark asteroids for removal
-
+      // mark for removal
       for (size_t i = 0; i < asteroids.size(); i++) {
         if (asteroids[i].isDestroyed()) {
           asteroidsToRemove.push_back(i);
@@ -148,7 +141,7 @@ int main(int argc, char *args[]) {
                                   // collison detection_______
     std::vector<Player *> playersToRemove;
     for (const auto &player : players) { // Note: use -> with pointers
-      SDL_Rect playerRect = {player->getPosition().first, // Use -> instead of .
+      SDL_Rect playerRect = {player->getPosition().first,
                              player->getPosition().second, player->getWidth(),
                              player->getHeight()};
 
@@ -174,6 +167,7 @@ int main(int argc, char *args[]) {
                                player.get()) != playersToRemove.end();
             }),
         players.end());
+
     // Frame rate capping
     Uint32 endTime = SDL_GetTicks();
     float elapsedMS = endTime - currentTime;
