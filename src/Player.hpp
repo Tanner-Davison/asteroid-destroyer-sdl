@@ -64,8 +64,9 @@ public:
   bool loadTexture(const char *path, SDL_Renderer *renderer);
   void cleanup(); // so far texture is my only one needed to clean;
   bool checkCollision(const SDL_Rect &a, const SDL_Rect &b);
-  Weapon getWeapon() const;
 
+  const Weapon &getWeapon() const;
+  Weapon &getWeapon();
   std::pair<int, int> getPosition() const;
 
   // Getters for size (if needed)

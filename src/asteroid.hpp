@@ -1,5 +1,8 @@
 #pragma once
+#include "Player.hpp"
 #include "SDL_render.h"
+#include <memory>
+#include <vector>
 struct SDL_Renderer;
 
 class Asteroid {
@@ -27,7 +30,7 @@ private:
   bool destroyed = false;
 
 public:
-  Asteroid();
+  Asteroid(const std::vector<std::unique_ptr<Player>> &players);
   Asteroid(const Asteroid &other);
   Asteroid &operator=(const Asteroid &other);
   ~Asteroid();
@@ -40,4 +43,5 @@ public:
   int getRectHeight() const;
   void destroy();
   bool isDestroyed() const;
+  bool checkStartCollision(const SDL_Rect &a, const SDL_Rect &b);
 };

@@ -1,5 +1,6 @@
 #include "SDL_render.h"
 #include "SDL_timer.h"
+#include <optional>
 #define SDL_MAIN_HANDLED
 #include "Player.hpp"
 #include "asteroid.hpp"
@@ -37,9 +38,11 @@ int main(int argc, char *args[]) {
       return 1;
     }
   }
+  // In main, when creating asteroids
   std::vector<Asteroid> asteroids;
-  for (int i = 0; i < 3; i++) {
-    asteroids.emplace_back();
+  for (int i = 0; i < 19; i++) {
+    asteroids.emplace_back(
+        players); // Pass the reference to players vector correctly
     if (!asteroids.back().loadTexture("src/asteroid.png", gRenderer)) {
       printf("Failed to load asteroid texture for asteroid %d\n", i);
       return 1;
@@ -82,24 +85,36 @@ int main(int argc, char *args[]) {
       for (auto &player : players) {
         player->handlePlayerInput(keyState);
       }
+
+      // Update asteroids and check bullet collisions
+
+      // In your main game loop:
+      std::vector<size_t> asteroidsToRemove;
       for (auto &asteroid : asteroids) {
         SDL_Rect asteroidRect = {asteroid.getRectX(), asteroid.getRectY(),
                                  asteroid.getRectWidth(),
                                  asteroid.getRectHeight()};
 
+        bool asteroidHit = false; // Flag to break outer loop
         // Check bullet collisions for each player
         for (auto &player : players) {
-          if (player->getWeapon().checkBulletCollision(asteroidRect)) {
-            printf("Bullet hit asteroid!\n"); // Debug print
+          auto bulletIndex =
+              player->getWeapon().checkBulletCollision(asteroidRect);
+          if (bulletIndex.has_value()) {
+            printf("Bullet %zu hit asteroid at position: %d, %d\n",
+                   bulletIndex.value(), asteroid.getRectX(),
+                   asteroid.getRectY());
+            player->getWeapon().destroyBullet(bulletIndex.value());
             asteroid.destroy();
-            break; // Stop checking other players once asteroid is hit
+            break;
           }
         }
+        if (asteroidHit)
+          break; // Stop checking more asteroids after a hit
       }
-      // Update asteroids and check bullet collisions
-      std::vector<size_t> asteroidsToRemove;
 
       // Mark asteroids for removal
+
       for (size_t i = 0; i < asteroids.size(); i++) {
         if (asteroids[i].isDestroyed()) {
           asteroidsToRemove.push_back(i);

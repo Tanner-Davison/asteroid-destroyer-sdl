@@ -117,7 +117,7 @@ bool Player::loadTexture(const char *path, SDL_Renderer *renderer) {
 void Player::handleInput(bool up, bool down, bool left, bool right,
                          bool isShooting, bool boost) {
   ACCELERATION = boost ? BOOST_ACCELERATION : BASE_ACCELERATION;
-  float CurrentMaxVelocity = boost ? MAX_VELOCITY * 2.5f : MAX_VELOCITY;
+  float CurrentMaxVelocity = boost ? MAX_VELOCITY * 1.5f : MAX_VELOCITY;
   // Movement handling
   if (right) {
     velocityX = std::min(velocityX + ACCELERATION, CurrentMaxVelocity);
@@ -187,7 +187,8 @@ bool Player::checkCollision(const SDL_Rect &a, const SDL_Rect &b) {
   // If none of the above, they overlap
   return true;
 }
-Weapon Player::getWeapon() const { return this->weapon; }
+const Weapon &Player::getWeapon() const { return weapon; }
+Weapon &Player::getWeapon() { return weapon; }
 void Player::cleanup() {
   if (mTexture != nullptr) {
     SDL_DestroyTexture(mTexture);
