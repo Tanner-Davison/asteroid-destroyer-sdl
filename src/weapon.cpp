@@ -17,8 +17,13 @@ void Bullet::update(float deltaTime) {
 bool Bullet::isOffScreen() const {
   return (x < 0 || x > SCREEN_WIDTH || y < 0 || y > SCREEN_HEIGHT);
 }
-////////////////////////// WEAPON  Impls///////////////////////////////////
+SDL_Rect Bullet::getHitBox() const {
+  return {static_cast<int>(x), static_cast<int>(y), WIDTH, HEIGHT};
+}
+bool Bullet::isActive() { return active; }
+void Bullet::deactivate() { active = false; }
 
+////////////////////////// WEAPON  Impls///////////////////////////////////
 Weapon::Weapon()
     : x(0), y(0), cooldown(350.0f), lastShotTime(300), bulletSpeed(600.0f),
       angle(-M_PI / 2) {};
@@ -63,3 +68,17 @@ void Weapon::shoot() {
   lastShotTime = SDL_GetTicks();
 }
 bool Weapon::canShoot() { return (SDL_GetTicks() - lastShotTime >= cooldown); }
+
+bool Weapon::checkBulletCollision(const SDL_Rect &target) {
+  bool hit = false;
+  for (auto &bullet : bullets) {
+    if (!bullet.isActive())
+      continue;
+
+    SDL_Rect bulletRect = bullet.getHitBox();
+    if (SDL_HasIntersection(&bulletRect, &target)) {
+      hit = true;
+    }
+  }
+  return hit;
+}

@@ -8,40 +8,40 @@ struct SDL_Renderer;
 
 class Player {
 private:
-  // Position (Floating Point for smoother movement)
+  // FLOATING POINT POSITION FOR SMOOTHER CHANGES
   float rectXf;
   float rectYf;
 
-  // Integer position (for rendering)
+  // INT POSITION FOR RENDERING
   int rectX;
   int rectY;
 
-  // Player size
+  // PLAYER SIZE
   int rectWidth = 45;
   int rectHeight = 45;
 
-  // Physics Properties
+  // PHYSICS PROPERTIES
   float velocityX;
   float velocityY;
-  const float MAX_VELOCITY = 3.4f; // Fixed maximum velocity
-  const float BASE_ACCELERATION = .60f;
-  const float BOOST_ACCELERATION = 1.5f;
-  const float DECELERATION = .9930; // Consistent deceleration
+  const float MAX_VELOCITY = 3.4f;       // Fixed maximum velocity
+  const float BASE_ACCELERATION = .60f;  // FIXED
+  const float BOOST_ACCELERATION = 1.5f; // FIXED BOOST_ACCELERATION
+  const float DECELERATION = .9930;      // FIXED Consistent deceleration
   float ACCELERATION = .78f;
-  //
+
   // TEXTURES
   SDL_Texture *mTexture;
   int textureWidth;
   int textureHeight;
-  //
 
-  // Movement state
+  // MOVEMENT STATE
   bool isMovingUp;
   bool isMovingDown;
   bool isMovingLeft;
   bool isMovingRight;
   bool shooting;
   bool boost;
+
   // Weapon system
   Weapon weapon;
 
@@ -65,6 +65,7 @@ public:
   bool loadTexture(const char *path, SDL_Renderer *renderer);
   void cleanup(); // so far texture is my only one needed to clean;
   bool checkCollision(const SDL_Rect &a, const SDL_Rect &b);
+  Weapon getWeapon() const;
 
   std::pair<int, int> getPosition() const;
 

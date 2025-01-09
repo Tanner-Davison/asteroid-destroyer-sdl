@@ -20,9 +20,12 @@ private:
   const float MAX_VELOCITY = 3.1f; // Fixed maximum velocity
   const float ACCELERATION = .55f; // Fixed acceleration rate
   const float DECELERATION = .992; // Consistent deceleration
+  bool destroyed = false;
 
 public:
   Asteroid();
+  Asteroid(const Asteroid &other);
+  Asteroid &operator=(const Asteroid &other);
   ~Asteroid();
   void renderAsteroid(SDL_Renderer *renderer);
   void update();
@@ -30,4 +33,6 @@ public:
   int getRectY() const;
   int getRectWidth() const;
   int getRectHeight() const;
+  void destroy();
+  bool isDestroyed() const;
 };

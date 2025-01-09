@@ -19,6 +19,30 @@ Asteroid::Asteroid() : rectXf(0), rectYf(0), rectWidth(100), rectHeight(100) {
   std::uniform_real_distribution<> rotDis(-2.0, 2.0);
   rotationSpeed = rotDis(GameRNG::gen);
 }
+Asteroid::Asteroid(const Asteroid &other)
+    : rectXf(other.rectXf), rectYf(other.rectYf), rectX(other.rectX),
+      rectY(other.rectY), rectWidth(other.rectWidth),
+      rectHeight(other.rectHeight), velocityX(other.velocityX),
+      velocityY(other.velocityY), angle(other.angle),
+      rotationSpeed(other.rotationSpeed), destroyed(other.destroyed) {}
+
+// Copy assignment operator
+Asteroid &Asteroid::operator=(const Asteroid &other) {
+  if (this != &other) { // Protect against self-assignment
+    rectXf = other.rectXf;
+    rectYf = other.rectYf;
+    rectX = other.rectX;
+    rectY = other.rectY;
+    rectWidth = other.rectWidth;
+    rectHeight = other.rectHeight;
+    velocityX = other.velocityX;
+    velocityY = other.velocityY;
+    angle = other.angle;
+    rotationSpeed = other.rotationSpeed;
+    destroyed = other.destroyed;
+  }
+  return *this;
+}
 Asteroid::~Asteroid() = default;
 void Asteroid::renderAsteroid(SDL_Renderer *renderer) {
   SDL_Rect rect = {rectX, rectY, rectWidth, rectHeight};
@@ -56,3 +80,5 @@ int Asteroid::getRectX() const { return this->rectX; }
 int Asteroid::getRectY() const { return this->rectY; }
 int Asteroid::getRectWidth() const { return this->rectWidth; }
 int Asteroid::getRectHeight() const { return this->rectHeight; }
+void Asteroid::destroy() { destroyed = true; }
+bool Asteroid::isDestroyed() const { return destroyed; }

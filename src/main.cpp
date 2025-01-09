@@ -39,8 +39,12 @@ int main(int argc, char *args[]) {
     printf("Failed to load player3 texture!\n");
     return 1;
   }
+  std::vector<Player *> players{&player, &player2, &player3};
+  std::vector<Asteroid> asteroids;
+  for (int i = 0; i < 3; i++) {
+    asteroids.emplace_back();
+  }
 
-  std::vector<Asteroid> asteroids{3};
   SDL_Event e;
   bool quit = false;
 
@@ -78,18 +82,49 @@ int main(int argc, char *args[]) {
       player2.handlePlayerInput(keyState);
       player3.handlePlayerInput(keyState);
 
+      for (auto &asteroid : asteroids) {
+        SDL_Rect asteroidRect = {asteroid.getRectX(), asteroid.getRectY(),
+                                 asteroid.getRectWidth(),
+                                 asteroid.getRectHeight()};
+
+        // Check bullet collisions for each player
+        for (Player *playa : players) {
+          if (playa->getWeapon().checkBulletCollision(asteroidRect)) {
+            printf("Bullet hit asteroid!\n"); // Debug print
+            asteroid.destroy();
+            break; // Stop checking other players once asteroid is hit
+          }
+        }
+      }
+      // Update asteroids and check bullet collisions
+      std::vector<size_t> asteroidsToRemove;
+
+      // Mark asteroids for removal
+      for (size_t i = 0; i < asteroids.size(); i++) {
+        if (asteroids[i].isDestroyed()) {
+          asteroidsToRemove.push_back(i);
+        }
+      }
+
+      // Remove from back to front to maintain valid indices
+      for (auto it = asteroidsToRemove.rbegin(); it != asteroidsToRemove.rend();
+           ++it) {
+        if (*it < asteroids.size()) { // Safety check
+          asteroids.erase(asteroids.begin() + *it);
+        }
+      }
       accumulator -= FIXED_TIME_STEP;
     }
 
     for (auto &asteroid : asteroids) {
       asteroid.update();
     }
-    // Render
+
     SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
     SDL_RenderClear(gRenderer);
-    player.renderPlayer(gRenderer);
-    player2.renderPlayer(gRenderer);
-    player3.renderPlayer(gRenderer);
+    for (Player *playa : players) {
+      playa->renderPlayer(gRenderer);
+    }
     for (auto &asteroid : asteroids) {
       asteroid.renderAsteroid(gRenderer);
     }
@@ -98,22 +133,35 @@ int main(int argc, char *args[]) {
 
     // check collision
     // checkCollision(player, player2);
+    std::vector<Player *> playersToRemove;
+    for (Player *player : players) { // Note: use -> with pointers
+      SDL_Rect playerRect = {player->getPosition().first, // Use -> instead of .
+                             player->getPosition().second, player->getWidth(),
+                             player->getHeight()};
 
-    SDL_Rect playerRect = {player.getPosition().first,
-                           player.getPosition().second, player.getWidth(),
-                           player.getHeight()};
+      for (const auto &asteroid : asteroids) {
+        SDL_Rect asteroidRect = {asteroid.getRectX(), asteroid.getRectY(),
+                                 asteroid.getRectWidth(),
+                                 asteroid.getRectHeight()};
 
-    for (const auto &asteroid : asteroids) {
-      SDL_Rect asteroidRect = {asteroid.getRectX(), asteroid.getRectY(),
-                               asteroid.getRectWidth(),
-                               asteroid.getRectHeight()};
-
-      if (player.checkCollision(playerRect, asteroidRect)) {
-        // Handle collision
-        // IDEAS player loses life, game over, etc.
-        quit = true;
+        if (player->checkCollision(playerRect,
+                                   asteroidRect)) { // Use -> instead of .
+          if (players.size() == 1) {
+            quit = true;
+          }
+          playersToRemove.push_back(player);
+          break;
+        }
       }
     }
+    players.erase(std::remove_if(players.begin(), players.end(),
+                                 [&playersToRemove](Player *player) {
+                                   return std::find(playersToRemove.begin(),
+                                                    playersToRemove.end(),
+                                                    player) !=
+                                          playersToRemove.end();
+                                 }),
+                  players.end());
     // Frame rate capping
     Uint32 endTime = SDL_GetTicks();
     float elapsedMS = endTime - currentTime;
