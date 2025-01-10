@@ -12,6 +12,7 @@ set(SOURCES
     src/Player.cpp
     src/weapon.cpp
     src/asteroid.cpp
+    src/score.cpp
 )
 
 # Headers
@@ -26,7 +27,9 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/include/SDL2
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
-# Link SDL2 library
+# Link SDL2 Image library
+message(STATUS "Looking for SDL2_ttf in: ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64")
+message(STATUS "SDL2_ttf lib name: ${SDL2_TTF_LIB}")
 find_library(SDL2_IMAGE_LIB SDL2_image PATHS ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64)
 if (SDL2_IMAGE_LIB)
     target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_IMAGE_LIB})
@@ -40,6 +43,13 @@ if (SDL2_LIB)
 else()
     message(FATAL_ERROR "SDL2 library not found in ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64")
 endif()
+# Link SDL2_TFF(FONT LIBRARY)
+find_library(SDL2_TTF_LIB SDL2_ttf PATHS ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64)
+if (SDL2_TTF_LIB)
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_TTF_LIB})
+else()
+    message(FATAL_ERROR "SDL2_ttf library not found in ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64")
+endif()
 # Copy hello_world.bmp to the build directory
 # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 #     COMMAND ${CMAKE_COMMAND} -E echo "Copying BMP files to ${CMAKE_CURRENT_BINARY_DIR}"
@@ -52,8 +62,25 @@ endif()
 # Copy SDL2.dll to the output directory (for runtime)
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    ${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2_image.dll
+    ${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2.dll
     $<TARGET_FILE_DIR:${PROJECT_NAME}>
+)
+#ttf (font dll)
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    ${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2_ttf.dll
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>
+)
+#image dll
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    ${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2_image.dll #image dll
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>
+)
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+COMMAND ${CMAKE_COMMAND} -E copy_if_different
+${CMAKE_CURRENT_SOURCE_DIR}/assets/fonts/FiraCode-Regular.ttf
+$<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
 # Copy SDL2.dll to the output directory (for runtime)
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
@@ -63,9 +90,4 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     $<TARGET_FILE_DIR:${PROJECT_NAME}>
 )
 
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    ${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2.dll
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>
-)
 

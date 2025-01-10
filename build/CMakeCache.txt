@@ -191,6 +191,9 @@ SDL2_IMAGE_LIB:FILEPATH=E:/source/repos/sdl-first-game/lib/x64/SDL2_image.lib
 //Path to a library.
 SDL2_LIB:FILEPATH=E:/source/repos/sdl-first-game/lib/x64/SDL2.lib
 
+//Path to a library.
+SDL2_TTF_LIB:FILEPATH=E:/source/repos/sdl-first-game/lib/x64/SDL2_ttf.lib
+
 //Value Computed by CMake
 sdl-first-game_BINARY_DIR:STATIC=E:/source/repos/sdl-first-game/build
 

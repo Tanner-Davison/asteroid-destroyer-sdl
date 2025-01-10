@@ -1,12 +1,67 @@
-#include "SDL_render.h"
-#include "SDL_timer.h"
-#include <optional>
 #define SDL_MAIN_HANDLED
 #include "Player.hpp"
+#include "SDL_render.h"
+#include "SDL_timer.h"
 #include "asteroid.hpp"
 #include "createwindow.hpp"
+#include "score.hpp"
+#include <optional>
 #include <vector>
+// void createPlayers(std::vector<std::unique_ptr<Player>> &players, int count)
+// {
+//   float centerX = SCREEN_WIDTH / 2.0f;
+//   float bottomY = SCREEN_HEIGHT - 100.0f;
+//   const int PLAYER_SPACING = 70;
+//   const int VERTICAL_OFFSET = 50;
 
+//   if (count <= 0) {
+//     return;
+//   }
+
+//   if (count == 1) {
+//     // Single player, center them
+//     players.push_back(std::make_unique<Player>(centerX, bottomY));
+//   } else {
+//     // V formation logic
+//     int middleIndex = count / 2;
+//     for (int i = 0; i < count; ++i) {
+//       float offsetX = (i - middleIndex) * PLAYER_SPACING;
+//       float offsetY = std::abs(i - middleIndex) * VERTICAL_OFFSET;
+//       players.push_back(
+//           std::make_unique<Player>(centerX - offsetX, bottomY + offsetY));
+//     }
+//   }
+// }
+std::vector<std::unique_ptr<Player>> createPlayers(int count) {
+  float centerX = SCREEN_WIDTH / 2.0f;
+  float bottomY = SCREEN_HEIGHT - 100.0f;
+  const int PLAYER_SPACING = 70; // Horizontal spacing between players
+  const int VERTICAL_OFFSET =
+      50; // Vertical spacing between rows in the V formation
+
+  std::vector<std::unique_ptr<Player>> players;
+
+  if (count <= 0) {
+    return players; // Return an empty vector if no players are to be created
+  }
+
+  if (count == 1) {
+    // Single player, center them
+    players.push_back(std::make_unique<Player>(centerX, bottomY));
+  } else {
+    // V formation logic
+    int middleIndex = count / 2; // Middle of the V formation
+    for (int i = 0; i < count; ++i) {
+      float offsetX = (i - middleIndex) * PLAYER_SPACING;
+      float offsetY = std::abs(i - middleIndex) * VERTICAL_OFFSET;
+      players.push_back(std::make_unique<Player>(
+          centerX + offsetX, bottomY - offsetY) // Move upward for V formation
+      );
+    }
+  }
+
+  return players; // Return the vector of players
+}
 int main(int argc, char *args[]) {
   if (!init()) {
     printf("Failed to initialize!\n");
@@ -20,17 +75,9 @@ int main(int argc, char *args[]) {
            IMG_GetError());
     return 1;
   }
-  float centerX = SCREEN_WIDTH / 2.0f;
-  float bottomY = SCREEN_HEIGHT - 100.0f;
-  const int PLAYER_SPACING = 50;
-
-  std::vector<std::unique_ptr<Player>> players;
-  players.push_back(std::make_unique<Player>(
-      centerX - static_cast<float>(PLAYER_SPACING) / 2, bottomY));
-  players.push_back(std::make_unique<Player>(
-      centerX + static_cast<float>(PLAYER_SPACING) / 2, bottomY));
-  players.push_back(std::make_unique<Player>(
-      centerX, bottomY - static_cast<float>(PLAYER_SPACING)));
+  int deathCount = 3;
+  Score scoreDisplay;
+  auto players = createPlayers(3);
 
   for (auto &player : players) {
     if (!player->loadTexture("src/spaceship.png", gRenderer)) {
@@ -38,11 +85,10 @@ int main(int argc, char *args[]) {
       return 1;
     }
   }
-  // In main, when creating asteroids
+  // ASTEROIDS
   std::vector<Asteroid> asteroids;
   for (int i = 0; i < 19; i++) {
-    asteroids.emplace_back(
-        players); // Pass the reference to players vector correctly
+    asteroids.emplace_back(players);
     if (!asteroids.back().loadTexture("src/asteroid.png", gRenderer)) {
       printf("Failed to load asteroid texture for asteroid %d\n", i);
       return 1;
@@ -72,13 +118,11 @@ int main(int argc, char *args[]) {
 
     accumulator += deltaTime;
 
-    // e handle
     while (SDL_PollEvent(&e)) {
       if (e.type == SDL_QUIT) {
         quit = true;
       }
     }
-
     const Uint8 *keyState = SDL_GetKeyboardState(NULL);
     // timestep update
     while (accumulator >= FIXED_TIME_STEP) {
@@ -87,16 +131,12 @@ int main(int argc, char *args[]) {
       }
 
       // Update asteroids and check bullet collisions
-
-      // In your main game loop:
       std::vector<size_t> asteroidsToRemove;
       for (auto &asteroid : asteroids) {
         SDL_Rect asteroidRect = {asteroid.getRectX(), asteroid.getRectY(),
                                  asteroid.getRectWidth(),
                                  asteroid.getRectHeight()};
-
-        bool asteroidHit = false; // Flag to break outer loop
-        // Check bullet collisions for each player
+        bool asteroidHit = false;
         for (auto &player : players) {
           auto bulletIndex =
               player->getWeapon().checkBulletCollision(asteroidRect);
@@ -106,15 +146,15 @@ int main(int argc, char *args[]) {
                    asteroid.getRectY());
             player->getWeapon().destroyBullet(bulletIndex.value());
             asteroid.destroy();
+            // update score
+            scoreDisplay.setScore(100);
             break;
           }
         }
         if (asteroidHit)
-          break; // Stop checking more asteroids after a hit
+          break;
       }
-
-      // Mark asteroids for removal
-
+      // mark for removal
       for (size_t i = 0; i < asteroids.size(); i++) {
         if (asteroids[i].isDestroyed()) {
           asteroidsToRemove.push_back(i);
@@ -137,6 +177,7 @@ int main(int argc, char *args[]) {
 
     SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
     SDL_RenderClear(gRenderer);
+    scoreDisplay.renderScore(gRenderer);
     for (auto &player : players) {
       player->renderPlayer(gRenderer);
     }
@@ -148,7 +189,7 @@ int main(int argc, char *args[]) {
                                   // collison detection_______
     std::vector<Player *> playersToRemove;
     for (const auto &player : players) { // Note: use -> with pointers
-      SDL_Rect playerRect = {player->getPosition().first, // Use -> instead of .
+      SDL_Rect playerRect = {player->getPosition().first,
                              player->getPosition().second, player->getWidth(),
                              player->getHeight()};
 
@@ -158,10 +199,20 @@ int main(int argc, char *args[]) {
                                  asteroid.getRectHeight()};
 
         if (player->checkCollision(playerRect, asteroidRect)) {
+          // Game Failed LOGIC CURRENTLY NO END
           if (players.size() == 1) {
-            quit = true;
+            // SHOULD REMOVE PLAYER
+            players.clear();
+            players = createPlayers(++deathCount);
+            for (auto &player : players) {
+              if (!player->loadTexture("src/spaceship.png", gRenderer)) {
+                printf("Failed to load player3 texture\n");
+                return 1;
+              }
+            }
           }
           playersToRemove.push_back(player.get());
+          scoreDisplay.setScore(-100);
           break;
         }
       }
@@ -174,6 +225,7 @@ int main(int argc, char *args[]) {
                                player.get()) != playersToRemove.end();
             }),
         players.end());
+
     // Frame rate capping
     Uint32 endTime = SDL_GetTicks();
     float elapsedMS = endTime - currentTime;
