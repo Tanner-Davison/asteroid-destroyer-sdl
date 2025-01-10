@@ -7,7 +7,30 @@
 #include "score.hpp"
 #include <optional>
 #include <vector>
+void createPlayers(std::vector<std::unique_ptr<Player>> &players, int count) {
+  float centerX = SCREEN_WIDTH / 2.0f;
+  float bottomY = SCREEN_HEIGHT - 100.0f;
+  const int PLAYER_SPACING = 70;
+  const int VERTICAL_OFFSET = 50;
 
+  if (count <= 0) {
+    return;
+  }
+
+  if (count == 1) {
+    // Single player, center them
+    players.push_back(std::make_unique<Player>(centerX, bottomY));
+  } else {
+    // V formation logic
+    int middleIndex = count / 2;
+    for (int i = 0; i < count; ++i) {
+      float offsetX = (i - middleIndex) * PLAYER_SPACING;
+      float offsetY = std::abs(i - middleIndex) * VERTICAL_OFFSET;
+      players.push_back(
+          std::make_unique<Player>(centerX - offsetX, bottomY + offsetY));
+    }
+  }
+}
 int main(int argc, char *args[]) {
   if (!init()) {
     printf("Failed to initialize!\n");
@@ -21,27 +44,18 @@ int main(int argc, char *args[]) {
            IMG_GetError());
     return 1;
   }
-  float centerX = SCREEN_WIDTH / 2.0f;
-  float bottomY = SCREEN_HEIGHT - 100.0f;
-  const int PLAYER_SPACING = 50;
 
   Score scoreDisplay;
 
   std::vector<std::unique_ptr<Player>> players;
-  players.push_back(std::make_unique<Player>(
-      centerX - static_cast<float>(PLAYER_SPACING) / 2, bottomY));
-  players.push_back(std::make_unique<Player>(
-      centerX + static_cast<float>(PLAYER_SPACING) / 2, bottomY));
-  players.push_back(std::make_unique<Player>(
-      centerX, bottomY - static_cast<float>(PLAYER_SPACING)));
-
+  createPlayers(players, 3);
   for (auto &player : players) {
     if (!player->loadTexture("src/spaceship.png", gRenderer)) {
       printf("Failed to load player3 texture\n");
       return 1;
     }
   }
-  // In main, when creating asteroids
+  // ASTEROIDS
   std::vector<Asteroid> asteroids;
   for (int i = 0; i < 19; i++) {
     asteroids.emplace_back(players);
@@ -79,7 +93,6 @@ int main(int argc, char *args[]) {
         quit = true;
       }
     }
-    // scoreboard
     const Uint8 *keyState = SDL_GetKeyboardState(NULL);
     // timestep update
     while (accumulator >= FIXED_TIME_STEP) {
@@ -104,6 +117,7 @@ int main(int argc, char *args[]) {
                    asteroid.getRectY());
             player->getWeapon().destroyBullet(bulletIndex.value());
             asteroid.destroy();
+            // update score
             scoreDisplay.setScore(100);
             break;
           }
@@ -157,9 +171,10 @@ int main(int argc, char *args[]) {
 
         if (player->checkCollision(playerRect, asteroidRect)) {
           if (players.size() == 1) {
-            quit = true;
+            quit == true;
           }
           playersToRemove.push_back(player.get());
+          scoreDisplay.setScore(-100);
           break;
         }
       }

@@ -3,23 +3,36 @@
 #include "createwindow.hpp"
 #include <SDL.h>
 
-Player::Player() : Player(100.0f, 100.0f, 50, 50) {}
-Player::Player(float x, float y) : Player(x, y, 50, 50) {};
+Player::Player()
+    : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
+      isMovingRight(false), shooting(false), ACCELERATION(BASE_ACCELERATION),
+      rectXf(100.0f), rectYf(100.0f), rectX(100), rectY(100), velocityX(0.0f),
+      velocityY(0.0f), rectWidth(50), rectHeight(50), boost(false),
+      mTexture(nullptr), textureWidth(0), textureHeight(0) {
+  playerRect = {this->getPosition().first, this->getPosition().second,
+                this->getWidth(), this->getHeight()};
+};
+
+Player::Player(float x, float y)
+    : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
+      isMovingRight(false), shooting(false), boost(false), rectXf(x), rectYf(y),
+      ACCELERATION(BASE_ACCELERATION), rectX(static_cast<int>(x)),
+      rectY(static_cast<int>(y)), // Fixed!
+      velocityX(0.0f), velocityY(0.0f), mTexture(nullptr), textureWidth(0),
+      textureHeight(0) {
+  playerRect = {this->getPosition().first, this->getPosition().second,
+                this->getWidth(), this->getHeight()};
+};
 Player::Player(float x, float y, int width, int height)
-    : rectXf(x), rectYf(y), rectX(static_cast<int>(x)),
-      rectY(static_cast<int>(y)), rectWidth(width), rectHeight(height) {
-  initCommonValues();
+    : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
+      isMovingRight(false), shooting(false), boost(false), rectXf(x), rectYf(y),
+      ACCELERATION(BASE_ACCELERATION), rectX(100), rectY(100), velocityX(0.0f),
+      velocityY(0.0f), rectWidth(width), rectHeight(height), mTexture(nullptr),
+      textureWidth(0), textureHeight(0) {
+  playerRect = {this->getPosition().first, this->getPosition().second,
+                this->getWidth(), this->getHeight()};
 };
 // initializer list to ease this file lol
-void Player::initCommonValues() {
-  isMovingUp = isMovingDown = isMovingLeft = isMovingRight = false;
-  shooting = boost = false;
-  velocityX = velocityY = 0.0f;
-  mTexture = nullptr;
-  textureWidth = textureHeight = 0;
-  ACCELERATION = BASE_ACCELERATION;
-  playerRect = {rectX, rectY, rectWidth, rectHeight};
-}
 void Player::renderPlayer(SDL_Renderer *renderer) {
   SDL_Rect rect = {rectX, rectY, rectWidth, rectHeight};
   if (mTexture != nullptr) {
@@ -144,6 +157,7 @@ void Player::handlePlayerInput(const Uint8 *keyState) {
 std::pair<int, int> Player::getPosition() const {
   return std::make_pair(rectX, rectY);
 }
+
 bool Player::checkCollision(const SDL_Rect &a, const SDL_Rect &b) {
   // edges recA
   int leftA = a.x;

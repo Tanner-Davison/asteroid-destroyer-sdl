@@ -52,7 +52,6 @@ public:
   void handlePlayerInput(const Uint8 *keyState);
   void handleInput(bool up, bool down, bool left, bool right, bool shooting,
                    bool boost);
-  void initCommonValues();
   // Core functions
   void renderPlayer(SDL_Renderer *renderer);
 
