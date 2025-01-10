@@ -23,6 +23,18 @@ y: Players y-coordinates
 velocityX: Players speed along the x-axis
 velocityY: Players speed along the y-axis
 
+P(x) = centerX + (i - (n/2)) _ spacing
+P(y) = bottomY - |i - (n/2)| _ vertical_offset
+Where:
+
+<sub>**n** is the total count of players
+**i** is the current player index (0 to n-1)
+| | represents absolute value</sub>
+
+This is essentially a linear function for x-coordinates combined with an absolute value function for y-coordinates,
+centered around the middle index. It creates a symmetric V shape because the absolute value function creates the same y-offset for positions equidistant from the center,
+while the x-coordinates spread outward linearly.
+
 ## MOVEMENT
 
 speed: the base speed of the player
