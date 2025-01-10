@@ -7,14 +7,42 @@
 #include "score.hpp"
 #include <optional>
 #include <vector>
-void createPlayers(std::vector<std::unique_ptr<Player>> &players, int count) {
+// void createPlayers(std::vector<std::unique_ptr<Player>> &players, int count)
+// {
+//   float centerX = SCREEN_WIDTH / 2.0f;
+//   float bottomY = SCREEN_HEIGHT - 100.0f;
+//   const int PLAYER_SPACING = 70;
+//   const int VERTICAL_OFFSET = 50;
+
+//   if (count <= 0) {
+//     return;
+//   }
+
+//   if (count == 1) {
+//     // Single player, center them
+//     players.push_back(std::make_unique<Player>(centerX, bottomY));
+//   } else {
+//     // V formation logic
+//     int middleIndex = count / 2;
+//     for (int i = 0; i < count; ++i) {
+//       float offsetX = (i - middleIndex) * PLAYER_SPACING;
+//       float offsetY = std::abs(i - middleIndex) * VERTICAL_OFFSET;
+//       players.push_back(
+//           std::make_unique<Player>(centerX - offsetX, bottomY + offsetY));
+//     }
+//   }
+// }
+std::vector<std::unique_ptr<Player>> createPlayers(int count) {
   float centerX = SCREEN_WIDTH / 2.0f;
   float bottomY = SCREEN_HEIGHT - 100.0f;
-  const int PLAYER_SPACING = 70;
-  const int VERTICAL_OFFSET = 50;
+  const int PLAYER_SPACING = 70; // Horizontal spacing between players
+  const int VERTICAL_OFFSET =
+      50; // Vertical spacing between rows in the V formation
+
+  std::vector<std::unique_ptr<Player>> players;
 
   if (count <= 0) {
-    return;
+    return players; // Return an empty vector if no players are to be created
   }
 
   if (count == 1) {
@@ -22,14 +50,17 @@ void createPlayers(std::vector<std::unique_ptr<Player>> &players, int count) {
     players.push_back(std::make_unique<Player>(centerX, bottomY));
   } else {
     // V formation logic
-    int middleIndex = count / 2;
+    int middleIndex = count / 2; // Middle of the V formation
     for (int i = 0; i < count; ++i) {
       float offsetX = (i - middleIndex) * PLAYER_SPACING;
       float offsetY = std::abs(i - middleIndex) * VERTICAL_OFFSET;
-      players.push_back(
-          std::make_unique<Player>(centerX - offsetX, bottomY + offsetY));
+      players.push_back(std::make_unique<Player>(
+          centerX + offsetX, bottomY - offsetY) // Move upward for V formation
+      );
     }
   }
+
+  return players; // Return the vector of players
 }
 int main(int argc, char *args[]) {
   if (!init()) {
@@ -44,11 +75,10 @@ int main(int argc, char *args[]) {
            IMG_GetError());
     return 1;
   }
-
+  int deathCount = 3;
   Score scoreDisplay;
+  auto players = createPlayers(3);
 
-  std::vector<std::unique_ptr<Player>> players;
-  createPlayers(players, 3);
   for (auto &player : players) {
     if (!player->loadTexture("src/spaceship.png", gRenderer)) {
       printf("Failed to load player3 texture\n");
@@ -101,7 +131,6 @@ int main(int argc, char *args[]) {
       }
 
       // Update asteroids and check bullet collisions
-
       std::vector<size_t> asteroidsToRemove;
       for (auto &asteroid : asteroids) {
         SDL_Rect asteroidRect = {asteroid.getRectX(), asteroid.getRectY(),
@@ -170,8 +199,17 @@ int main(int argc, char *args[]) {
                                  asteroid.getRectHeight()};
 
         if (player->checkCollision(playerRect, asteroidRect)) {
+          // Game Failed LOGIC CURRENTLY NO END
           if (players.size() == 1) {
-            quit == true;
+            // SHOULD REMOVE PLAYER
+            players.clear();
+            players = createPlayers(++deathCount);
+            for (auto &player : players) {
+              if (!player->loadTexture("src/spaceship.png", gRenderer)) {
+                printf("Failed to load player3 texture\n");
+                return 1;
+              }
+            }
           }
           playersToRemove.push_back(player.get());
           scoreDisplay.setScore(-100);
