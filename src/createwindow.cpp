@@ -4,6 +4,7 @@
 #include "SDL_video.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 #include <direct.h>
 #include <stdio.h>
 // Define constants
@@ -15,6 +16,7 @@ SDL_Window *gWindow = NULL;
 SDL_Surface *gScreenSurface = NULL;
 SDL_Surface *gHelloWorld = NULL;
 SDL_Renderer *gRenderer = NULL;
+TTF_Font *font = nullptr;
 std::random_device GameRNG::rd;
 std::mt19937 GameRNG::gen(GameRNG::rd());
 
@@ -26,7 +28,17 @@ bool init() {
     printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
     success = false;
   }
-
+  // initializer for Fonts
+  if (TTF_Init() == -1) {
+    printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+    success = false;
+  }
+  // initializer for TTF_OpenFont
+  font = TTF_OpenFont("assets/fonts/FiraCode-Regular.ttf", 24);
+  if (!font) {
+    printf("Failed to Load font! SDL_ttf Error: %s\n", TTF_GetError());
+    success = false; // You probably want to set success to false here
+  }
   // Initialize SDL_image
   int imgFlags = IMG_INIT_PNG;
   if (!(IMG_Init(imgFlags) & imgFlags)) {
@@ -85,7 +97,9 @@ void close() {
   // Destroy Renderer
   SDL_DestroyRenderer(gRenderer);
   gRenderer = NULL;
-
+  // TTF (font Cleanup)
+  TTF_CloseFont(font);
+  TTF_Quit();
   /*
    Destroy Window-
     this is destroyed using SDLs system since SDL's memory is handled in 'C'

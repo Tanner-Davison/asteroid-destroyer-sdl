@@ -1,10 +1,11 @@
-#include "SDL_render.h"
-#include "SDL_timer.h"
-#include <optional>
 #define SDL_MAIN_HANDLED
 #include "Player.hpp"
+#include "SDL_render.h"
+#include "SDL_timer.h"
 #include "asteroid.hpp"
 #include "createwindow.hpp"
+#include "score.hpp"
+#include <optional>
 #include <vector>
 
 int main(int argc, char *args[]) {
@@ -23,6 +24,8 @@ int main(int argc, char *args[]) {
   float centerX = SCREEN_WIDTH / 2.0f;
   float bottomY = SCREEN_HEIGHT - 100.0f;
   const int PLAYER_SPACING = 50;
+
+  Score scoreDisplay;
 
   std::vector<std::unique_ptr<Player>> players;
   players.push_back(std::make_unique<Player>(
@@ -76,7 +79,7 @@ int main(int argc, char *args[]) {
         quit = true;
       }
     }
-
+    // scoreboard
     const Uint8 *keyState = SDL_GetKeyboardState(NULL);
     // timestep update
     while (accumulator >= FIXED_TIME_STEP) {
@@ -101,6 +104,7 @@ int main(int argc, char *args[]) {
                    asteroid.getRectY());
             player->getWeapon().destroyBullet(bulletIndex.value());
             asteroid.destroy();
+            scoreDisplay.setScore(100);
             break;
           }
         }
@@ -130,6 +134,7 @@ int main(int argc, char *args[]) {
 
     SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
     SDL_RenderClear(gRenderer);
+    scoreDisplay.renderScore(gRenderer);
     for (auto &player : players) {
       player->renderPlayer(gRenderer);
     }

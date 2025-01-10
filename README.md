@@ -1,6 +1,19 @@
 # SDL Window Program
 
-# Project notes for self
+## Project notes for self
+
+# Steps Of Rendering Something
+
+### please email me if you know a better way (tanner.davison95@gmail.com)
+
+- Step 1: Create Surface (texture based or primitive shape)
+
+```
+
+SDL_Surface* surface = TTF_RenderTextSolid(font, "Text", color); // for fonts (texture based)
+SDL_Surface* surface = IMG_Load("image.png"); (texture based)
+SDl_Surface*
+```
 
 ## POSITION
 
