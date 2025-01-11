@@ -2,6 +2,16 @@
 
 ## Project notes for self
 
+### Welcome, This is my first Game Project using SDL's Subsystem and my best first attempt at creating a 2D game!
+
+### This is Game uses the _Time Accumulator_ Pattern with fixed _Timesteps_:
+
+```cpp
+
+```
+
+const float```
+
 # Steps Of Rendering Something
 
 #### please email me if you know a better way <ins>tanner.davison95@gmail.com<ins>
@@ -36,7 +46,7 @@ cppCopySDL_RenderCopy(renderer, texture, NULL, &destRect);
 
 ```cpp
 cppCopySDL_FreeSurface(surface);   // Free surface first
-SDL_DestroyTexture(texture);  // Then destroy texture
+SDL_DestroyTexture(texture);      // Then destroy texture
 ```
 
 ## POSITION VARS
