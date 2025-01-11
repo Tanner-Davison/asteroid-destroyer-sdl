@@ -8,7 +8,7 @@
 
 - Step 1: Create Surface (texture based or primitive shape)
 
-```cpp
+```
 
 SDL_Surface* surface = TTF_RenderTextSolid(font, "Text", color); // for fonts (texture based)
 SDL_Surface* surface = IMG_Load("image.png"); (texture based)
@@ -27,9 +27,9 @@ P(x) = centerX + (i - (n/2)) _ spacing
 P(y) = bottomY - |i - (n/2)| _ vertical_offset
 Where:
 
-<sub>**n** is the total count of players
+**n** is the total count of players
 **i** is the current player index (0 to n-1)
-| | represents absolute value</sub>
+| | represents absolute value
 
 This is essentially a linear function for x-coordinates combined with an absolute value function for y-coordinates,
 centered around the middle index. It creates a symmetric V shape because the absolute value function creates the same y-offset for positions equidistant from the center,

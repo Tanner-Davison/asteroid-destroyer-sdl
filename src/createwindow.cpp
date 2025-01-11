@@ -76,15 +76,15 @@ bool loadMedia(const char *path) {
            IMG_GetError());
     success = false;
   } else {
-    // Converting surface to texture
-    SDL_Texture *newTexture =
+    SDL_Texture *newTexture = // Texture
         SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     if (newTexture == NULL) {
       printf("Unable to create texture from %s! SDL Error: %s\n", path,
              SDL_GetError());
       success = false;
     }
-    SDL_FreeSurface(loadedSurface); // I no longer need surface
+    // free surface bro
+    SDL_FreeSurface(loadedSurface);
   }
 
   return success;
