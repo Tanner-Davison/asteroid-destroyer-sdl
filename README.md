@@ -61,7 +61,7 @@ SDL_DestroyTexture(texture);      // Then destroy texture
 
 ### handlePlayerInputAndPosition
 
-```cpp
+````cpp
 void Player::handlePlayerInputAndPosition(const Uint8 *keyState) {
   handleInput(keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP],
               keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN],
@@ -69,6 +69,56 @@ void Player::handlePlayerInputAndPosition(const Uint8 *keyState) {
               keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT],
               keyState[SDL_SCANCODE_SPACE], keyState[SDL_SCANCODE_LSHIFT]);
 }
+
+```cpp
+void Player::handlePlayerInputAndPosition(const Uint8 *keyState) {
+  const bool up = keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP],
+             down = keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN],
+             left = keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT],
+             right = keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT],
+             boost = keyState[SDL_SCANCODE_LSHIFT],
+             isShooting = keyState[SDL_SCANCODE_SPACE];
+
+  ACCELERATION = boost ? BOOST_ACCELERATION : BASE_ACCELERATION;
+  float CurrentMaxVelocity = boost ? MAX_VELOCITY * 1.5f : MAX_VELOCITY;
+
+  // Movement handling
+  if (right) {
+    velocityX = std::min(velocityX + ACCELERATION, CurrentMaxVelocity);
+  } else if (left) {
+    velocityX = std::max(velocityX - ACCELERATION, -CurrentMaxVelocity);
+  } else {
+    velocityX *= DECELERATION;
+    if (abs(velocityX) < 0.3f) {
+      velocityX = 0;
+    }
+  }
+
+  if (down) {
+    velocityY = std::min(velocityY + ACCELERATION, CurrentMaxVelocity);
+  } else if (up) {
+    velocityY = std::max(velocityY - ACCELERATION, -CurrentMaxVelocity);
+  } else {
+    velocityY *= DECELERATION;
+    if (abs(velocityY) < 0.3f) {
+      velocityY = 0;
+    }
+  }
+
+  if (isShooting) {
+    weapon.shoot();
+  }
+
+  float nextX = rectXf + velocityX;
+  float nextY = rectYf + velocityY;
+    //THIS GETS CALLED NEXT
+  handleBoundsAndUpdatePosition(nextX, nextY);
+}
+````
+
+### handleBound(nextX, nextY);
+
+```cpp
 
 ```
 

@@ -52,11 +52,7 @@ public:
   void renderPlayer(SDL_Renderer *renderer);
   // input and pos
   void handlePlayerInputAndPosition(const Uint8 *keyState);
-  // Position management
-  void setPlayerPos(int x, int y);
-  void updatePlayerPos();
-  void updatePlayerPos(int x, int y);
-  void handleBounds(float nextX, float nextY);
+  void handleBoundsAndUpdatePosition(float nextX, float nextY);
   bool loadTexture(const char *path, SDL_Renderer *renderer);
   void cleanup(); // Texture
   bool checkCollision(const SDL_Rect &a, const SDL_Rect &b);

@@ -46,42 +46,38 @@ void Player::renderPlayer(SDL_Renderer *renderer) {
   weapon.render(renderer);
 }
 
-void Player::setPlayerPos(int x, int y) {
-  this->rectX = x;
-  this->rectY = y;
-  this->rectXf = static_cast<float>(x);
-  this->rectYf = static_cast<float>(y);
-}
+void Player::handleBoundsAndUpdatePosition(float nextX, float nextY) {
+  const bool hitLeftWall = nextX <= 0,
+             hitRightWall = nextX >= SCREEN_WIDTH - rectWidth,
+             hitTopWall = nextY <= 0,
+             hitBottomWall = nextY >= SCREEN_HEIGHT - rectHeight;
 
-void Player::updatePlayerPos() {
-
-  rectX = static_cast<int>(rectXf);
-  rectY = static_cast<int>(rectYf);
-}
-
-void Player::handleBounds(float nextX, float nextY) {
-  if (nextX <= 0) {
+  if (hitLeftWall) {
     rectXf = 0.0f;
     velocityX = -velocityX * 1.8f;
-  } else if (nextX >= SCREEN_WIDTH - rectWidth) {
-    rectXf = SCREEN_WIDTH - rectWidth;
 
+  } else if (hitRightWall) {
+    rectXf = SCREEN_WIDTH - rectWidth;
     velocityX = -velocityX * 1.8f;
   } else {
     rectXf = nextX;
   }
 
-  if (nextY <= 0) {
+  if (hitTopWall) {
     rectYf = 0.0f;
     velocityY = -velocityY * 1.8f;
-  } else if (nextY >= SCREEN_HEIGHT - rectHeight) {
+
+  } else if (hitBottomWall) {
     rectYf = SCREEN_HEIGHT - rectHeight;
     velocityY = -velocityY * 1.8f;
+
   } else {
     rectYf = nextY;
   }
 
-  updatePlayerPos();
+  // update Position
+  rectX = static_cast<int>(rectXf);
+  rectY = static_cast<int>(rectYf);
 }
 bool Player::loadTexture(const char *path, SDL_Renderer *renderer) {
   // Free Existing Texture * ERROR HANDLING *
@@ -151,7 +147,7 @@ void Player::handlePlayerInputAndPosition(const Uint8 *keyState) {
 
   float nextX = rectXf + velocityX;
   float nextY = rectYf + velocityY;
-  handleBounds(nextX, nextY);
+  handleBoundsAndUpdatePosition(nextX, nextY);
 }
 //
 // Not connected to handlePlayerInputAndPosition
