@@ -49,7 +49,28 @@ cppCopySDL_FreeSurface(surface);   // Free surface first
 SDL_DestroyTexture(texture);      // Then destroy texture
 ```
 
-## POSITION VARS
+## Updating Player Position functions(quite a lot)
+
+```cpp
+    while (accumulator >= FIXED_TIME_STEP) {
+      for (auto &player : players) {
+        player->handlePlayerInputAndPosition(keyState); //HERE!
+      }
+    //this then calls Player::handlePlayerInputAndPosition
+```
+
+### handlePlayerInputAndPosition
+
+```cpp
+void Player::handlePlayerInputAndPosition(const Uint8 *keyState) {
+  handleInput(keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP],
+              keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN],
+              keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT],
+              keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT],
+              keyState[SDL_SCANCODE_SPACE], keyState[SDL_SCANCODE_LSHIFT]);
+}
+
+```
 
 x: Players x-coordinets
 y: Players y-coordinates

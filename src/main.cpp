@@ -30,13 +30,12 @@ std::vector<std::unique_ptr<Player>> createPlayers(int count) {
     for (int i = 0; i < count; ++i) {
       float offsetX = (i - middleIndex) * PLAYER_SPACING;
       float offsetY = std::abs(i - middleIndex) * VERTICAL_OFFSET;
-      players.push_back(std::make_unique<Player>(
-          centerX + offsetX, bottomY - offsetY) // Move upward for V formation
-      );
+      players.push_back(
+          std::make_unique<Player>(centerX + offsetX, bottomY - offsetY));
     }
   }
 
-  return players; // Return the vector of players
+  return players;
 }
 int main(int argc, char *args[]) {
   if (!init()) {
@@ -86,13 +85,13 @@ int main(int argc, char *args[]) {
   while (!quit) {
     Uint32 currentTime = SDL_GetTicks();
     float deltaTime = (currentTime - lastTime) / 1000.0f;
-
-    // Cap max frame time to prevent spiral of death
-    if (deltaTime > 0.25f) {
-      deltaTime = 0.25f;
-    }
-
+    lastTime = currentTime;
+    deltaTime = std::min(deltaTime, 0.25f);
     accumulator += deltaTime;
+    // // Cap max frame time to prevent spiral of death
+    // if (deltaTime > 0.25f) {
+    //   deltaTime = 0.25f;
+    // }
 
     while (SDL_PollEvent(&e)) {
       if (e.type == SDL_QUIT) {
@@ -103,16 +102,17 @@ int main(int argc, char *args[]) {
     // timestep update
     while (accumulator >= FIXED_TIME_STEP) {
       for (auto &player : players) {
-        player->handlePlayerInput(keyState);
+        player->handlePlayerInputAndPosition(keyState);
       }
 
-      // Update asteroids and check bullet collisions
+      // Update asteroids (bulletCollision, asteroids to remove)
       std::vector<size_t> asteroidsToRemove;
       for (auto &asteroid : asteroids) {
         SDL_Rect asteroidRect = {asteroid.getRectX(), asteroid.getRectY(),
                                  asteroid.getRectWidth(),
                                  asteroid.getRectHeight()};
         bool asteroidHit = false;
+        // check players bullet
         for (auto &player : players) {
           auto bulletIndex =
               player->getWeapon().checkBulletCollision(asteroidRect);
@@ -162,7 +162,8 @@ int main(int argc, char *args[]) {
     }
 
     SDL_RenderPresent(gRenderer); // FINAL FRAME
-                                  // collison detection_______
+    //
+    // Collision Detection
     std::vector<Player *> playersToRemove;
     for (const auto &player : players) { // Note: use -> with pointers
       SDL_Rect playerRect = {player->getPosition().first,
@@ -208,8 +209,6 @@ int main(int argc, char *args[]) {
     if (frameDelay > elapsedMS) {
       SDL_Delay(frameDelay - elapsedMS);
     }
-
-    lastTime = currentTime;
   }
 
   close();

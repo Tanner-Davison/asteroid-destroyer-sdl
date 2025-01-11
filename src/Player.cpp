@@ -65,6 +65,7 @@ void Player::handleBounds(float nextX, float nextY) {
     velocityX = -velocityX * 1.8f;
   } else if (nextX >= SCREEN_WIDTH - rectWidth) {
     rectXf = SCREEN_WIDTH - rectWidth;
+
     velocityX = -velocityX * 1.8f;
   } else {
     rectXf = nextX;
@@ -109,10 +110,18 @@ bool Player::loadTexture(const char *path, SDL_Renderer *renderer) {
   return true;
 }
 
-void Player::handleInput(bool up, bool down, bool left, bool right,
-                         bool isShooting, bool boost) {
+// PlayerInput
+void Player::handlePlayerInputAndPosition(const Uint8 *keyState) {
+  const bool up = keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP],
+             down = keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN],
+             left = keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT],
+             right = keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT],
+             boost = keyState[SDL_SCANCODE_LSHIFT],
+             isShooting = keyState[SDL_SCANCODE_SPACE];
+
   ACCELERATION = boost ? BOOST_ACCELERATION : BASE_ACCELERATION;
   float CurrentMaxVelocity = boost ? MAX_VELOCITY * 1.5f : MAX_VELOCITY;
+
   // Movement handling
   if (right) {
     velocityX = std::min(velocityX + ACCELERATION, CurrentMaxVelocity);
@@ -124,6 +133,7 @@ void Player::handleInput(bool up, bool down, bool left, bool right,
       velocityX = 0;
     }
   }
+
   if (down) {
     velocityY = std::min(velocityY + ACCELERATION, CurrentMaxVelocity);
   } else if (up) {
@@ -134,26 +144,17 @@ void Player::handleInput(bool up, bool down, bool left, bool right,
       velocityY = 0;
     }
   }
-  // hand weapons shooting
+
   if (isShooting) {
     weapon.shoot();
   }
 
-  // next position
   float nextX = rectXf + velocityX;
   float nextY = rectYf + velocityY;
   handleBounds(nextX, nextY);
 }
-
-// PlayerInput
-void Player::handlePlayerInput(const Uint8 *keyState) {
-  handleInput(keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP],
-              keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN],
-              keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT],
-              keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT],
-              keyState[SDL_SCANCODE_SPACE], keyState[SDL_SCANCODE_LSHIFT]);
-}
-
+//
+// Not connected to handlePlayerInputAndPosition
 std::pair<int, int> Player::getPosition() const {
   return std::make_pair(rectX, rectY);
 }
