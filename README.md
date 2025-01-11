@@ -16,28 +16,27 @@ SDL_Surface* surface = IMG_Load("image.png");
 
 ### Step 2: Create Texture from Surface
 
-```
+```cpp
 cppCopySDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-```
 
 ### Define the Destination Rectangle (where to render)
 
-```cpp
 cppCopySDL_Rect destRect = { x, y, width, height };
-```
 
 ### Step 3: Render to Screen
 
-```cpp
-cppCopySDL_RenderCopy(renderer, texture, NULL, &destRect);
 ```
+
+cppCopySDL_RenderCopy(renderer, texture, NULL, &destRect);
+
+````
 
 ### Cleanup to Prevent Memory Leaks
 
 ```cpp
 cppCopySDL_FreeSurface(surface);   // Free surface first
 SDL_DestroyTexture(texture);  // Then destroy texture
-```
+````
 
 ## POSITION VARS
 
