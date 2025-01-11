@@ -48,11 +48,10 @@ public:
   Player(float x, float y);
   Player(float x, float y, int width, int height);
   ~Player();
-  // Player input
-  void handlePlayerInputAndPosition(const Uint8 *keyState);
   // Core functions
   void renderPlayer(SDL_Renderer *renderer);
-
+  // input and pos
+  void handlePlayerInputAndPosition(const Uint8 *keyState);
   // Position management
   void setPlayerPos(int x, int y);
   void updatePlayerPos();
