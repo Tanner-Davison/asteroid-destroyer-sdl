@@ -16,7 +16,7 @@ SDL_Surface* surface = IMG_Load("image.png");
 
 ### Step 2: Create Texture from Surface
 
-```cpp
+```
 cppCopySDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 ```
 
