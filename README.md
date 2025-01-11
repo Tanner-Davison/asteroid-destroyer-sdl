@@ -4,17 +4,9 @@
 
 ### Welcome, This is my first Game Project using SDL's Subsystem and my best first attempt at creating a 2D game!
 
-### This is Game uses the _Time Accumulator_ Pattern with fixed _Timesteps_:
+# Steps Of Rendering In Game Objects
 
-```cpp
-
-```
-
-const float```
-
-# Steps Of Rendering Something
-
-#### please email me if you know a better way <ins>tanner.davison95@gmail.com<ins>
+#### _please email me if you know a better way <ins>tanner.davison95@gmail.com<ins>_
 
 ### Step 1: Create Surface
 
@@ -45,18 +37,21 @@ cppCopySDL_RenderCopy(renderer, texture, NULL, &destRect);
 ### Cleanup to Prevent Memory Leaks
 
 ```cpp
-cppCopySDL_FreeSurface(surface);   // Free surface first
 SDL_DestroyTexture(texture);      // Then destroy texture
 ```
 
 ## Updating Player Position functions(quite a lot)
 
 ```cpp
+//main() ->
+    //...
+
     while (accumulator >= FIXED_TIME_STEP) {
       for (auto &player : players) {
         player->handlePlayerInputAndPosition(keyState); //HERE!
       }
-    //this then calls Player::handlePlayerInputAndPosition
+
+    //...
 ```
 
 ### handlePlayerInputAndPosition
