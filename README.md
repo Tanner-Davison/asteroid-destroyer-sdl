@@ -6,7 +6,7 @@
 
 #### please email me if you know a better way <ins>tanner.davison95@gmail.com<ins>
 
-## Step 1: Create Surface
+### Step 1: Create Surface
 
 ```cpp
 cppCopySDL_Surface* surface = TTF_RenderText_Solid(font, "Text", color);
@@ -14,25 +14,25 @@ cppCopySDL_Surface* surface = TTF_RenderText_Solid(font, "Text", color);
 SDL_Surface* surface = IMG_Load("image.png");
 ```
 
-## Step 2: Create Texture from Surface
+### Step 2: Create Texture from Surface
 
 ```cpp
 cppCopySDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
 ```
 
-## Define the Destination Rectangle (where to render)
+### Define the Destination Rectangle (where to render)
 
 ```cpp
 cppCopySDL_Rect destRect = { x, y, width, height };
 ```
 
-## Step 3: Render to Screen
+### Step 3: Render to Screen
 
 ```cpp
 cppCopySDL_RenderCopy(renderer, texture, NULL, &destRect);
 ```
 
-## Cleanup to Prevent Memory Leaks
+### Cleanup to Prevent Memory Leaks
 
 ```cpp
 cppCopySDL_FreeSurface(surface);   // Free surface first
