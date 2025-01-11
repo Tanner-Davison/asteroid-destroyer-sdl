@@ -2,36 +2,42 @@
 #include "SDL_render.h"
 #include "createwindow.hpp"
 #include <SDL.h>
-
+// Default constructor
 Player::Player()
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
       isMovingRight(false), shooting(false), ACCELERATION(BASE_ACCELERATION),
       rectXf(100.0f), rectYf(100.0f), rectX(100), rectY(100), velocityX(0.0f),
       velocityY(0.0f), rectWidth(50), rectHeight(50), boost(false),
       mTexture(nullptr), textureWidth(0), textureHeight(0) {
-  playerRect = {this->getPosition().first, this->getPosition().second,
-                this->getWidth(), this->getHeight()};
-};
+  playerRect = {getPosition().first, getPosition().second, getWidth(),
+                getHeight()};
+}
 
-Player::Player(float x, float y)
+// Position constructor
+Player::Player(int rectX,
+               int rectY) // Changed from float x,y to int rectX,rectY
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
-      isMovingRight(false), shooting(false), boost(false), rectXf(x), rectYf(y),
-      ACCELERATION(BASE_ACCELERATION), rectX(static_cast<int>(x)),
-      rectY(static_cast<int>(y)), // Fixed!
+      isMovingRight(false), shooting(false), boost(false),
+      rectXf(static_cast<float>(rectX)), rectYf(static_cast<float>(rectY)),
+      ACCELERATION(BASE_ACCELERATION), rectX(rectX), rectY(rectY),
       velocityX(0.0f), velocityY(0.0f), mTexture(nullptr), textureWidth(0),
       textureHeight(0) {
-  playerRect = {this->getPosition().first, this->getPosition().second,
-                this->getWidth(), this->getHeight()};
-};
-Player::Player(float x, float y, int width, int height)
+  playerRect = {getPosition().first, getPosition().second, getWidth(),
+                getHeight()};
+}
+
+// Full constructor with dimensions
+Player::Player(int rectX, int rectY, int width,
+               int height) // Changed from float to int
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
-      isMovingRight(false), shooting(false), boost(false), rectXf(x), rectYf(y),
-      ACCELERATION(BASE_ACCELERATION), rectX(100), rectY(100), velocityX(0.0f),
-      velocityY(0.0f), rectWidth(width), rectHeight(height), mTexture(nullptr),
-      textureWidth(0), textureHeight(0) {
-  playerRect = {this->getPosition().first, this->getPosition().second,
-                this->getWidth(), this->getHeight()};
-};
+      isMovingRight(false), shooting(false), boost(false),
+      rectXf(static_cast<float>(rectX)), rectYf(static_cast<float>(rectY)),
+      ACCELERATION(BASE_ACCELERATION), rectX(rectX), rectY(rectY),
+      velocityX(0.0f), velocityY(0.0f), rectWidth(width), rectHeight(height),
+      mTexture(nullptr), textureWidth(0), textureHeight(0) {
+  playerRect = {getPosition().first, getPosition().second, getWidth(),
+                getHeight()};
+}
 // initializer list to ease this file lol
 void Player::renderPlayer(SDL_Renderer *renderer) {
   SDL_Rect rect = {rectX, rectY, rectWidth, rectHeight};
@@ -46,41 +52,38 @@ void Player::renderPlayer(SDL_Renderer *renderer) {
   weapon.render(renderer);
 }
 
-void Player::setPlayerPos(int x, int y) {
-  this->rectX = x;
-  this->rectY = y;
-  this->rectXf = static_cast<float>(x);
-  this->rectYf = static_cast<float>(y);
-}
+void Player::handleBoundsAndUpdatePosition(float nextX, float nextY) {
+  const bool hitLeftWall = nextX <= 0,
+             hitRightWall = nextX >= SCREEN_WIDTH - rectWidth,
+             hitTopWall = nextY <= 0,
+             hitBottomWall = nextY >= SCREEN_HEIGHT - rectHeight;
 
-void Player::updatePlayerPos() {
-
-  rectX = static_cast<int>(rectXf);
-  rectY = static_cast<int>(rectYf);
-}
-
-void Player::handleBounds(float nextX, float nextY) {
-  if (nextX <= 0) {
+  if (hitLeftWall) {
     rectXf = 0.0f;
     velocityX = -velocityX * 1.8f;
-  } else if (nextX >= SCREEN_WIDTH - rectWidth) {
+
+  } else if (hitRightWall) {
     rectXf = SCREEN_WIDTH - rectWidth;
     velocityX = -velocityX * 1.8f;
   } else {
     rectXf = nextX;
   }
 
-  if (nextY <= 0) {
+  if (hitTopWall) {
     rectYf = 0.0f;
     velocityY = -velocityY * 1.8f;
-  } else if (nextY >= SCREEN_HEIGHT - rectHeight) {
+
+  } else if (hitBottomWall) {
     rectYf = SCREEN_HEIGHT - rectHeight;
     velocityY = -velocityY * 1.8f;
+
   } else {
     rectYf = nextY;
   }
 
-  updatePlayerPos();
+  // update Position
+  rectX = static_cast<int>(rectXf);
+  rectY = static_cast<int>(rectYf);
 }
 bool Player::loadTexture(const char *path, SDL_Renderer *renderer) {
   // Free Existing Texture * ERROR HANDLING *
@@ -109,10 +112,18 @@ bool Player::loadTexture(const char *path, SDL_Renderer *renderer) {
   return true;
 }
 
-void Player::handleInput(bool up, bool down, bool left, bool right,
-                         bool isShooting, bool boost) {
+// PlayerInput
+void Player::handlePlayerInputAndPosition(const Uint8 *keyState) {
+  const bool up = keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP],
+             down = keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN],
+             left = keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT],
+             right = keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT],
+             boost = keyState[SDL_SCANCODE_LSHIFT],
+             isShooting = keyState[SDL_SCANCODE_SPACE];
+
   ACCELERATION = boost ? BOOST_ACCELERATION : BASE_ACCELERATION;
   float CurrentMaxVelocity = boost ? MAX_VELOCITY * 1.5f : MAX_VELOCITY;
+
   // Movement handling
   if (right) {
     velocityX = std::min(velocityX + ACCELERATION, CurrentMaxVelocity);
@@ -124,6 +135,7 @@ void Player::handleInput(bool up, bool down, bool left, bool right,
       velocityX = 0;
     }
   }
+
   if (down) {
     velocityY = std::min(velocityY + ACCELERATION, CurrentMaxVelocity);
   } else if (up) {
@@ -134,26 +146,17 @@ void Player::handleInput(bool up, bool down, bool left, bool right,
       velocityY = 0;
     }
   }
-  // hand weapons shooting
+
   if (isShooting) {
     weapon.shoot();
   }
 
-  // next position
   float nextX = rectXf + velocityX;
   float nextY = rectYf + velocityY;
-  handleBounds(nextX, nextY);
+  handleBoundsAndUpdatePosition(nextX, nextY);
 }
-
-// PlayerInput
-void Player::handlePlayerInput(const Uint8 *keyState) {
-  handleInput(keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP],
-              keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN],
-              keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT],
-              keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT],
-              keyState[SDL_SCANCODE_SPACE], keyState[SDL_SCANCODE_LSHIFT]);
-}
-
+//
+// Not connected to handlePlayerInputAndPosition
 std::pair<int, int> Player::getPosition() const {
   return std::make_pair(rectX, rectY);
 }

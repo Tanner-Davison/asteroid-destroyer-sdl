@@ -49,7 +49,112 @@ cppCopySDL_FreeSurface(surface);   // Free surface first
 SDL_DestroyTexture(texture);      // Then destroy texture
 ```
 
-## POSITION VARS
+## Updating Player Position functions(quite a lot)
+
+```cpp
+    while (accumulator >= FIXED_TIME_STEP) {
+      for (auto &player : players) {
+        player->handlePlayerInputAndPosition(keyState); //HERE!
+      }
+    //this then calls Player::handlePlayerInputAndPosition
+```
+
+### handlePlayerInputAndPosition
+
+````cpp
+void Player::handlePlayerInputAndPosition(const Uint8 *keyState) {
+  handleInput(keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP],
+              keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN],
+              keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT],
+              keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT],
+              keyState[SDL_SCANCODE_SPACE], keyState[SDL_SCANCODE_LSHIFT]);
+}
+
+```cpp
+void Player::handlePlayerInputAndPosition(const Uint8 *keyState) {
+  const bool up = keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP],
+             down = keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN],
+             left = keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT],
+             right = keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT],
+             boost = keyState[SDL_SCANCODE_LSHIFT],
+             isShooting = keyState[SDL_SCANCODE_SPACE];
+
+  ACCELERATION = boost ? BOOST_ACCELERATION : BASE_ACCELERATION;
+  float CurrentMaxVelocity = boost ? MAX_VELOCITY * 1.5f : MAX_VELOCITY;
+
+  // Movement handling
+  if (right) {
+    velocityX = std::min(velocityX + ACCELERATION, CurrentMaxVelocity);
+  } else if (left) {
+    velocityX = std::max(velocityX - ACCELERATION, -CurrentMaxVelocity);
+  } else {
+    velocityX *= DECELERATION;
+    if (abs(velocityX) < 0.3f) {
+      velocityX = 0;
+    }
+  }
+
+  if (down) {
+    velocityY = std::min(velocityY + ACCELERATION, CurrentMaxVelocity);
+  } else if (up) {
+    velocityY = std::max(velocityY - ACCELERATION, -CurrentMaxVelocity);
+  } else {
+    velocityY *= DECELERATION;
+    if (abs(velocityY) < 0.3f) {
+      velocityY = 0;
+    }
+  }
+
+  if (isShooting) {
+    weapon.shoot();
+  }
+
+  float nextX = rectXf + velocityX;
+  float nextY = rectYf + velocityY;
+    //THIS GETS CALLED NEXT
+  handleBoundsAndUpdatePosition(nextX, nextY);
+}
+````
+
+### handleBoundsAndUpdatePosition(nextX, nextY);
+
+```cpp
+void Player::handleBoundsAndUpdatePosition(float nextX, float nextY) {
+  const bool hitLeftWall = nextX <= 0,
+             hitRightWall = nextX >= SCREEN_WIDTH - rectWidth,
+             hitTopWall = nextY <= 0,
+             hitBottomWall = nextY >= SCREEN_HEIGHT - rectHeight;
+
+  if (hitLeftWall) {
+    rectXf = 0.0f;
+    velocityX = -velocityX * 1.8f;
+
+  } else if (hitRightWall) {
+    rectXf = SCREEN_WIDTH - rectWidth;
+    velocityX = -velocityX * 1.8f;
+  } else {
+    rectXf = nextX;
+  }
+
+  if (hitTopWall) {
+    rectYf = 0.0f;
+    velocityY = -velocityY * 1.8f;
+
+  } else if (hitBottomWall) {
+    rectYf = SCREEN_HEIGHT - rectHeight;
+    velocityY = -velocityY * 1.8f;
+
+  } else {
+    rectYf = nextY;
+  }
+
+  // update Position
+  rectX = static_cast<int>(rectXf);
+  rectY = static_cast<int>(rectYf);
+}
+```
+
+## Specific vars description to position
 
 x: Players x-coordinets
 y: Players y-coordinates

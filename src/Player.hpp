@@ -45,21 +45,14 @@ private:
 
 public:
   Player();
-  Player(float x, float y);
-  Player(float x, float y, int width, int height);
+  Player(int x, int y);
+  Player(int x, int y, int width, int height);
   ~Player();
-  // Player input
-  void handlePlayerInput(const Uint8 *keyState);
-  void handleInput(bool up, bool down, bool left, bool right, bool shooting,
-                   bool boost);
   // Core functions
   void renderPlayer(SDL_Renderer *renderer);
-
-  // Position management
-  void setPlayerPos(int x, int y);
-  void updatePlayerPos();
-  void updatePlayerPos(int x, int y);
-  void handleBounds(float nextX, float nextY);
+  // input and pos
+  void handlePlayerInputAndPosition(const Uint8 *keyState);
+  void handleBoundsAndUpdatePosition(float nextX, float nextY);
   bool loadTexture(const char *path, SDL_Renderer *renderer);
   void cleanup(); // Texture
   bool checkCollision(const SDL_Rect &a, const SDL_Rect &b);
