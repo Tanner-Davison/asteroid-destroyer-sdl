@@ -4,18 +4,42 @@
 
 # Steps Of Rendering Something
 
-### please email me if you know a better way tanner.davison95@gmail.com
+#### please email me if you know a better way <ins>tanner.davison95@gmail.com<ins>
 
-- Step 1: Create Surface (texture based or primitive shape)
+## Step 1: Create Surface
 
 ```cpp
-
-SDL_Surface* surface = TTF_RenderTextSolid(font, "Text", color); // for fonts (texture based)
-SDL_Surface* surface = IMG_Load("image.png"); (texture based)
-SDl_Surface*
+cppCopySDL_Surface* surface = TTF_RenderText_Solid(font, "Text", color);
+// or
+SDL_Surface* surface = IMG_Load("image.png");
 ```
 
-## POSITION
+## Step 2: Create Texture from Surface
+
+```cpp
+cppCopySDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+```
+
+## Define the Destination Rectangle (where to render)
+
+```cpp
+cppCopySDL_Rect destRect = { x, y, width, height };
+```
+
+## Step 3: Render to Screen
+
+```cpp
+cppCopySDL_RenderCopy(renderer, texture, NULL, &destRect);
+```
+
+## Cleanup to Prevent Memory Leaks
+
+```cpp
+cppCopySDL_FreeSurface(surface);   // Free surface first
+SDL_DestroyTexture(texture);  // Then destroy texture
+```
+
+## POSITION VARS
 
 x: Players x-coordinets
 y: Players y-coordinates
@@ -27,9 +51,9 @@ P(x) = centerX + (i - (n/2)) _ spacing
 P(y) = bottomY - |i - (n/2)| _ vertical_offset
 Where:
 
-<sub>**n** is the total count of players
+**n** is the total count of players
 **i** is the current player index (0 to n-1)
-| | represents absolute value</sub>
+| | represents absolute value
 
 This is essentially a linear function for x-coordinates combined with an absolute value function for y-coordinates,
 centered around the middle index. It creates a symmetric V shape because the absolute value function creates the same y-offset for positions equidistant from the center,
