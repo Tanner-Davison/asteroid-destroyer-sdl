@@ -2,36 +2,42 @@
 #include "SDL_render.h"
 #include "createwindow.hpp"
 #include <SDL.h>
-
+// Default constructor
 Player::Player()
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
       isMovingRight(false), shooting(false), ACCELERATION(BASE_ACCELERATION),
       rectXf(100.0f), rectYf(100.0f), rectX(100), rectY(100), velocityX(0.0f),
       velocityY(0.0f), rectWidth(50), rectHeight(50), boost(false),
       mTexture(nullptr), textureWidth(0), textureHeight(0) {
-  playerRect = {this->getPosition().first, this->getPosition().second,
-                this->getWidth(), this->getHeight()};
-};
+  playerRect = {getPosition().first, getPosition().second, getWidth(),
+                getHeight()};
+}
 
-Player::Player(float x, float y)
+// Position constructor
+Player::Player(int rectX,
+               int rectY) // Changed from float x,y to int rectX,rectY
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
-      isMovingRight(false), shooting(false), boost(false), rectXf(x), rectYf(y),
-      ACCELERATION(BASE_ACCELERATION), rectX(static_cast<int>(x)),
-      rectY(static_cast<int>(y)), // Fixed!
+      isMovingRight(false), shooting(false), boost(false),
+      rectXf(static_cast<float>(rectX)), rectYf(static_cast<float>(rectY)),
+      ACCELERATION(BASE_ACCELERATION), rectX(rectX), rectY(rectY),
       velocityX(0.0f), velocityY(0.0f), mTexture(nullptr), textureWidth(0),
       textureHeight(0) {
-  playerRect = {this->getPosition().first, this->getPosition().second,
-                this->getWidth(), this->getHeight()};
-};
-Player::Player(float x, float y, int width, int height)
+  playerRect = {getPosition().first, getPosition().second, getWidth(),
+                getHeight()};
+}
+
+// Full constructor with dimensions
+Player::Player(int rectX, int rectY, int width,
+               int height) // Changed from float to int
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
-      isMovingRight(false), shooting(false), boost(false), rectXf(x), rectYf(y),
-      ACCELERATION(BASE_ACCELERATION), rectX(100), rectY(100), velocityX(0.0f),
-      velocityY(0.0f), rectWidth(width), rectHeight(height), mTexture(nullptr),
-      textureWidth(0), textureHeight(0) {
-  playerRect = {this->getPosition().first, this->getPosition().second,
-                this->getWidth(), this->getHeight()};
-};
+      isMovingRight(false), shooting(false), boost(false),
+      rectXf(static_cast<float>(rectX)), rectYf(static_cast<float>(rectY)),
+      ACCELERATION(BASE_ACCELERATION), rectX(rectX), rectY(rectY),
+      velocityX(0.0f), velocityY(0.0f), rectWidth(width), rectHeight(height),
+      mTexture(nullptr), textureWidth(0), textureHeight(0) {
+  playerRect = {getPosition().first, getPosition().second, getWidth(),
+                getHeight()};
+}
 // initializer list to ease this file lol
 void Player::renderPlayer(SDL_Renderer *renderer) {
   SDL_Rect rect = {rectX, rectY, rectWidth, rectHeight};

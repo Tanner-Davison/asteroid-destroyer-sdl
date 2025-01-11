@@ -45,8 +45,8 @@ private:
 
 public:
   Player();
-  Player(float x, float y);
-  Player(float x, float y, int width, int height);
+  Player(int x, int y);
+  Player(int x, int y, int width, int height);
   ~Player();
   // Core functions
   void renderPlayer(SDL_Renderer *renderer);

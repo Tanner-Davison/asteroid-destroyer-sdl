@@ -116,11 +116,45 @@ void Player::handlePlayerInputAndPosition(const Uint8 *keyState) {
 }
 ````
 
-### handleBound(nextX, nextY);
+### handleBoundsAndUpdatePosition(nextX, nextY);
 
 ```cpp
+void Player::handleBoundsAndUpdatePosition(float nextX, float nextY) {
+  const bool hitLeftWall = nextX <= 0,
+             hitRightWall = nextX >= SCREEN_WIDTH - rectWidth,
+             hitTopWall = nextY <= 0,
+             hitBottomWall = nextY >= SCREEN_HEIGHT - rectHeight;
 
+  if (hitLeftWall) {
+    rectXf = 0.0f;
+    velocityX = -velocityX * 1.8f;
+
+  } else if (hitRightWall) {
+    rectXf = SCREEN_WIDTH - rectWidth;
+    velocityX = -velocityX * 1.8f;
+  } else {
+    rectXf = nextX;
+  }
+
+  if (hitTopWall) {
+    rectYf = 0.0f;
+    velocityY = -velocityY * 1.8f;
+
+  } else if (hitBottomWall) {
+    rectYf = SCREEN_HEIGHT - rectHeight;
+    velocityY = -velocityY * 1.8f;
+
+  } else {
+    rectYf = nextY;
+  }
+
+  // update Position
+  rectX = static_cast<int>(rectXf);
+  rectY = static_cast<int>(rectYf);
+}
 ```
+
+## Specific vars description to position
 
 x: Players x-coordinets
 y: Players y-coordinates
