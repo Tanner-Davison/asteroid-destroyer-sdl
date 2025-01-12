@@ -267,19 +267,19 @@ Ensure that the SDL2.dll file is in the same folder as the executable on Windows
 
 Code Structure
 
-CMakeLists.txt: CMake build configuration.
+**CMakeLists.txt:** CMake build configuration.
 
-src/main.cpp: The main C++ entry point of the application.
+**src/main.cpp:** The main C++ entry point of the application.
 
-include/: Folder where header files (if any) are placed.
+**include/:** Folder where header files (if any) are placed.
 
-lib/: Folder containing the SDL2 libraries.
+**lib/:** Folder containing the SDL2 libraries.
 
-bin/: Folder where SDL2.dll is placed for runtime.
+**bin/:** Folder where SDL2.dll is placed for runtime.
 
 Notes
 The project is configured to use SDL2 with the C++ standard set to C++23.
-The #define SDL_MAIN_HANDLED is used to prevent SDL2 from overriding the main function.
-
+The #define **SDL_MAIN_HANDLED** is used to prevent SDL2 from overriding the main function.
+PLEASE PUT THIS ON TOP TO NOT DRIVE YOURSELF CRAZY DURING COMPILATION
 License
 MIT
