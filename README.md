@@ -3,6 +3,7 @@
 <p align="center"> Welcome, This is my first Game Project using SDL's Subsystem and my best first attempt at creating a 2D game! </p>
 <p align="center">Created By: Tanner Davison</p>
 <p align="center" >tanner.davison95@gmail.com</p>
+<br/>
 <p>Please email me if you know any patterns that could assist in this project or if you would like to share any tips and tricks I could use to improve my SDL compatibility</p>
 </br>
 
