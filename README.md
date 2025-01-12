@@ -1,4 +1,4 @@
-<div style="display = 'div'; align-self: center"> Asteroids Destroyer an SDL Game. </div>
+<div style="align: center"> Asteroids Destroyer an SDL Game. </div>
 
 ### Welcome, This is my first Game Project using SDL's Subsystem and my best first attempt at creating a 2D game!
 
