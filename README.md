@@ -1,6 +1,6 @@
 <h1 align="center"> Asteroids Destroyer an SDL Game. </h1>
 
-### Welcome, This is my first Game Project using SDL's Subsystem and my best first attempt at creating a 2D game!
+<p> Welcome, This is my first Game Project using SDL's Subsystem and my best first attempt at creating a 2D game! </p>
 
 # Steps Of Rendering In Game Objects
 
