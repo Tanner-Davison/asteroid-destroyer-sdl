@@ -2,7 +2,7 @@
 
 <p align="center"> Welcome, This is my first Game Project using SDL's Subsystem and my best first attempt at creating a 2D game! </p>
 <p align="center">Tanner Davison</p>
-<p>Contact: tanner.davison95@gmail.com</p>
+<p align="center">contact: <em> tanner.davison95@gmail.com</em></p>
 
 # Steps Of Rendering In Game Objects
 
