@@ -1,12 +1,12 @@
 # SDL Window Program
 
-## Project notes for self
-
 ### Welcome, This is my first Game Project using SDL's Subsystem and my best first attempt at creating a 2D game!
 
 # Steps Of Rendering In Game Objects
 
-#### _please email me if you know a better way <ins>tanner.davison95@gmail.com<ins>_
+#### _please email me if you would like to share a better way <ins>tanner.davison95@gmail.com<ins>_
+
+#### _or even better send a pr with your changes!_
 
 ### Step 1: Create Surface
 
@@ -189,7 +189,7 @@ rotationSpeed: degrees per frame
 
 # Used with Neovim
 
-This project is a basic C++ game setup using SDL2 for graphics, input handling, and window management. The project is configured with CMake for building and Visual Studio for compiling on Windows.
+This project is a basic C++ game setup using SDL2 for graphics, input handling, and window management. The project is configured with CMake for building and g++ for compiling on Windows.
 
 # Compilation Notes for Self
 
