@@ -3,10 +3,8 @@
 <p align="center"> Welcome, This is my first Game Project using SDL's Subsystem and my best first attempt at creating a 2D game! </p>
 <p align="center">Created By: Tanner Davison</p>
 <p align="center" >tanner.davison95@gmail.com</p>
-
+<p>Please email me if you know any patterns that could assist in this project or if you would like to share any tips and tricks I could use to improve my SDL compatibility</p>
 # Steps Of Rendering In Game Objects
-
-#### _please email me if you would like to share a better way <ens>tanner.davison95@gmail.com<ins>_
 
 #### _or even better send a pr with your changes!_
 
