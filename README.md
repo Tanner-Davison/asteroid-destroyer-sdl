@@ -280,7 +280,6 @@ Code Structure
 
 **bin/:** Folder where SDL2.dll is placed for runtime.
 
-Notes
 The project is configured to use SDL2 with the C++ standard set to C++23.
 The #define **SDL_MAIN_HANDLED** is used to prevent SDL2 from overriding the main function.
 PLEASE PUT THIS ON TOP TO NOT DRIVE YOURSELF CRAZY DURING COMPILATION
