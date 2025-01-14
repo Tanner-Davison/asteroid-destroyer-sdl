@@ -8,7 +8,6 @@
 #include <optional>
 #include <vector>
 
-//////////////////////////
 std::vector<std::unique_ptr<Player>> createPlayers(int count) {
   int centerX = static_cast<int>(SCREEN_WIDTH / 2);
   int bottomY = static_cast<int>(SCREEN_HEIGHT - 100);
