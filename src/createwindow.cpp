@@ -5,8 +5,14 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-#include <direct.h>
 #include <stdio.h>
+#ifdef _WIN32
+#include <direct.h>
+#define CREATE_DIR(dir) _mkdir(dir)
+#else
+#include <sys/stat.h>
+#define CREATE_DIR(dir) mkdir(dir, 0777)
+#endif
 // Define constants
 const int SCREEN_WIDTH = 1900;
 const int SCREEN_HEIGHT = 1200;

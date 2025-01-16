@@ -10,84 +10,97 @@ set(SOURCES
     src/main.cpp
     src/createwindow.cpp
     src/Player.cpp
-    src/weapon.cpp
+    src/weapon.cpp 
     src/asteroid.cpp
     src/score.cpp
 )
 
-# Headers
-set(CMAKE_EXE_LINKER_FLAGS "/SUBSYSTEM:CONSOLE")
-# Add the executable
-add_executable(${PROJECT_NAME} ${SOURCES})
+if(WIN32)
+    set(CMAKE_EXE_LINKER_FLAGS "/SUBSYSTEM:CONSOLE")
+    # Windows-specific paths
+    set(SDL2_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+    set(SDL2_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64)
+endif()
 
-# Include SDL2 headers
-# target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/include/)
+# Create the executable from sources
+add_executable(${PROJECT_NAME} ${SOURCES})
+if(APPLE)
+    # Add Homebrew paths for M1 Mac
+    include_directories(/opt/homebrew/Cellar/sdl2/2.30.11/include/SDL2)
+    link_directories(/opt/homebrew/Cellar/sdl2/2.30.11/lib)
+    
+    # Link SDL2 libraries for Mac with full paths
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        "-framework Cocoa"
+        "-framework IOKit"
+        "-framework CoreVideo"
+        "/opt/homebrew/Cellar/sdl2/2.30.11/lib/libSDL2-2.0.0.dylib"
+        "/opt/homebrew/lib/libSDL2_image.dylib"
+        "/opt/homebrew/lib/libSDL2_ttf.dylib"
+    )
+
+    # Add SDL2 binary path to runtime path
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        INSTALL_RPATH "/opt/homebrew/Cellar/sdl2/2.30.11/lib"
+    )
+
+else()
+    # Windows-specific library finding
+    find_library(SDL2_LIB SDL2 PATHS ${SDL2_LIB_PATH})
+    find_library(SDL2_IMAGE_LIB SDL2_image PATHS ${SDL2_LIB_PATH})
+    find_library(SDL2_TTF_LIB SDL2_ttf PATHS ${SDL2_LIB_PATH})
+    
+    # Link libraries for Windows
+    target_link_libraries(${PROJECT_NAME} PRIVATE
+        ${SDL2_LIB}
+        ${SDL2_IMAGE_LIB}
+        ${SDL2_TTF_LIB}
+    )
+endif()
+
+# Include directories for both platforms
 target_include_directories(${PROJECT_NAME} PRIVATE 
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include/SDL2
     ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
-# Link SDL2 Image library
-message(STATUS "Looking for SDL2_ttf in: ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64")
-message(STATUS "SDL2_ttf lib name: ${SDL2_TTF_LIB}")
-find_library(SDL2_IMAGE_LIB SDL2_image PATHS ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64)
-if (SDL2_IMAGE_LIB)
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_IMAGE_LIB})
-else()
-    message(FATAL_ERROR "SDL2_image library not found in ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64")
-endif()
-#Link SDL2 library
-find_library(SDL2_LIB SDL2 PATHS ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64)
-if (SDL2_LIB)
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIB})
-else()
-    message(FATAL_ERROR "SDL2 library not found in ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64")
-endif()
-# Link SDL2_TFF(FONT LIBRARY)
-find_library(SDL2_TTF_LIB SDL2_ttf PATHS ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64)
-if (SDL2_TTF_LIB)
-    target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_TTF_LIB})
-else()
-    message(FATAL_ERROR "SDL2_ttf library not found in ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64")
-endif()
-# Copy hello_world.bmp to the build directory
-# add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-#     COMMAND ${CMAKE_COMMAND} -E echo "Copying BMP files to ${CMAKE_CURRENT_BINARY_DIR}"
-#     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-#         ${CMAKE_CURRENT_SOURCE_DIR}/src/hello_world.bmp
-#         ${CMAKE_CURRENT_SOURCE_DIR}/src/hello_world2.bmp
-#         $<TARGET_FILE_DIR:${PROJECT_NAME}>
-# )
 
-# Copy SDL2.dll to the output directory (for runtime)
+# Copy assets for both platforms
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    ${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2.dll
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>
-)
-#ttf (font dll)
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    ${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2_ttf.dll
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>
-)
-#image dll
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    ${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2_image.dll #image dll
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>
-)
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-COMMAND ${CMAKE_COMMAND} -E copy_if_different
-${CMAKE_CURRENT_SOURCE_DIR}/assets/fonts/FiraCode-Regular.ttf
-$<TARGET_FILE_DIR:${PROJECT_NAME}>
-)
-# Copy SDL2.dll to the output directory (for runtime)
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/spaceship.png
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/asteroid.png
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        "${CMAKE_CURRENT_SOURCE_DIR}/assets/fonts/FiraCode-Regular.ttf"
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/FiraCode-Regular.ttf"
 )
 
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/spaceship.png"
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/spaceship.png"
+)
 
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/asteroid.png"
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/asteroid.png"
+)
+
+# Copy DLLs only on Windows
+if(WIN32)
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2.dll"
+            "$<TARGET_FILE_DIR:${PROJECT_NAME}>/SDL2.dll"
+    )
+    
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2_ttf.dll"
+            "$<TARGET_FILE_DIR:${PROJECT_NAME}>/SDL2_ttf.dll"
+    )
+    
+    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2_image.dll"
+            "$<TARGET_FILE_DIR:${PROJECT_NAME}>/SDL2_image.dll"
+    )
+endif()
