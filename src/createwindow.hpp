@@ -1,12 +1,13 @@
 // creatingwindow.hpp
+// This is where my window and its resources are being
+// handled. No classes or Structs just good old declaration
+//
 #pragma once
 #include <SDL2/SDL.h>
 #include <random>
 
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
-extern SDL_Window *gWindow;
-
 //     Function Declarations
 bool init();                      // Starts Up SDL and creates window
 bool loadMedia(const char *path); // Loads Media
