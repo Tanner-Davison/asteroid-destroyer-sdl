@@ -13,13 +13,10 @@ std::vector<std::unique_ptr<Player>> createPlayers(int count) {
   int bottomY = static_cast<int>(SCREEN_HEIGHT - 100);
   const int PLAYER_SPACING = 70;
   const int VERTICAL_OFFSET = 50;
-
   std::vector<std::unique_ptr<Player>> players;
-
   if (count <= 0) {
     return players;
   }
-
   if (count == 1) {
     // Center on Single
     players.push_back(std::make_unique<Player>(centerX, bottomY));
