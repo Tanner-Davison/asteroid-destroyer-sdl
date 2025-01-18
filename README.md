@@ -14,17 +14,16 @@
 
 ### Step 1: Create Surface
 
-```cpp
+````cpp
 cppCopySDL_Surface* surface = TTF_RenderText_Solid(font, "Text", color);
 // or
 SDL_Surface* surface = IMG_Load("image.png");
-```
 
 ### Step 2: Create Texture from Surface
 
 ```cpp
 cppCopySDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-```
+````
 
 ### Define the Destination Rectangle (where to render)
 
