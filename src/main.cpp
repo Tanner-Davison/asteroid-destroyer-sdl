@@ -40,7 +40,7 @@ int main(int argc, char *args[]) {
   }
 
   int imgFlags = IMG_INIT_PNG;
-  // Initializing SDL_Image w/ png
+
   if (!(IMG_Init(imgFlags) & imgFlags)) {
     printf("SDL_image could not initialize! SDL_image Error: %s\n",
            IMG_GetError());
