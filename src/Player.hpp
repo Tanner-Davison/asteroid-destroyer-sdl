@@ -8,11 +8,11 @@ struct SDL_Renderer;
 
 class Player {
 private:
-  // FLOATING POINT POSITION FOR SMOOTHER CHANGES
+  // smooth movement float points
   float rectXf;
   float rectYf;
 
-  // INT POSITION FOR RENDERING
+  // Rendering position
   int rectX;
   int rectY;
 
@@ -20,7 +20,7 @@ private:
   int rectWidth = 45;
   int rectHeight = 45;
 
-  // PHYSICS PROPERTIES
+  // Physics properties
   float velocityX;
   float velocityY;
   const float MAX_VELOCITY = 3.4f;       // Maximum velocity
@@ -28,12 +28,12 @@ private:
   const float BOOST_ACCELERATION = 3.5f; // BOOST_ACCELERATION
   const float DECELERATION = .9930;      // DECELERATION
   float ACCELERATION = .78f;
-  // TEXTURES
+  // Textures
   SDL_Rect playerRect;
   SDL_Texture *mTexture;
   int textureWidth;
   int textureHeight;
-  // MOVEMENT STATE
+  // Movement state
   bool isMovingUp;
   bool isMovingDown;
   bool isMovingLeft;
