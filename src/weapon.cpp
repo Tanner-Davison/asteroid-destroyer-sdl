@@ -26,14 +26,14 @@ void Bullet::deactivate() { active = false; };
 ////////////////////////// WEAPON  Impls///////////////////////////////////
 Weapon::Weapon()
     : x(0), y(0), cooldown(350.0f), lastShotTime(300), bulletSpeed(600.0f),
-      angle(-M_PI / 2) {};
+      angle(-M_PI / 2) {}
 
 void Weapon::update(float playerX, float playerY) {
   this->x = playerX;
   this->y = playerY;
 
   auto oldSize = bullets.size();
-  bullets.erase(std::remove_if(bullets.begin(), bullets.end(),
+  bullets.erase(remove_if(bullets.begin(), bullets.end(),
                                [](const Bullet &bullet) {
                                  bool should_remove =
                                      bullet.isOffScreen() || !bullet.isActive();

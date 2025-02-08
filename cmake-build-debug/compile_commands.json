@@ -1,0 +1,38 @@
+[
+{
+  "directory": "E:/source/repos/sdl-first-game/cmake-build-debug",
+  "command": "C:\\PROGRA~2\\JETBRA~1\\CLION2~1.2\\bin\\mingw\\bin\\G__~1.EXE -IE:/source/repos/sdl-first-game/include -IE:/source/repos/sdl-first-game/include/SDL2 -IE:/source/repos/sdl-first-game/src -g -std=gnu++23 -fdiagnostics-color=always -o CMakeFiles\\sdl-first-game.dir\\src\\main.cpp.obj -c E:\\source\\repos\\sdl-first-game\\src\\main.cpp",
+  "file": "E:\\source\\repos\\sdl-first-game\\src\\main.cpp",
+  "output": "CMakeFiles\\sdl-first-game.dir\\src\\main.cpp.obj"
+},
+{
+  "directory": "E:/source/repos/sdl-first-game/cmake-build-debug",
+  "command": "C:\\PROGRA~2\\JETBRA~1\\CLION2~1.2\\bin\\mingw\\bin\\G__~1.EXE -IE:/source/repos/sdl-first-game/include -IE:/source/repos/sdl-first-game/include/SDL2 -IE:/source/repos/sdl-first-game/src -g -std=gnu++23 -fdiagnostics-color=always -o CMakeFiles\\sdl-first-game.dir\\src\\createwindow.cpp.obj -c E:\\source\\repos\\sdl-first-game\\src\\createwindow.cpp",
+  "file": "E:\\source\\repos\\sdl-first-game\\src\\createwindow.cpp",
+  "output": "CMakeFiles\\sdl-first-game.dir\\src\\createwindow.cpp.obj"
+},
+{
+  "directory": "E:/source/repos/sdl-first-game/cmake-build-debug",
+  "command": "C:\\PROGRA~2\\JETBRA~1\\CLION2~1.2\\bin\\mingw\\bin\\G__~1.EXE -IE:/source/repos/sdl-first-game/include -IE:/source/repos/sdl-first-game/include/SDL2 -IE:/source/repos/sdl-first-game/src -g -std=gnu++23 -fdiagnostics-color=always -o CMakeFiles\\sdl-first-game.dir\\src\\Player.cpp.obj -c E:\\source\\repos\\sdl-first-game\\src\\Player.cpp",
+  "file": "E:\\source\\repos\\sdl-first-game\\src\\Player.cpp",
+  "output": "CMakeFiles\\sdl-first-game.dir\\src\\Player.cpp.obj"
+},
+{
+  "directory": "E:/source/repos/sdl-first-game/cmake-build-debug",
+  "command": "C:\\PROGRA~2\\JETBRA~1\\CLION2~1.2\\bin\\mingw\\bin\\G__~1.EXE -IE:/source/repos/sdl-first-game/include -IE:/source/repos/sdl-first-game/include/SDL2 -IE:/source/repos/sdl-first-game/src -g -std=gnu++23 -fdiagnostics-color=always -o CMakeFiles\\sdl-first-game.dir\\src\\weapon.cpp.obj -c E:\\source\\repos\\sdl-first-game\\src\\weapon.cpp",
+  "file": "E:\\source\\repos\\sdl-first-game\\src\\weapon.cpp",
+  "output": "CMakeFiles\\sdl-first-game.dir\\src\\weapon.cpp.obj"
+},
+{
+  "directory": "E:/source/repos/sdl-first-game/cmake-build-debug",
+  "command": "C:\\PROGRA~2\\JETBRA~1\\CLION2~1.2\\bin\\mingw\\bin\\G__~1.EXE -IE:/source/repos/sdl-first-game/include -IE:/source/repos/sdl-first-game/include/SDL2 -IE:/source/repos/sdl-first-game/src -g -std=gnu++23 -fdiagnostics-color=always -o CMakeFiles\\sdl-first-game.dir\\src\\asteroid.cpp.obj -c E:\\source\\repos\\sdl-first-game\\src\\asteroid.cpp",
+  "file": "E:\\source\\repos\\sdl-first-game\\src\\asteroid.cpp",
+  "output": "CMakeFiles\\sdl-first-game.dir\\src\\asteroid.cpp.obj"
+},
+{
+  "directory": "E:/source/repos/sdl-first-game/cmake-build-debug",
+  "command": "C:\\PROGRA~2\\JETBRA~1\\CLION2~1.2\\bin\\mingw\\bin\\G__~1.EXE -IE:/source/repos/sdl-first-game/include -IE:/source/repos/sdl-first-game/include/SDL2 -IE:/source/repos/sdl-first-game/src -g -std=gnu++23 -fdiagnostics-color=always -o CMakeFiles\\sdl-first-game.dir\\src\\score.cpp.obj -c E:\\source\\repos\\sdl-first-game\\src\\score.cpp",
+  "file": "E:\\source\\repos\\sdl-first-game\\src\\score.cpp",
+  "output": "CMakeFiles\\sdl-first-game.dir\\src\\score.cpp.obj"
+}
+]

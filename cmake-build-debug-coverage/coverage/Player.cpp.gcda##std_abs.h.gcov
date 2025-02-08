@@ -1,0 +1,151 @@
+        -:    0:Source:C:/Program Files (x86)/JetBrains/CLion 2024.3.2/bin/mingw/lib/gcc/x86_64-w64-mingw32/13.1.0/include/c++/bits/std_abs.h
+        -:    0:Graph:E:\source\repos\sdl-first-game\cmake-build-debug-coverage\CMakeFiles\sdl-first-game.dir\src\Player.cpp.gcno
+        -:    0:Data:E:\source\repos\sdl-first-game\cmake-build-debug-coverage\CMakeFiles\sdl-first-game.dir\src\Player.cpp.gcda
+        -:    0:Runs:1
+        -:    1:// -*- C++ -*- C library enhancements header.
+        -:    2:
+        -:    3:// Copyright (C) 2016-2023 Free Software Foundation, Inc.
+        -:    4://
+        -:    5:// This file is part of the GNU ISO C++ Library.  This library is free
+        -:    6:// software; you can redistribute it and/or modify it under the
+        -:    7:// terms of the GNU General Public License as published by the
+        -:    8:// Free Software Foundation; either version 3, or (at your option)
+        -:    9:// any later version.
+        -:   10:
+        -:   11:// This library is distributed in the hope that it will be useful,
+        -:   12:// but WITHOUT ANY WARRANTY; without even the implied warranty of
+        -:   13:// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        -:   14:// GNU General Public License for more details.
+        -:   15:
+        -:   16:// Under Section 7 of GPL version 3, you are granted additional
+        -:   17:// permissions described in the GCC Runtime Library Exception, version
+        -:   18:// 3.1, as published by the Free Software Foundation.
+        -:   19:
+        -:   20:// You should have received a copy of the GNU General Public License and
+        -:   21:// a copy of the GCC Runtime Library Exception along with this program;
+        -:   22:// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+        -:   23:// <http://www.gnu.org/licenses/>.
+        -:   24:
+        -:   25:/** @file include/bits/std_abs.h
+        -:   26: *  This is an internal header file, included by other library headers.
+        -:   27: *  Do not attempt to use it directly. @headername{cmath, cstdlib}
+        -:   28: */
+        -:   29:
+        -:   30:#ifndef _GLIBCXX_BITS_STD_ABS_H
+        -:   31:#define _GLIBCXX_BITS_STD_ABS_H
+        -:   32:
+        -:   33:#pragma GCC system_header
+        -:   34:
+        -:   35:#include <bits/c++config.h>
+        -:   36:
+        -:   37:#define _GLIBCXX_INCLUDE_NEXT_C_HEADERS
+        -:   38:#include_next <stdlib.h>
+        -:   39:#ifdef __CORRECT_ISO_CPP_MATH_H_PROTO
+        -:   40:# include_next <math.h>
+        -:   41:#endif
+        -:   42:#undef _GLIBCXX_INCLUDE_NEXT_C_HEADERS
+        -:   43:
+        -:   44:#undef abs
+        -:   45:
+        -:   46:extern "C++"
+        -:   47:{
+        -:   48:namespace std _GLIBCXX_VISIBILITY(default)
+        -:   49:{
+        -:   50:_GLIBCXX_BEGIN_NAMESPACE_VERSION
+        -:   51:
+        -:   52:  using ::abs;
+        -:   53:
+        -:   54:#ifndef __CORRECT_ISO_CPP_STDLIB_H_PROTO
+        -:   55:  inline long
+        -:   56:  abs(long __i) { return __builtin_labs(__i); }
+        -:   57:#endif
+        -:   58:
+        -:   59:#ifdef _GLIBCXX_USE_LONG_LONG
+        -:   60:  inline long long
+        -:   61:  abs(long long __x) { return __builtin_llabs (__x); }
+        -:   62:#endif
+        -:   63:
+        -:   64:// _GLIBCXX_RESOLVE_LIB_DEFECTS
+        -:   65:// 2192. Validity and return type of std::abs(0u) is unclear
+        -:   66:// 2294. <cstdlib> should declare abs(double)
+        -:   67:// 2735. std::abs(short), std::abs(signed char) and others should return int
+        -:   68:
+        -:   69:#ifndef __CORRECT_ISO_CPP_MATH_H_PROTO
+        -:   70:  inline _GLIBCXX_CONSTEXPR double
+        -:   71:  abs(double __x)
+        -:   72:  { return __builtin_fabs(__x); }
+        -:   73:
+        -:   74:  inline _GLIBCXX_CONSTEXPR float
+function _ZSt3absf called 0 returned 0% blocks executed 0%
+    #####:   75:  abs(float __x)
+    #####:   76:  { return __builtin_fabsf(__x); }
+    %%%%%:   76-block  0
+        -:   77:
+        -:   78:  inline _GLIBCXX_CONSTEXPR long double
+        -:   79:  abs(long double __x)
+        -:   80:  { return __builtin_fabsl(__x); }
+        -:   81:#endif
+        -:   82:
+        -:   83:#if defined(__GLIBCXX_TYPE_INT_N_0)
+        -:   84:  __extension__ inline _GLIBCXX_CONSTEXPR __GLIBCXX_TYPE_INT_N_0
+        -:   85:  abs(__GLIBCXX_TYPE_INT_N_0 __x) { return __x >= 0 ? __x : -__x; }
+        -:   86:#endif
+        -:   87:#if defined(__GLIBCXX_TYPE_INT_N_1)
+        -:   88:  __extension__ inline _GLIBCXX_CONSTEXPR __GLIBCXX_TYPE_INT_N_1
+        -:   89:  abs(__GLIBCXX_TYPE_INT_N_1 __x) { return __x >= 0 ? __x : -__x; }
+        -:   90:#endif
+        -:   91:#if defined(__GLIBCXX_TYPE_INT_N_2)
+        -:   92:  __extension__ inline _GLIBCXX_CONSTEXPR __GLIBCXX_TYPE_INT_N_2
+        -:   93:  abs(__GLIBCXX_TYPE_INT_N_2 __x) { return __x >= 0 ? __x : -__x; }
+        -:   94:#endif
+        -:   95:#if defined(__GLIBCXX_TYPE_INT_N_3)
+        -:   96:  __extension__ inline _GLIBCXX_CONSTEXPR __GLIBCXX_TYPE_INT_N_3
+        -:   97:  abs(__GLIBCXX_TYPE_INT_N_3 __x) { return __x >= 0 ? __x : -__x; }
+        -:   98:#endif
+        -:   99:
+        -:  100:#if defined(__STDCPP_FLOAT16_T__) && defined(_GLIBCXX_FLOAT_IS_IEEE_BINARY32)
+        -:  101:  constexpr _Float16
+        -:  102:  abs(_Float16 __x)
+        -:  103:  { return _Float16(__builtin_fabsf(__x)); }
+        -:  104:#endif
+        -:  105:
+        -:  106:#if defined(__STDCPP_FLOAT32_T__) && defined(_GLIBCXX_FLOAT_IS_IEEE_BINARY32)
+        -:  107:  constexpr _Float32
+        -:  108:  abs(_Float32 __x)
+        -:  109:  { return __builtin_fabsf(__x); }
+        -:  110:#endif
+        -:  111:
+        -:  112:#if defined(__STDCPP_FLOAT64_T__) && defined(_GLIBCXX_DOUBLE_IS_IEEE_BINARY64)
+        -:  113:  constexpr _Float64
+        -:  114:  abs(_Float64 __x)
+        -:  115:  { return __builtin_fabs(__x); }
+        -:  116:#endif
+        -:  117:
+        -:  118:#if defined(__STDCPP_FLOAT128_T__) && defined(_GLIBCXX_LDOUBLE_IS_IEEE_BINARY128)
+        -:  119:  constexpr _Float128
+        -:  120:  abs(_Float128 __x)
+        -:  121:  { return __builtin_fabsl(__x); }
+        -:  122:#elif defined(__STDCPP_FLOAT128_T__) && defined(_GLIBCXX_HAVE_FLOAT128_MATH)
+        -:  123:  constexpr _Float128
+        -:  124:  abs(_Float128 __x)
+        -:  125:  { return __builtin_fabsf128(__x); }
+        -:  126:#endif
+        -:  127:
+        -:  128:#if defined(__STDCPP_BFLOAT16_T__) && defined(_GLIBCXX_FLOAT_IS_IEEE_BINARY32)
+        -:  129:  constexpr __gnu_cxx::__bfloat16_t
+        -:  130:  abs(__gnu_cxx::__bfloat16_t __x)
+        -:  131:  { return __gnu_cxx::__bfloat16_t(__builtin_fabsf(__x)); }
+        -:  132:#endif
+        -:  133:
+        -:  134:#if !defined(__STRICT_ANSI__) && defined(_GLIBCXX_USE_FLOAT128)
+        -:  135:  __extension__ inline _GLIBCXX_CONSTEXPR
+        -:  136:  __float128
+        -:  137:  abs(__float128 __x)
+        -:  138:  { return __x < 0 ? -__x : __x; }
+        -:  139:#endif
+        -:  140:
+        -:  141:_GLIBCXX_END_NAMESPACE_VERSION
+        -:  142:} // namespace
+        -:  143:} // extern "C"++"
+        -:  144:
+        -:  145:#endif // _GLIBCXX_BITS_STD_ABS_H

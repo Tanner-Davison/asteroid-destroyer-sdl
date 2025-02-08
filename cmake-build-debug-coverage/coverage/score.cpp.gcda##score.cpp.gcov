@@ -1,0 +1,132 @@
+        -:    0:Source:E:/source/repos/sdl-first-game/src/score.cpp
+        -:    0:Graph:E:\source\repos\sdl-first-game\cmake-build-debug-coverage\CMakeFiles\sdl-first-game.dir\src\score.cpp.gcno
+        -:    0:Data:E:\source\repos\sdl-first-game\cmake-build-debug-coverage\CMakeFiles\sdl-first-game.dir\src\score.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include "score.hpp"
+        -:    2:
+function _ZN5ScoreC2Ev called 0 returned 0% blocks executed 0%
+    #####:    3:Score::Score()
+    #####:    4:    : score(0), textWidth(0), textHeight(0), x(50),
+    #####:    5:      y(50) // Position wherever you want it
+    %%%%%:    5-block  0
+call    0 never executed
+        -:    6:{
+    #####:    7:  messageToRender = "Score: 0";
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:    8:}
+    %%%%%:    8-block  0
+    $$$$$:    8-block  1
+call    0 never executed
+        -:    9:
+function _ZN5ScoreD2Ev called 0 returned 0% blocks executed 0%
+    #####:   10:Score::~Score() {
+        -:   11:  // No need to cleanup string
+    #####:   12:}
+    %%%%%:   12-block  0
+call    0 never executed
+        -:   13:
+function _ZN5Score8setScoreEi called 0 returned 0% blocks executed 0%
+    #####:   14:void Score::setScore(int newScore) {
+    #####:   15:  score += newScore;
+    #####:   16:  messageToRender = "Score: " + std::to_string(score);
+    %%%%%:   16-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   16-block  1
+call    4 never executed
+call    5 never executed
+call    6 never executed
+    $$$$$:   16-block  2
+call    7 never executed
+    $$$$$:   16-block  3
+    #####:   17:}
+        -:   18:
+function _ZN5Score11renderScoreEP12SDL_Renderer called 0 returned 0% blocks executed 0%
+    #####:   19:void Score::renderScore(SDL_Renderer *renderer) {
+    #####:   20:  SDL_Color textColor = {255, 255, 255, 255}; // White text
+        -:   21:
+        -:   22:  // Create surface
+        -:   23:  SDL_Surface *textSurface =
+    #####:   24:      TTF_RenderText_Solid(font, messageToRender.c_str(), textColor);
+    %%%%%:   24-block  0
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    #####:   25:  if (textSurface == nullptr) {
+    %%%%%:   25-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   26:    printf("Unable to render text surface! SDL_ttf Error: %s\n",
+    %%%%%:   26-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   26-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+        -:   27:           TTF_GetError());
+    #####:   28:    return;
+    %%%%%:   28-block  0
+    %%%%%:   28-block  1
+        -:   29:  }
+        -:   30:  // Create texture from surface
+        -:   31:  SDL_Texture *textTexture =
+    #####:   32:      SDL_CreateTextureFromSurface(renderer, textSurface);
+    %%%%%:   32-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   33:  if (textTexture == nullptr) {
+    %%%%%:   33-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   34:    printf("Unable to create texture from rendered text! SDL Error: %s\n",
+    %%%%%:   34-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   34-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+        -:   35:           SDL_GetError());
+    #####:   36:    SDL_FreeSurface(textSurface);
+    %%%%%:   36-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   37:    return;
+    %%%%%:   37-block  0
+        -:   38:  }
+        -:   39:
+    #####:   40:  textWidth = textSurface->w;
+    #####:   41:  textHeight = textSurface->h;
+        -:   42:
+        -:   43:  // Setup rendering Rect
+    #####:   44:  SDL_Rect renderQuad = {x, y, textWidth, textHeight};
+        -:   45:
+        -:   46:  // Render
+    #####:   47:  SDL_RenderCopy(renderer, textTexture, NULL, &renderQuad);
+    %%%%%:   47-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:   48:
+        -:   49:  // Clean up
+    #####:   50:  SDL_FreeSurface(textSurface);
+    %%%%%:   50-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   51:  SDL_DestroyTexture(textTexture);
+    %%%%%:   51-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:   52:}

@@ -1,0 +1,309 @@
+        -:    0:Source:E:/source/repos/sdl-first-game/src/asteroid.cpp
+        -:    0:Graph:E:\source\repos\sdl-first-game\cmake-build-debug-coverage\CMakeFiles\sdl-first-game.dir\src\asteroid.cpp.gcno
+        -:    0:Data:E:\source\repos\sdl-first-game\cmake-build-debug-coverage\CMakeFiles\sdl-first-game.dir\src\asteroid.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include "asteroid.hpp"
+        -:    2:#include "SDL_image.h"
+        -:    3:#include "SDL_rect.h"
+        -:    4:#include "SDL_render.h"
+        -:    5:#include "SDL_surface.h"
+        -:    6:#include "createwindow.hpp"
+        -:    7:#include <SDL.h>
+        -:    8:#include <random>
+        -:    9:
+        -:   10:class Player;
+function _ZN8AsteroidC2ERKSt6vectorISt10unique_ptrI6PlayerSt14default_deleteIS2_EESaIS5_EE called 0 returned 0% blocks executed 0%
+    #####:   11:Asteroid::Asteroid(const std::vector<std::unique_ptr<Player>> &players)
+    #####:   12:    : rectXf(0), rectYf(0), rectWidth(100), rectHeight(100), mTexture(nullptr) {
+        -:   13:
+    #####:   14:  std::uniform_int_distribution<> disX(0, SCREEN_WIDTH - rectWidth);
+    %%%%%:   14-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   15:  std::uniform_int_distribution<> disY(0, SCREEN_HEIGHT - rectHeight);
+    %%%%%:   15-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:   16:
+    #####:   17:  bool validPosition = false;
+    #####:   18:  while (!validPosition) {
+    %%%%%:   18-block  0
+    %%%%%:   18-block  1
+branch  0 never executed
+branch  1 never executed (fallthrough)
+    #####:   19:    this->rectX = disX(GameRNG::gen);
+    %%%%%:   19-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   20:    this->rectY = disY(GameRNG::gen);
+    %%%%%:   20-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   21:    this->rectXf = static_cast<float>(rectX);
+    #####:   22:    this->rectYf = static_cast<float>(rectY);
+        -:   23:
+        -:   24:    // Check if asteroid collides with any player
+    #####:   25:    validPosition = true;
+    #####:   26:    for (const auto &player : players) {
+    %%%%%:   26-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:   26-block  1
+call    2 never executed
+    %%%%%:   26-block  2
+call    3 never executed
+    %%%%%:   26-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:   27:      SDL_Rect playerRect = {player->getPosition().first,
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    #####:   28:                             player->getPosition().second, player->getWidth(),
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+call    3 never executed
+    #####:   29:                             player->getHeight()};
+    %%%%%:   29-block  0
+call    0 never executed
+    %%%%%:   29-block  1
+call    1 never executed
+call    2 never executed
+call    3 never executed
+    #####:   30:      SDL_Rect asteroidRect = {rectX, rectY, rectWidth, rectHeight};
+        -:   31:
+        -:   32:      // Check for collision (this assumes you have a checkCollision function or
+        -:   33:      // use SDL to compare rects)
+    #####:   34:      if (checkStartCollision(asteroidRect, playerRect)) {
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   34-block  0
+branch  3 never executed (fallthrough)
+branch  4 never executed
+    #####:   35:        validPosition = false; // Re-generate if collision is detected
+    #####:   36:        break;
+    %%%%%:   36-block  0
+        -:   37:      }
+        -:   38:    }
+        -:   39:  }
+        -:   40:
+        -:   41:  // After finding a valid position, handle movement and other initialization
+    #####:   42:  std::uniform_real_distribution<float> velDis(-2.0f, 2.0f);
+    %%%%%:   42-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   43:  velocityX = velDis(GameRNG::gen);
+    %%%%%:   43-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   44:  velocityY = velDis(GameRNG::gen);
+    %%%%%:   44-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   45:  angle = 0.0;
+    #####:   46:  std::uniform_real_distribution<> rotDis(-2.0, 2.0);
+    %%%%%:   46-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   47:  rotationSpeed = rotDis(GameRNG::gen);
+    %%%%%:   47-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   48:}
+    %%%%%:   48-block  0
+        -:   49:
+function _ZN8AsteroidC2ERKS_ called 0 returned 0% blocks executed 0%
+    #####:   50:Asteroid::Asteroid(const Asteroid &other)
+    #####:   51:    : rectXf(other.rectXf), rectYf(other.rectYf), rectX(other.rectX),
+    #####:   52:      rectY(other.rectY), rectWidth(other.rectWidth),
+    #####:   53:      rectHeight(other.rectHeight), velocityX(other.velocityX),
+    #####:   54:      velocityY(other.velocityY), angle(other.angle),
+    #####:   55:      rotationSpeed(other.rotationSpeed), destroyed(other.destroyed),
+    #####:   56:      mTexture(other.mTexture) {}
+        -:   57:
+        -:   58:// Copy assignment operator
+function _ZN8AsteroidaSERKS_ called 0 returned 0% blocks executed 0%
+    #####:   59:Asteroid &Asteroid::operator=(const Asteroid &other) {
+    #####:   60:  if (this != &other) { // Protect against self-assignment
+    %%%%%:   60-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   61:    rectXf = other.rectXf;
+    #####:   62:    rectYf = other.rectYf;
+    #####:   63:    rectX = other.rectX;
+    #####:   64:    rectY = other.rectY;
+    #####:   65:    rectWidth = other.rectWidth;
+    #####:   66:    rectHeight = other.rectHeight;
+    #####:   67:    velocityX = other.velocityX;
+    #####:   68:    velocityY = other.velocityY;
+    #####:   69:    angle = other.angle;
+    #####:   70:    rotationSpeed = other.rotationSpeed;
+    #####:   71:    destroyed = other.destroyed;
+    #####:   72:    mTexture = other.mTexture;
+    %%%%%:   72-block  0
+        -:   73:  }
+    #####:   74:  return *this;
+    %%%%%:   74-block  0
+        -:   75:}
+function _ZN8AsteroidD2Ev called 0 returned 0% blocks executed 0%
+    #####:   76:Asteroid::~Asteroid() = default;
+function _ZN8Asteroid14renderAsteroidEP12SDL_Renderer called 0 returned 0% blocks executed 0%
+    #####:   77:void Asteroid::renderAsteroid(SDL_Renderer *renderer) {
+    #####:   78:  SDL_Rect rect = {rectX, rectY, rectWidth, rectHeight};
+    #####:   79:  if (mTexture != nullptr) {
+    %%%%%:   79-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   80:    SDL_RenderCopy(renderer, mTexture, NULL, &rect);
+    %%%%%:   80-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:   81:  } else {
+    #####:   82:    SDL_SetRenderDrawColor(renderer, 128, 128, 128, 255); // Medium gray
+    %%%%%:   82-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   83:    SDL_RenderFillRect(renderer, &rect);
+    %%%%%:   83-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:   84:  }
+    #####:   85:}
+    %%%%%:   85-block  0
+function _ZN8Asteroid11loadTextureEPKcP12SDL_Renderer called 0 returned 0% blocks executed 0%
+    #####:   86:bool Asteroid::loadTexture(const char *path, SDL_Renderer *renderer) {
+    #####:   87:  if (this->mTexture != nullptr) {
+    %%%%%:   87-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   88:    SDL_DestroyTexture(mTexture);
+    %%%%%:   88-block  0
+call    0 never executed
+    #####:   89:    mTexture = nullptr;
+        -:   90:  }
+        -:   91:  // load Texture
+    #####:   92:  SDL_Surface *loadedSurface = IMG_Load(path);
+    %%%%%:   92-block  0
+call    0 never executed
+    #####:   93:  if (loadedSurface == nullptr) {
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   94:    printf("Unable to load image %s! SDL_image Error %s\n", path,
+    %%%%%:   94-block  0
+call    0 never executed
+call    1 never executed
+        -:   95:           IMG_GetError());
+    #####:   96:    return false;
+        -:   97:  }
+    #####:   98:  mTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+    %%%%%:   98-block  0
+call    0 never executed
+    #####:   99:  if (mTexture == nullptr) {
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  100:    printf("Unable to create Texture %s! SDL Error: %s\n", path,
+    %%%%%:  100-block  0
+call    0 never executed
+call    1 never executed
+        -:  101:           SDL_GetError());
+    #####:  102:    return false;
+        -:  103:  }
+        -:  104:  // main implementation
+    #####:  105:  textureWidth = loadedSurface->w;
+    #####:  106:  textureHeight = loadedSurface->h;
+    #####:  107:  SDL_FreeSurface(loadedSurface);
+    %%%%%:  107-block  0
+call    0 never executed
+    #####:  108:  return true;
+        -:  109:}
+function _ZN8Asteroid6updateEv called 0 returned 0% blocks executed 0%
+    #####:  110:void Asteroid::update() {
+        -:  111:  // Update position
+    #####:  112:  rectXf += velocityX;
+    #####:  113:  rectYf += velocityY;
+        -:  114:
+        -:  115:  // Wrap around screen edges
+    #####:  116:  if (rectXf < -rectWidth)
+    %%%%%:  116-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  117:    rectXf = SCREEN_WIDTH;
+    %%%%%:  117-block  0
+    #####:  118:  if (rectXf > SCREEN_WIDTH)
+    %%%%%:  118-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  119:    rectXf = -rectWidth;
+    %%%%%:  119-block  0
+    #####:  120:  if (rectYf < -rectHeight)
+    %%%%%:  120-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  121:    rectYf = SCREEN_HEIGHT;
+    %%%%%:  121-block  0
+    #####:  122:  if (rectYf > SCREEN_HEIGHT)
+    %%%%%:  122-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  123:    rectYf = -rectHeight;
+    %%%%%:  123-block  0
+        -:  124:
+        -:  125:  // Update integer coordinates
+    #####:  126:  rectX = static_cast<int>(rectXf);
+    #####:  127:  rectY = static_cast<int>(rectYf);
+        -:  128:
+        -:  129:  // Update rotation
+    #####:  130:  angle += rotationSpeed;
+    #####:  131:  if (angle > 360)
+    %%%%%:  131-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  132:    angle -= 360;
+    %%%%%:  132-block  0
+    #####:  133:  if (angle < 0)
+    %%%%%:  133-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  134:    angle += 360;
+    %%%%%:  134-block  0
+    #####:  135:}
+        -:  136:
+function _ZNK8Asteroid8getRectXEv called 0 returned 0% blocks executed 0%
+    #####:  137:int Asteroid::getRectX() const { return this->rectX; }
+    %%%%%:  137-block  0
+function _ZNK8Asteroid8getRectYEv called 0 returned 0% blocks executed 0%
+    #####:  138:int Asteroid::getRectY() const { return this->rectY; }
+    %%%%%:  138-block  0
+function _ZNK8Asteroid12getRectWidthEv called 0 returned 0% blocks executed 0%
+    #####:  139:int Asteroid::getRectWidth() const { return this->rectWidth; }
+    %%%%%:  139-block  0
+function _ZNK8Asteroid13getRectHeightEv called 0 returned 0% blocks executed 0%
+    #####:  140:int Asteroid::getRectHeight() const { return this->rectHeight; }
+    %%%%%:  140-block  0
+function _ZN8Asteroid7destroyEv called 0 returned 0% blocks executed 0%
+    #####:  141:void Asteroid::destroy() { destroyed = true; }
+function _ZNK8Asteroid11isDestroyedEv called 0 returned 0% blocks executed 0%
+    #####:  142:bool Asteroid::isDestroyed() const { return destroyed; }
+    %%%%%:  142-block  0
+function _ZN8Asteroid19checkStartCollisionERK8SDL_RectS2_ called 0 returned 0% blocks executed 0%
+    #####:  143:bool Asteroid::checkStartCollision(const SDL_Rect &a, const SDL_Rect &b) {
+    #####:  144:  return SDL_HasIntersection(&a, &b) != SDL_FALSE;
+    %%%%%:  144-block  0
+call    0 never executed
+        -:  145:}

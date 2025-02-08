@@ -1,0 +1,3 @@
+E:/source/repos/sdl-first-game/cmake-build-debug-coverage/CMakeFiles/sdl-first-game.dir
+E:/source/repos/sdl-first-game/cmake-build-debug-coverage/CMakeFiles/edit_cache.dir
+E:/source/repos/sdl-first-game/cmake-build-debug-coverage/CMakeFiles/rebuild_cache.dir

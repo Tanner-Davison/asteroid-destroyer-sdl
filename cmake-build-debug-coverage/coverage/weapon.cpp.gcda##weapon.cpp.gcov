@@ -1,0 +1,254 @@
+        -:    0:Source:E:/source/repos/sdl-first-game/src/weapon.cpp
+        -:    0:Graph:E:\source\repos\sdl-first-game\cmake-build-debug-coverage\CMakeFiles\sdl-first-game.dir\src\weapon.cpp.gcno
+        -:    0:Data:E:\source\repos\sdl-first-game\cmake-build-debug-coverage\CMakeFiles\sdl-first-game.dir\src\weapon.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include "weapon.hpp"
+        -:    2:#include "createwindow.hpp"
+function _ZN6BulletC2Effff called 0 returned 0% blocks executed 0%
+    #####:    3:Bullet::Bullet(float startX, float startY, float velX, float velY)
+    #####:    4:    : x(startX), y(startY), velocityX(velX), velocityY(velY), active(true) {};
+        -:    5:
+function _ZN6Bullet6renderEP12SDL_Renderer called 0 returned 0% blocks executed 0%
+    #####:    6:void Bullet::render(SDL_Renderer *renderer) {
+    #####:    7:  SDL_Rect bulletRect = {static_cast<int>(x), static_cast<int>(y), WIDTH,
+    #####:    8:                         HEIGHT};
+    #####:    9:  SDL_SetRenderDrawColor(renderer, 255, 255, 0, 255); // Color: White
+    %%%%%:    9-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   10:  SDL_RenderFillRect(renderer, &bulletRect);
+    %%%%%:   10-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   11:}
+    %%%%%:   11-block  0
+function _ZN6Bullet6updateEf called 0 returned 0% blocks executed 0%
+    #####:   12:void Bullet::update(float deltaTime) {
+    #####:   13:  x += velocityX * deltaTime;
+    #####:   14:  y += velocityY * deltaTime;
+    #####:   15:};
+        -:   16:
+function _ZNK6Bullet11isOffScreenEv called 0 returned 0% blocks executed 0%
+    #####:   17:bool Bullet::isOffScreen() const {
+    #####:   18:  return (x < 0 || x > SCREEN_WIDTH || y < 0 || y > SCREEN_HEIGHT);
+    %%%%%:   18-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    %%%%%:   18-block  1
+branch  2 never executed (fallthrough)
+branch  3 never executed
+    %%%%%:   18-block  2
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    %%%%%:   18-block  3
+branch  6 never executed (fallthrough)
+branch  7 never executed
+    %%%%%:   18-block  4
+    %%%%%:   18-block  5
+    %%%%%:   18-block  6
+        -:   19:}
+function _ZNK6Bullet9getHitBoxEv called 0 returned 0% blocks executed 0%
+    #####:   20:SDL_Rect Bullet::getHitBox() const {
+    #####:   21:  return {static_cast<int>(x), static_cast<int>(y), WIDTH, HEIGHT};
+    %%%%%:   21-block  0
+        -:   22:}
+function _ZNK6Bullet8isActiveEv called 0 returned 0% blocks executed 0%
+    #####:   23:bool Bullet::isActive() const { return active; }
+    %%%%%:   23-block  0
+function _ZN6Bullet10deactivateEv called 0 returned 0% blocks executed 0%
+    #####:   24:void Bullet::deactivate() { active = false; };
+        -:   25:
+        -:   26:////////////////////////// WEAPON  Impls///////////////////////////////////
+function _ZN6WeaponC2Ev called 0 returned 0% blocks executed 0%
+    #####:   27:Weapon::Weapon()
+    #####:   28:    : x(0), y(0), cooldown(350.0f), lastShotTime(300), bulletSpeed(600.0f),
+    #####:   29:      angle(-M_PI / 2) {};
+    %%%%%:   29-block  0
+call    0 never executed
+        -:   30:
+function _ZN6Weapon6updateEff called 0 returned 0% blocks executed 0%
+    #####:   31:void Weapon::update(float playerX, float playerY) {
+    #####:   32:  this->x = playerX;
+    #####:   33:  this->y = playerY;
+        -:   34:
+    #####:   35:  auto oldSize = bullets.size();
+    %%%%%:   35-block  0
+call    0 never executed
+    #####:   36:  bullets.erase(remove_if(bullets.begin(), bullets.end(),
+call    0 never executed
+call    1 never executed
+call    2 never executed
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   36-block  0
+call    6 never executed
+call    7 never executed
+branch  8 never executed (fallthrough)
+branch  9 never executed (throw)
+    $$$$$:   36-block  1
+    $$$$$:   36-block  2
+function _ZZN6Weapon6updateEffENKUlRK6BulletE_clES2_ called 0 returned 0% blocks executed 0%
+    #####:   37:                               [](const Bullet &bullet) {
+        -:   38:                                 bool should_remove =
+    #####:   39:                                     bullet.isOffScreen() || !bullet.isActive();
+    %%%%%:   39-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    %%%%%:   39-block  1
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed
+    %%%%%:   39-block  2
+    %%%%%:   39-block  3
+        -:   40:                                 // printf("Checking bullet - OffScreen: %d, "
+        -:   41:                                 //        "Active: %d, Should Remove: %d\n",
+        -:   42:                                 //        bullet.isOffScreen(),
+        -:   43:                                 //        bullet.isActive(), should_remove);
+    #####:   44:                                 return should_remove;
+    %%%%%:   44-block  0
+        -:   45:                               }),
+    #####:   46:                bullets.end());
+call    0 never executed
+    $$$$$:   46-block  0
+        -:   47:
+    #####:   48:  float deltaTime = 1.0f / 60.0f;
+    #####:   49:  for (auto &bullet : bullets) {
+    %%%%%:   49-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:   49-block  1
+call    2 never executed
+call    3 never executed
+    %%%%%:   49-block  2
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:   50:    bullet.update(deltaTime);
+call    0 never executed
+        -:   51:  }
+    #####:   52:}
+    %%%%%:   52-block  0
+function _ZN6Weapon6renderEP12SDL_Renderer called 0 returned 0% blocks executed 0%
+    #####:   53:void Weapon::render(SDL_Renderer *renderer) {
+        -:   54:  // render bullets
+    #####:   55:  for (auto &bullet : bullets) {
+    %%%%%:   55-block  0
+call    0 never executed
+call    1 never executed
+    %%%%%:   55-block  1
+call    2 never executed
+    %%%%%:   55-block  2
+call    3 never executed
+    %%%%%:   55-block  3
+call    4 never executed
+branch  5 never executed
+branch  6 never executed (fallthrough)
+    #####:   56:    bullet.render(renderer);
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:   57:  }
+        -:   58:
+        -:   59:  // Optionally render the weapon itself
+    #####:   60:  SDL_Rect weaponRect = {static_cast<int>(x), static_cast<int>(y), 5, 5};
+    #####:   61:  SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Red color
+    %%%%%:   61-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   62:  SDL_RenderFillRect(renderer, &weaponRect);
+    %%%%%:   62-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   63:}
+    %%%%%:   63-block  0
+        -:   64:
+function _ZN6Weapon5shootEv called 0 returned 0% blocks executed 0%
+    #####:   65:void Weapon::shoot() {
+    #####:   66:  if (!canShoot())
+    %%%%%:   66-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   66-block  1
+branch  3 never executed (fallthrough)
+branch  4 never executed
+    #####:   67:    return;
+    %%%%%:   67-block  0
+    #####:   68:  float velX = bulletSpeed * cos(angle);
+    %%%%%:   68-block  0
+call    0 never executed
+    #####:   69:  float velY = bulletSpeed * sin(angle);
+call    0 never executed
+    #####:   70:  bullets.emplace_back(x, y, velX, velY);
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   71:  lastShotTime = SDL_GetTicks();
+    %%%%%:   71-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   71-block  1
+        -:   72:}
+function _ZN6Weapon8canShootEv called 0 returned 0% blocks executed 0%
+    #####:   73:bool Weapon::canShoot() { return (SDL_GetTicks() - lastShotTime >= cooldown); }
+    %%%%%:   73-block  0
+call    0 never executed
+function _ZN6Weapon20checkBulletCollisionERK8SDL_Rect called 0 returned 0% blocks executed 0%
+    #####:   74:std::optional<size_t> Weapon::checkBulletCollision(const SDL_Rect &target) {
+        -:   75:
+    #####:   76:  for (size_t i = 0; i < bullets.size(); i++) {
+    %%%%%:   76-block  0
+    %%%%%:   76-block  1
+    %%%%%:   76-block  2
+call    0 never executed
+branch  1 never executed
+branch  2 never executed (fallthrough)
+    #####:   77:    SDL_Rect bulletRect = bullets[i].getHitBox();
+    %%%%%:   77-block  0
+call    0 never executed
+call    1 never executed
+    #####:   78:    if (SDL_HasIntersection(&bulletRect, &target)) {
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   78-block  0
+branch  3 never executed (fallthrough)
+branch  4 never executed
+    #####:   79:      return i; // Return the index as an optional
+    %%%%%:   79-block  0
+call    0 never executed
+        -:   80:    }
+        -:   81:  }
+    #####:   82:  return std::nullopt; // Return empty optional instead of -1
+    %%%%%:   82-block  0
+call    0 never executed
+        -:   83:}
+function _ZN6Weapon13destroyBulletEy called 0 returned 0% blocks executed 0%
+    #####:   84:void Weapon::destroyBullet(size_t index) {
+    #####:   85:  if (index < bullets.size()) {
+    %%%%%:   85-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:   86:    bullets.erase(bullets.begin() +
+call    0 never executed
+call    1 never executed
+branch  2 never executed (fallthrough)
+branch  3 never executed (throw)
+    %%%%%:   86-block  0
+    $$$$$:   86-block  1
+    $$$$$:   86-block  2
+    #####:   87:                  index); // Directly erase instead of deactivating
+    %%%%%:   87-block  0
+call    0 never executed
+call    1 never executed
+        -:   88:  }
+    #####:   89:}
+    %%%%%:   89-block  0

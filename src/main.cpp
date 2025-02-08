@@ -3,6 +3,7 @@
 #include "SDL_render.h"
 #include "SDL_timer.h"
 #include "asteroid.hpp"
+#include <algorithm>
 #include "createwindow.hpp"
 #include "score.hpp"
 #include <optional>

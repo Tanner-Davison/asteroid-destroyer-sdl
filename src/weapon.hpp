@@ -3,6 +3,7 @@
 #include "SDL_stdinc.h"
 #include <math.h>
 #include <optional>
+#include <algorithm>
 #include <vector>
 struct SDL_Renderer;
 

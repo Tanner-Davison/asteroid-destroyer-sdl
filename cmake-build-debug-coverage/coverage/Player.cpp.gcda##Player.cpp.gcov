@@ -1,0 +1,431 @@
+        -:    0:Source:E:/source/repos/sdl-first-game/src/Player.cpp
+        -:    0:Graph:E:\source\repos\sdl-first-game\cmake-build-debug-coverage\CMakeFiles\sdl-first-game.dir\src\Player.cpp.gcno
+        -:    0:Data:E:\source\repos\sdl-first-game\cmake-build-debug-coverage\CMakeFiles\sdl-first-game.dir\src\Player.cpp.gcda
+        -:    0:Runs:1
+        -:    1:#include "Player.hpp"
+        -:    2:#include "SDL_render.h"
+        -:    3:#include "createwindow.hpp"
+        -:    4:#include <SDL.h>
+        -:    5:// Default constructor
+function _ZN6PlayerC2Ev called 0 returned 0% blocks executed 0%
+    #####:    6:Player::Player()
+    #####:    7:    : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
+    #####:    8:      isMovingRight(false), shooting(false), ACCELERATION(BASE_ACCELERATION),
+    #####:    9:      rectXf(100.0f), rectYf(100.0f), rectX(100), rectY(100), velocityX(0.0f),
+    #####:   10:      velocityY(0.0f), rectWidth(50), rectHeight(50), boost(false),
+    #####:   11:      mTexture(nullptr), textureWidth(0), textureHeight(0) {
+    %%%%%:   11-block  0
+call    0 never executed
+    #####:   12:  playerRect = {getPosition().first, getPosition().second, getWidth(),
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   12-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   12-block  1
+call    6 never executed
+    #####:   13:                getHeight()};
+call    0 never executed
+    #####:   14:}
+    $$$$$:   14-block  0
+call    0 never executed
+        -:   15:
+        -:   16:// Position constructor
+function _ZN6PlayerC2Eii called 0 returned 0% blocks executed 0%
+    #####:   17:Player::Player(int rectX,
+    #####:   18:               int rectY) // Changed from float x,y to int rectX,rectY
+    #####:   19:    : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
+    #####:   20:      isMovingRight(false), shooting(false), boost(false),
+    #####:   21:      rectXf(static_cast<float>(rectX)), rectYf(static_cast<float>(rectY)),
+    #####:   22:      ACCELERATION(BASE_ACCELERATION), rectX(rectX), rectY(rectY),
+    #####:   23:      velocityX(0.0f), velocityY(0.0f), mTexture(nullptr), textureWidth(0),
+    #####:   24:      textureHeight(0) {
+    %%%%%:   24-block  0
+call    0 never executed
+    #####:   25:  playerRect = {getPosition().first, getPosition().second, getWidth(),
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   25-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   25-block  1
+call    6 never executed
+    #####:   26:                getHeight()};
+call    0 never executed
+    #####:   27:}
+    $$$$$:   27-block  0
+call    0 never executed
+        -:   28:
+        -:   29:// Full constructor with dimensions
+function _ZN6PlayerC2Eiiii called 0 returned 0% blocks executed 0%
+    #####:   30:Player::Player(int rectX, int rectY, int width,
+    #####:   31:               int height) // Changed from float to int
+    #####:   32:    : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
+    #####:   33:      isMovingRight(false), shooting(false), boost(false),
+    #####:   34:      rectXf(static_cast<float>(rectX)), rectYf(static_cast<float>(rectY)),
+    #####:   35:      ACCELERATION(BASE_ACCELERATION), rectX(rectX), rectY(rectY),
+    #####:   36:      velocityX(0.0f), velocityY(0.0f), rectWidth(width), rectHeight(height),
+    #####:   37:      mTexture(nullptr), textureWidth(0), textureHeight(0) {
+    %%%%%:   37-block  0
+call    0 never executed
+    #####:   38:  playerRect = {getPosition().first, getPosition().second, getWidth(),
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    %%%%%:   38-block  0
+call    3 never executed
+branch  4 never executed (fallthrough)
+branch  5 never executed (throw)
+    %%%%%:   38-block  1
+call    6 never executed
+    #####:   39:                getHeight()};
+call    0 never executed
+    #####:   40:}
+    $$$$$:   40-block  0
+call    0 never executed
+        -:   41:// initializer list to ease this file lol
+function _ZN6Player12renderPlayerEP12SDL_Renderer called 0 returned 0% blocks executed 0%
+    #####:   42:void Player::renderPlayer(SDL_Renderer *renderer) {
+    #####:   43:  SDL_Rect rect = {rectX, rectY, rectWidth, rectHeight};
+    #####:   44:  if (mTexture != nullptr) {
+    %%%%%:   44-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   45:    SDL_RenderCopy(renderer, mTexture, nullptr, &rect);
+    %%%%%:   45-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:   46:  } else {
+    #####:   47:    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    %%%%%:   47-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   48:    SDL_RenderFillRect(renderer, &rect);
+    %%%%%:   48-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:   49:  }
+        -:   50:  // Render weapon // updates position
+    #####:   51:  weapon.update((rectX - 2) + rectWidth / 2, rectY - 6);
+    %%%%%:   51-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   52:  weapon.render(renderer);
+    %%%%%:   52-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+    #####:   53:}
+    %%%%%:   53-block  0
+        -:   54:
+function _ZN6Player29handleBoundsAndUpdatePositionEff called 0 returned 0% blocks executed 0%
+    #####:   55:void Player::handleBoundsAndUpdatePosition(float nextX, float nextY) {
+    #####:   56:  const bool hitLeftWall = nextX <= 0,
+    #####:   57:             hitRightWall = nextX >= SCREEN_WIDTH - rectWidth,
+    #####:   58:             hitTopWall = nextY <= 0,
+    #####:   59:             hitBottomWall = nextY >= SCREEN_HEIGHT - rectHeight;
+        -:   60:
+    #####:   61:  if (hitLeftWall) {
+    %%%%%:   61-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   62:    rectXf = 0.0f;
+    #####:   63:    velocityX = -velocityX * 1.8f;
+    %%%%%:   63-block  0
+        -:   64:
+    #####:   65:  } else if (hitRightWall) {
+    %%%%%:   65-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   66:    rectXf = SCREEN_WIDTH - rectWidth;
+    #####:   67:    velocityX = -velocityX * 1.8f;
+    %%%%%:   67-block  0
+        -:   68:  } else {
+    #####:   69:    rectXf = nextX;
+    %%%%%:   69-block  0
+        -:   70:  }
+        -:   71:
+    #####:   72:  if (hitTopWall) {
+    %%%%%:   72-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   73:    rectYf = 0.0f;
+    #####:   74:    velocityY = -velocityY * 1.8f;
+    %%%%%:   74-block  0
+        -:   75:
+    #####:   76:  } else if (hitBottomWall) {
+    %%%%%:   76-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   77:    rectYf = SCREEN_HEIGHT - rectHeight;
+    #####:   78:    velocityY = -velocityY * 1.8f;
+    %%%%%:   78-block  0
+        -:   79:
+        -:   80:  } else {
+    #####:   81:    rectYf = nextY;
+    %%%%%:   81-block  0
+        -:   82:  }
+        -:   83:
+        -:   84:  // update Position
+    #####:   85:  rectX = static_cast<int>(rectXf);
+    #####:   86:  rectY = static_cast<int>(rectYf);
+    #####:   87:}
+function _ZN6Player11loadTextureEPKcP12SDL_Renderer called 0 returned 0% blocks executed 0%
+    #####:   88:bool Player::loadTexture(const char *path, SDL_Renderer *renderer) {
+        -:   89:  // Free Existing Texture * ERROR HANDLING *
+    #####:   90:  if (mTexture != nullptr) {
+    %%%%%:   90-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   91:    SDL_DestroyTexture(mTexture);
+    %%%%%:   91-block  0
+call    0 never executed
+    #####:   92:    mTexture = nullptr;
+        -:   93:  }
+        -:   94:  // Load Image
+    #####:   95:  SDL_Surface *loadedSurface = IMG_Load(path);
+    %%%%%:   95-block  0
+call    0 never executed
+    #####:   96:  if (loadedSurface == nullptr) {
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:   97:    printf("Unable to laod image %s! SDL_image Error: %s\n", path,
+    %%%%%:   97-block  0
+call    0 never executed
+call    1 never executed
+        -:   98:           IMG_GetError());
+    #####:   99:    return false;
+        -:  100:  }
+    #####:  101:  mTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+    %%%%%:  101-block  0
+call    0 never executed
+    #####:  102:  if (mTexture == nullptr) {
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  103:    printf("Unable to create Texture %s! SDL Error: %s\n", path,
+    %%%%%:  103-block  0
+call    0 never executed
+call    1 never executed
+        -:  104:           SDL_GetError());
+    #####:  105:    return false;
+        -:  106:  }
+        -:  107:  // Main implementation
+    #####:  108:  textureWidth = loadedSurface->w;
+    #####:  109:  textureHeight = loadedSurface->h;
+        -:  110:  // Free the survface!!
+    #####:  111:  SDL_FreeSurface(loadedSurface);
+    %%%%%:  111-block  0
+call    0 never executed
+    #####:  112:  return true;
+        -:  113:}
+        -:  114:
+        -:  115:// PlayerInput
+function _ZN6Player28handlePlayerInputAndPositionEPKh called 0 returned 0% blocks executed 0%
+    #####:  116:void Player::handlePlayerInputAndPosition(const Uint8 *keyState) {
+    #####:  117:  const bool up = keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP],
+    %%%%%:  117-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    %%%%%:  117-block  1
+branch  2 never executed (fallthrough)
+branch  3 never executed
+    %%%%%:  117-block  2
+    %%%%%:  117-block  3
+    #####:  118:             down = keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN],
+    %%%%%:  118-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    %%%%%:  118-block  1
+branch  2 never executed (fallthrough)
+branch  3 never executed
+    %%%%%:  118-block  2
+    %%%%%:  118-block  3
+    #####:  119:             left = keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT],
+    %%%%%:  119-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    %%%%%:  119-block  1
+branch  2 never executed (fallthrough)
+branch  3 never executed
+    %%%%%:  119-block  2
+    %%%%%:  119-block  3
+    #####:  120:             right = keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT],
+    %%%%%:  120-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    %%%%%:  120-block  1
+branch  2 never executed (fallthrough)
+branch  3 never executed
+    %%%%%:  120-block  2
+    %%%%%:  120-block  3
+    #####:  121:             boost = keyState[SDL_SCANCODE_LSHIFT],
+    #####:  122:             isShooting = keyState[SDL_SCANCODE_SPACE];
+        -:  123:
+    #####:  124:  ACCELERATION = boost ? BOOST_ACCELERATION : BASE_ACCELERATION;
+    %%%%%:  124-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    %%%%%:  124-block  1
+    %%%%%:  124-block  2
+    #####:  125:  float CurrentMaxVelocity = boost ? MAX_VELOCITY * 1.5f : MAX_VELOCITY;
+    %%%%%:  125-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    %%%%%:  125-block  1
+    %%%%%:  125-block  2
+        -:  126:
+        -:  127:  // Movement handling
+    #####:  128:  if (right) {
+    %%%%%:  128-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  129:    velocityX = std::min(velocityX + ACCELERATION, CurrentMaxVelocity);
+    %%%%%:  129-block  0
+call    0 never executed
+    #####:  130:  } else if (left) {
+    %%%%%:  130-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  131:    velocityX = std::max(velocityX - ACCELERATION, -CurrentMaxVelocity);
+    %%%%%:  131-block  0
+call    0 never executed
+        -:  132:  } else {
+    #####:  133:    velocityX *= DECELERATION;
+    #####:  134:    if (abs(velocityX) < 0.3f) {
+    %%%%%:  134-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:  135:      velocityX = 0;
+    %%%%%:  135-block  0
+        -:  136:    }
+        -:  137:  }
+        -:  138:
+    #####:  139:  if (down) {
+    %%%%%:  139-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  140:    velocityY = std::min(velocityY + ACCELERATION, CurrentMaxVelocity);
+    %%%%%:  140-block  0
+call    0 never executed
+    #####:  141:  } else if (up) {
+    %%%%%:  141-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  142:    velocityY = std::max(velocityY - ACCELERATION, -CurrentMaxVelocity);
+    %%%%%:  142-block  0
+call    0 never executed
+        -:  143:  } else {
+    #####:  144:    velocityY *= DECELERATION;
+    #####:  145:    if (abs(velocityY) < 0.3f) {
+    %%%%%:  145-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed
+    #####:  146:      velocityY = 0;
+    %%%%%:  146-block  0
+        -:  147:    }
+        -:  148:  }
+        -:  149:
+    #####:  150:  if (isShooting) {
+    %%%%%:  150-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  151:    weapon.shoot();
+    %%%%%:  151-block  0
+call    0 never executed
+branch  1 never executed (fallthrough)
+branch  2 never executed (throw)
+        -:  152:  }
+        -:  153:
+    #####:  154:  float nextX = rectXf + velocityX;
+    #####:  155:  float nextY = rectYf + velocityY;
+    #####:  156:  handleBoundsAndUpdatePosition(nextX, nextY);
+    %%%%%:  156-block  0
+call    0 never executed
+    #####:  157:}
+        -:  158://
+        -:  159:// Not connected to handlePlayerInputAndPosition
+function _ZNK6Player11getPositionEv called 0 returned 0% blocks executed 0%
+    #####:  160:std::pair<int, int> Player::getPosition() const {
+    #####:  161:  return std::make_pair(rectX, rectY);
+    %%%%%:  161-block  0
+call    0 never executed
+        -:  162:}
+        -:  163:
+function _ZN6Player14checkCollisionERK8SDL_RectS2_ called 0 returned 0% blocks executed 0%
+    #####:  164:bool Player::checkCollision(const SDL_Rect &a, const SDL_Rect &b) {
+        -:  165:  // edges recA
+    #####:  166:  int leftA = a.x;
+    #####:  167:  int rightA = a.x + a.w;
+    #####:  168:  int topA = a.y;
+    #####:  169:  int bottomA = a.y + a.h;
+        -:  170:
+        -:  171:  // edges recB
+    #####:  172:  int leftB = b.x;
+    #####:  173:  int rightB = b.x + b.w;
+    #####:  174:  int topB = b.y;
+    #####:  175:  int bottomB = b.y + b.h;
+        -:  176:
+        -:  177:  // Check if any edges don't overlap
+    #####:  178:  if (bottomA <= topB)
+    %%%%%:  178-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  179:    return false;
+    %%%%%:  179-block  0
+    #####:  180:  if (topA >= bottomB)
+    %%%%%:  180-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  181:    return false;
+    %%%%%:  181-block  0
+    #####:  182:  if (rightA <= leftB)
+    %%%%%:  182-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  183:    return false;
+    %%%%%:  183-block  0
+    #####:  184:  if (leftA >= rightB)
+    %%%%%:  184-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  185:    return false;
+    %%%%%:  185-block  0
+        -:  186:
+        -:  187:  // If none of the above, they overlap
+    #####:  188:  return true;
+    %%%%%:  188-block  0
+        -:  189:}
+function _ZNK6Player9getWeaponEv called 0 returned 0% blocks executed 0%
+    #####:  190:const Weapon &Player::getWeapon() const { return weapon; }
+    %%%%%:  190-block  0
+function _ZN6Player9getWeaponEv called 0 returned 0% blocks executed 0%
+    #####:  191:Weapon &Player::getWeapon() { return weapon; }
+    %%%%%:  191-block  0
+function _ZN6Player7cleanupEv called 0 returned 0% blocks executed 0%
+    #####:  192:void Player::cleanup() {
+    #####:  193:  if (mTexture != nullptr) {
+    %%%%%:  193-block  0
+branch  0 never executed (fallthrough)
+branch  1 never executed
+    #####:  194:    SDL_DestroyTexture(mTexture);
+    %%%%%:  194-block  0
+call    0 never executed
+    #####:  195:    mTexture = nullptr;
+        -:  196:  }
+    #####:  197:}
+        -:  198:
+function _ZN6PlayerD2Ev called 0 returned 0% blocks executed 0%
+    #####:  199:Player::~Player() { cleanup(); };
+    %%%%%:  199-block  0
+call    0 never executed
+call    1 never executed
