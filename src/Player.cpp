@@ -2,33 +2,9 @@
 #include "SDL_render.h"
 #include "createwindow.hpp"
 #include <SDL.h>
-// Default constructor
-Player::Player()
-    : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
-      isMovingRight(false), shooting(false), ACCELERATION(BASE_ACCELERATION),
-      rectXf(100.0f), rectYf(100.0f), rectX(100), rectY(100), velocityX(0.0f),
-      velocityY(0.0f), rectWidth(50), rectHeight(50), boost(false),
-      mTexture(nullptr), textureWidth(0), textureHeight(0) {
-  playerRect = {getPosition().first, getPosition().second, getWidth(),
-                getHeight()};
-}
 
-// Position constructor
-Player::Player(int rectX,
-               int rectY) // Changed from float x,y to int rectX,rectY
-    : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
-      isMovingRight(false), shooting(false), boost(false),
-      rectXf(static_cast<float>(rectX)), rectYf(static_cast<float>(rectY)),
-      ACCELERATION(BASE_ACCELERATION), rectX(rectX), rectY(rectY),
-      velocityX(0.0f), velocityY(0.0f), mTexture(nullptr), textureWidth(0),
-      textureHeight(0) {
-  playerRect = {getPosition().first, getPosition().second, getWidth(),
-                getHeight()};
-}
-
-// Full constructor with dimensions
-Player::Player(int rectX, int rectY, int width,
-               int height) // Changed from float to int
+// Most complete constructor
+Player::Player(int rectX, int rectY, int width, int height)
     : isMovingUp(false), isMovingDown(false), isMovingLeft(false),
       isMovingRight(false), shooting(false), boost(false),
       rectXf(static_cast<float>(rectX)), rectYf(static_cast<float>(rectY)),
@@ -38,7 +14,11 @@ Player::Player(int rectX, int rectY, int width,
   playerRect = {getPosition().first, getPosition().second, getWidth(),
                 getHeight()};
 }
-// initializer list to ease this file lol
+// Position constructor - delegates to full constructor with default dimensions
+Player::Player(int rectX, int rectY) : Player(rectX, rectY, 50, 50) {}
+// Default constructor - delegates to position constructor with default position
+Player::Player() : Player(100, 100) {}
+
 void Player::renderPlayer(SDL_Renderer *renderer) {
   SDL_Rect rect = {rectX, rectY, rectWidth, rectHeight};
   if (mTexture != nullptr) {
@@ -48,7 +28,7 @@ void Player::renderPlayer(SDL_Renderer *renderer) {
     SDL_RenderFillRect(renderer, &rect);
   }
   // Render weapon // updates position
-  weapon.update((rectX - 2) + rectWidth / 2, rectY - 6);
+  weapon.update((rectX - 2) + static_cast<float>(rectWidth) / 2, rectY - 6);
   weapon.render(renderer);
 }
 
