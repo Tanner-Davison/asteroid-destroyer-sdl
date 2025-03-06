@@ -14,8 +14,13 @@
 #define CREATE_DIR(dir) mkdir(dir, 0777)
 #endif
 // Define constants
+#ifdef _WIN32
 const int SCREEN_WIDTH = 1900;
 const int SCREEN_HEIGHT = 1200;
+#else
+const int SCREEN_WIDTH = 1500;
+const int SCREEN_HEIGHT = 900;
+#endif
 
 // Define global variables
 SDL_Window *gWindow = NULL;

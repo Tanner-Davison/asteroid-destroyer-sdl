@@ -17,17 +17,17 @@ private:
   int rectY;
 
   // PLAYER SIZE
-  int rectWidth = 45;
-  int rectHeight = 45;
+  int rectWidth = 50;
+  int rectHeight = 50;
 
   // Physics properties
   float velocityX;
   float velocityY;
-  const float MAX_VELOCITY = 3.4f;       // Maximum velocity
-  const float BASE_ACCELERATION = .60f;  // BASE_ACCELERATION
+  const float MAX_VELOCITY = 5.4f;       // Maximum velocity
+  const float BASE_ACCELERATION = .70f;  // BASE_ACCELERATION
   const float BOOST_ACCELERATION = 3.5f; // BOOST_ACCELERATION
-  const float DECELERATION = .9930;      // DECELERATION
-  float ACCELERATION = .78f;
+  const float DECELERATION = .9830;      // DECELERATION
+  float ACCELERATION = .05f;
   // Textures
   SDL_Rect playerRect;
   SDL_Texture *mTexture;

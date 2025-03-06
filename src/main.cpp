@@ -3,9 +3,9 @@
 #include "SDL_render.h"
 #include "SDL_timer.h"
 #include "asteroid.hpp"
-#include <algorithm>
 #include "createwindow.hpp"
 #include "score.hpp"
+#include <algorithm>
 #include <optional>
 #include <vector>
 
@@ -197,7 +197,7 @@ int main(int argc, char *args[]) {
     }
 
     // RENDERING (HAPPENS EVERY FRAME)
-    SDL_SetRenderDrawColor(gRenderer, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(gRenderer, 10, 14, 33, 255);
     SDL_RenderClear(gRenderer);
 
     // RENDER GAME OBJECTS
