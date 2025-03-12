@@ -1,6 +1,6 @@
-^E:\SOURCE\REPOS\SDL-FIRST-GAME\BUILD\CMAKEFILES\408DA45FEC51AD87307A3953DB4633B6\GENERATE.STAMP.RULE
+^E:\SOURCE\REPOS\ASTEROID-DESTROYER-SDL\BUILD\CMAKEFILES\883787CEC46155C3EED422D97B2608BE\GENERATE.STAMP.RULE
 setlocal
-"C:\Program Files\CMake\bin\cmake.exe" -SE:/source/repos/sdl-first-game -BE:/source/repos/sdl-first-game/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file E:/source/repos/sdl-first-game/build/sdl-first-game.sln
+"C:\Program Files\CMake\bin\cmake.exe" -SE:/source/repos/asteroid-destroyer-sdl -BE:/source/repos/asteroid-destroyer-sdl/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file E:/source/repos/asteroid-destroyer-sdl/build/asteroid-destroyer-sdl.sln
 if %errorlevel% neq 0 goto :cmEnd
 :cmEnd
 endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone

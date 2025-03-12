@@ -2,13 +2,13 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
-      <FullPath>E:\source\repos\sdl-first-game\build\x64\Debug\ZERO_CHECK</FullPath>
+      <FullPath>E:\source\repos\asteroid-destroyer-sdl\build\x64\Debug\ZERO_CHECK</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>E:\source\repos\sdl-first-game\build\Debug\sdl-first-game.exe</FullPath>
+      <FullPath>E:\source\repos\asteroid-destroyer-sdl\build\Debug\asteroid-destroyer-sdl.exe</FullPath>
     </ProjectOutput>
     <ProjectOutput>
-      <FullPath>E:\source\repos\sdl-first-game\build\x64\Debug\ALL_BUILD</FullPath>
+      <FullPath>E:\source\repos\asteroid-destroyer-sdl\build\x64\Debug\ALL_BUILD</FullPath>
     </ProjectOutput>
   </ProjectOutputs>
   <ContentFiles />
