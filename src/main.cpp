@@ -207,8 +207,7 @@ int main(int argc, char* args[]) {
             }
 
             // REMOVE DESTROYED ASTROIDS IN REVERSE
-            for (unsigned long& it :
-                 std::ranges::reverse_view(asteroidsToRemove)) {
+            for (auto& it : std::ranges::reverse_view(asteroidsToRemove)) {
                 if (it < asteroids.size()) {
                     asteroids.erase(asteroids.begin() + it);
                 }
