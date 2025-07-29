@@ -1,6 +1,6 @@
 #pragma once
 #include "Player.hpp"
-#include "SDL_render.h"
+#include <SDL2/SDL_render.h>
 #include <memory>
 #include <vector>
 struct SDL_Renderer;

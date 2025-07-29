@@ -1,7 +1,7 @@
 #include "Player.hpp"
-#include "SDL_render.h"
+#include <SDL2/SDL_render.h>
 #include "createwindow.hpp"
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 // Most complete constructor
 Player::Player(int rectX, int rectY, int width, int height)

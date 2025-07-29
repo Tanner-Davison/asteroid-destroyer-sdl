@@ -1,10 +1,10 @@
 #include "asteroid.hpp"
-#include "SDL_image.h"
-#include "SDL_rect.h"
-#include "SDL_render.h"
-#include "SDL_surface.h"
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_rect.h>
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_surface.h>
 #include "createwindow.hpp"
-#include <SDL.h>
+#include <SDL2/SDL.h>
 #include <random>
 
 class Player;

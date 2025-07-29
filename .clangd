@@ -4,7 +4,7 @@ CompileFlags:
     - "-I${workspaceFolder}/include/SDL2"
     - "-I/usr/local/include"
     - "-I/opt/homebrew/include"
-    - "-std=c++17"
+    - "-std=c++23"
     - "-D__APPLE__"
 Index:
   Background: true
@@ -15,4 +15,4 @@ Diagnostics:
       - performance-*
     Remove:
       - modernize-use-trailing-return-type
-      # - readability-identifier-naming
+      - readability-identifier-naming

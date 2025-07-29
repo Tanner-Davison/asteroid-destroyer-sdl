@@ -1,8 +1,8 @@
 #define SDL_MAIN_HANDLED
 // SDL headers
 
-#include "SDL_render.h"
-#include "SDL_timer.h"
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_timer.h>
 
 // Game component headers
 #include "./Player.hpp"
@@ -16,6 +16,7 @@
 #include <optional>
 #include <string>
 #include <vector>
+
 std::vector<std::unique_ptr<Player>> createPlayers(int count) {
     int centerX = static_cast<int>(SCREEN_WIDTH / 2);
     int bottomY = static_cast<int>(SCREEN_HEIGHT - 100);
@@ -306,7 +307,7 @@ int main(int argc, char* args[]) {
         SDL_Texture* levelTexture =
             SDL_CreateTextureFromSurface(gRenderer, levelSurface);
         SDL_Rect levelRect = {10, 10, levelSurface->w, levelSurface->h};
-        SDL_RenderCopy(gRenderer, levelTexture, nullptr, &levelRect);
+        SDL_RenderCopy(gRenderer, levelTexture, NULL, &levelRect);
         SDL_FreeSurface(levelSurface);
         SDL_DestroyTexture(levelTexture);
 
