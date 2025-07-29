@@ -1,5 +1,5 @@
 # SDL2 Asteroid Destroyer - Development Guide
-
+please reach out to Tanner Davison / tanner.davison95@gmail.com for collaboration on this repo and to request changes to this guide.
 ## Table of Contents
 1. [Project Overview](#project-overview)
 2. [Architecture Design](#architecture-design)
