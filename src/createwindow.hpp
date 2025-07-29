@@ -10,13 +10,13 @@ extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
 //     Function Declarations
 bool init();                      // Starts Up SDL and creates window
-bool loadMedia(const char *path); // Loads Media
+bool loadMedia(const char* path); // Loads Media
 void close();                     // Frees Media and Shuts Down SDL
 // Global variables declared as extern;
-extern SDL_Window *gWindow;
-extern SDL_Surface *gScreenSurface;
-extern SDL_Surface *gHelloWorld;
-extern SDL_Renderer *gRenderer;
+extern SDL_Window* gWindow;
+extern SDL_Surface* gScreenSurface;
+extern SDL_Surface* gHelloWorld;
+extern SDL_Renderer* gRenderer;
 // static RNG members (random generated numbers)
 namespace GameRNG {
 extern std::random_device rd;
