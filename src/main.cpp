@@ -206,7 +206,6 @@ int main(int argc, char* args[]) {
             }
 
             // REMOVE DESTROYED ASTROIDS IN REVERSE
-            for (auto it = asteroidsToRemove.rbegin();
                  it != asteroidsToRemove.rend(); ++it) {
                 if (*it < asteroids.size()) {
                     asteroids.erase(asteroids.begin() + *it);
