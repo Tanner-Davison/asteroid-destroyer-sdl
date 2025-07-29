@@ -1,21 +1,20 @@
 #define SDL_MAIN_HANDLED
-// SDL headers
-
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_timer.h>
-
-// Game component headers
-#include "./Player.hpp"
-#include "asteroid.hpp"
-
-#include "createwindow.hpp"
-#include "score.hpp"
-#include <utility>
 // Standard library headers
 #include <algorithm>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
+
+// SDL headers
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_timer.h>
+
+// Game component headers
+#include "createwindow.hpp"
+#include "score.hpp"
+#include "./Player.hpp"
+#include "asteroid.hpp"
 
 std::vector<std::unique_ptr<Player>> createPlayers(int count) {
     int centerX = static_cast<int>(SCREEN_WIDTH / 2);

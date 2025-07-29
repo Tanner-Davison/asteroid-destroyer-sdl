@@ -1,5 +1,5 @@
 CompileFlags:
-  Add: 
+  Add:
     - "-I${workspaceFolder}/include"
     - "-I${workspaceFolder}/include/SDL2"
     - "-I/opt/homebrew/Cellar/sdl2/2.30.11/include/SDL2"
@@ -15,7 +15,7 @@ Index:
   Background: true
 Diagnostics:
   ClangTidy:
-    Add: 
+    Add:
       - modernize-*
       - performance-*
     Remove:
