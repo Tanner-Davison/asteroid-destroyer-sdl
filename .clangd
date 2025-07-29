@@ -5,7 +5,7 @@ CompileFlags:
     - "-I/opt/homebrew/Cellar/sdl2/2.30.11/include/SDL2"
     - "-I/usr/local/include"
     - "-I/opt/homebrew/include"
-    - "-std=gnu++2b"
+    - "-std=c++20"
     - "-D__APPLE__"
     - "-DSDL_MAIN_HANDLED"
     - "-framework Cocoa"

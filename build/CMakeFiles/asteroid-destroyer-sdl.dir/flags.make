@@ -6,7 +6,7 @@ CXX_DEFINES =
 
 CXX_INCLUDES = -I/opt/homebrew/Cellar/sdl2/2.30.11/include/SDL2 -I/Users/tanner.davison/Desktop/sdl-project/asteroid-destroyer-sdl/include -I/Users/tanner.davison/Desktop/sdl-project/asteroid-destroyer-sdl/include/SDL2 -I/Users/tanner.davison/Desktop/sdl-project/asteroid-destroyer-sdl/src
 
-CXX_FLAGSarm64 = -std=gnu++2b -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk
+CXX_FLAGSarm64 = -std=gnu++2b -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk
 
-CXX_FLAGS = -std=gnu++2b -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.2.sdk
+CXX_FLAGS = -std=gnu++2b -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.5.sdk
 
