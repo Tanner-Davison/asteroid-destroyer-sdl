@@ -2,10 +2,15 @@ CompileFlags:
   Add: 
     - "-I${workspaceFolder}/include"
     - "-I${workspaceFolder}/include/SDL2"
+    - "-I/opt/homebrew/Cellar/sdl2/2.30.11/include/SDL2"
     - "-I/usr/local/include"
     - "-I/opt/homebrew/include"
-    - "-std=c++23"
+    - "-std=gnu++2b"
     - "-D__APPLE__"
+    - "-DSDL_MAIN_HANDLED"
+    - "-framework Cocoa"
+    - "-framework IOKit"
+    - "-framework CoreVideo"
 Index:
   Background: true
 Diagnostics:
