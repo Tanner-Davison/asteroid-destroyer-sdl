@@ -1,4 +1,17 @@
+/*
+ * Copyright 2024 Tanner Davison
+ *
+ * This file is part of my Asteroid Destroyer SDL project.
+ */
+
+#ifndef SDL_MAIN_HANDLED
 #define SDL_MAIN_HANDLED
+#endif
+
+// SDL headers
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_timer.h>
+
 // Standard library headers
 #include <algorithm>
 #include <memory>
@@ -8,15 +21,11 @@
 #include <utility>
 #include <vector>
 
-// SDL headers
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_timer.h>
-
 // Game component headers
 #include "./Player.hpp"
-#include "asteroid.hpp"
-#include "createwindow.hpp"
-#include "score.hpp"
+#include "./asteroid.hpp"
+#include "./createwindow.hpp"
+#include "./score.hpp"
 
 std::vector<std::unique_ptr<Player>> createPlayers(int count) {
     int centerX = static_cast<int>(SCREEN_WIDTH / 2);
