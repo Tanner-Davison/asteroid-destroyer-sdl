@@ -2,6 +2,7 @@
 // Standard library headers
 #include <algorithm>
 #include <optional>
+#include <ranges>
 #include <string>
 #include <utility>
 #include <vector>
@@ -11,10 +12,10 @@
 #include <SDL2/SDL_timer.h>
 
 // Game component headers
-#include "createwindow.hpp"
-#include "score.hpp"
 #include "./Player.hpp"
 #include "asteroid.hpp"
+#include "createwindow.hpp"
+#include "score.hpp"
 
 std::vector<std::unique_ptr<Player>> createPlayers(int count) {
     int centerX = static_cast<int>(SCREEN_WIDTH / 2);
@@ -206,9 +207,10 @@ int main(int argc, char* args[]) {
             }
 
             // REMOVE DESTROYED ASTROIDS IN REVERSE
-                 it != asteroidsToRemove.rend(); ++it) {
-                if (*it < asteroids.size()) {
-                    asteroids.erase(asteroids.begin() + *it);
+            for (unsigned long& it :
+                 std::ranges::reverse_view(asteroidsToRemove)) {
+                if (it < asteroids.size()) {
+                    asteroids.erase(asteroids.begin() + it);
                 }
             }
 
