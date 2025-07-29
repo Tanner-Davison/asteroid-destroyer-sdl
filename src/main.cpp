@@ -1,6 +1,7 @@
 #define SDL_MAIN_HANDLED
 // Standard library headers
 #include <algorithm>
+#include <memory>
 #include <optional>
 #include <ranges>
 #include <string>
