@@ -4,6 +4,7 @@
 //
 #pragma once
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include <random>
 
 extern const int SCREEN_WIDTH;
@@ -17,6 +18,7 @@ extern SDL_Window* gWindow;
 extern SDL_Surface* gScreenSurface;
 extern SDL_Surface* gHelloWorld;
 extern SDL_Renderer* gRenderer;
+extern TTF_Font* font;
 // static RNG members (random generated numbers)
 namespace GameRNG {
 extern std::random_device rd;

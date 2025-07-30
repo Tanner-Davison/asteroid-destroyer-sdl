@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.15)
 project(asteroid-destroyer-sdl)
 
 # Set C++ standard and compile commands
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Source files
@@ -15,18 +15,11 @@ set(SOURCES
     src/score.cpp
 )
 
-if(WIN32)
-    #set(CMAKE_EXE_LINKER_FLAGS "/SUBSYSTEM:CONSOLE")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ")
-    # Windows-specific paths
-    set(SDL2_PATH ${CMAKE_CURRENT_SOURCE_DIR})
-    set(SDL2_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64)
-endif()
-
 # Create the executable from sources
 add_executable(${PROJECT_NAME} ${SOURCES})
+
 if(APPLE)
-    # Add Homebrew paths for M1 Mac
+    # Add Homebrew paths for Mac
     include_directories(/opt/homebrew/Cellar/sdl2/2.30.11/include/SDL2)
     link_directories(/opt/homebrew/Cellar/sdl2/2.30.11/lib)
     
@@ -45,8 +38,11 @@ if(APPLE)
         INSTALL_RPATH "/opt/homebrew/Cellar/sdl2/2.30.11/lib"
     )
 
-else()
+elseif(WIN32)
     # Windows-specific library finding
+    set(SDL2_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+    set(SDL2_LIB_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/x64)
+    
     find_library(SDL2_LIB SDL2 PATHS ${SDL2_LIB_PATH})
     find_library(SDL2_IMAGE_LIB SDL2_image PATHS ${SDL2_LIB_PATH})
     find_library(SDL2_TTF_LIB SDL2_ttf PATHS ${SDL2_LIB_PATH})
@@ -57,36 +53,8 @@ else()
         ${SDL2_IMAGE_LIB}
         ${SDL2_TTF_LIB}
     )
-endif()
-
-# Include directories for both platforms
-target_include_directories(${PROJECT_NAME} PRIVATE 
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/SDL2
-    ${CMAKE_CURRENT_SOURCE_DIR}/src
-)
-
-# Copy assets for both platforms
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_CURRENT_SOURCE_DIR}/assets/fonts/FiraCode-Regular.ttf"
-        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/FiraCode-Regular.ttf"
-)
-
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/spaceship.png"
-        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/spaceship.png"
-)
-
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_CURRENT_SOURCE_DIR}/src/asteroid.png"
-        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/asteroid.png"
-)
-
-# Copy DLLs only on Windows
-if(WIN32)
+    
+    # Copy DLLs for Windows
     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
             "${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2.dll"
@@ -104,4 +72,39 @@ if(WIN32)
             "${CMAKE_CURRENT_SOURCE_DIR}/bin/SDL2_image.dll"
             "$<TARGET_FILE_DIR:${PROJECT_NAME}>/SDL2_image.dll"
     )
+else()
+    # Linux/Unix systems - try to find SDL2 via pkg-config
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(SDL2 REQUIRED sdl2)
+    pkg_check_modules(SDL2_IMAGE REQUIRED SDL2_image)
+    pkg_check_modules(SDL2_TTF REQUIRED SDL2_ttf)
+    
+    target_include_directories(${PROJECT_NAME} PRIVATE ${SDL2_INCLUDE_DIRS} ${SDL2_IMAGE_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS})
+    target_link_libraries(${PROJECT_NAME} PRIVATE ${SDL2_LIBRARIES} ${SDL2_IMAGE_LIBRARIES} ${SDL2_TTF_LIBRARIES})
 endif()
+
+# Include directories for all platforms
+target_include_directories(${PROJECT_NAME} PRIVATE 
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/SDL2
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+)
+
+# Copy assets for all platforms
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_CURRENT_SOURCE_DIR}/assets/fonts/FiraCode-Regular.ttf"
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/FiraCode-Regular.ttf"
+)
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/spaceship.png"
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/spaceship.png"
+)
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        "${CMAKE_CURRENT_SOURCE_DIR}/src/asteroid.png"
+        "$<TARGET_FILE_DIR:${PROJECT_NAME}>/asteroid.png"
+)
