@@ -20,36 +20,12 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include <cstdio>
 
 // Game component headers
 #include "./Player.hpp"
 #include "./asteroid.hpp"
 #include "./createwindow.hpp"
 #include "./score.hpp"
-
-// Helper function to get asset path that works on both platforms
-std::string getAssetPath(const std::string& filename) {
-    // Try multiple possible paths
-    std::vector<std::string> possiblePaths = {
-        filename,                           // Current directory
-        "assets/fonts/" + filename,        // Assets subdirectory
-        "../assets/fonts/" + filename,     // Parent directory assets
-        "src/" + filename,                 // Src directory
-        "../src/" + filename               // Parent src directory
-    };
-    
-    for (const auto& path : possiblePaths) {
-        FILE* file = fopen(path.c_str(), "r");
-        if (file) {
-            fclose(file);
-            return path;
-        }
-    }
-    
-    // If none found, return the original filename
-    return filename;
-}
 
 std::vector<std::unique_ptr<Player>> createPlayers(int count) {
     int centerX = static_cast<int>(SCREEN_WIDTH / 2);
@@ -113,11 +89,10 @@ std::vector<Asteroid> spawnAsteroids(
     int count, const std::vector<std::unique_ptr<Player>>& players,
     SDL_Renderer* renderer) {
     std::vector<Asteroid> asteroids;
-    std::string asteroidPath = getAssetPath("asteroid.png");
     for (int i = 0; i < count; i++) {
         asteroids.emplace_back(players);
-        if (!asteroids.back().loadTexture(asteroidPath.c_str(), renderer)) {
-            printf("Failed to load asteroid texture from path: %s for asteroid %d\n", asteroidPath.c_str(), i);
+        if (!asteroids.back().loadTexture("asteroid.png", renderer)) {
+            printf("Failed to load asteroid texture for asteroid %d\n", i);
             // Handle error - maybe return empty vector or throw exception
         }
     }
@@ -146,11 +121,9 @@ int main(int argc, char* args[]) {
     }
 
     // Load font
-    std::string fontPath = getAssetPath("FiraCode-Regular.ttf");
-    font = TTF_OpenFont(fontPath.c_str(), 48);
+    font = TTF_OpenFont("FiraCode-Regular.ttf", 48);
     if (font == NULL) {
-        printf("Failed to load font from path: %s\n", fontPath.c_str());
-        printf("SDL_ttf Error: %s\n", TTF_GetError());
+        printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
         return 1;
     }
 
@@ -159,9 +132,8 @@ int main(int argc, char* args[]) {
     auto players = createPlayers(3);
 
     for (auto& player : players) {
-        std::string texturePath = getAssetPath("spaceship.png");
-        if (!player->loadTexture(texturePath.c_str(), gRenderer)) {
-            printf("Failed to load player texture from path: %s\n", texturePath.c_str());
+        if (!player->loadTexture("spaceship.png", gRenderer)) {
+            printf("Failed to load player texture\n");
             return 1;
         }
     }
@@ -290,11 +262,10 @@ int main(int argc, char* args[]) {
                         if (players.size() == 1) {
                             players.clear();
                             players = std::move(createPlayers(++deathCount));
-                            std::string respawnTexturePath = getAssetPath("spaceship.png");
                             for (auto& player : players) {
-                                if (!player->loadTexture(respawnTexturePath.c_str(),
+                                if (!player->loadTexture("spaceship.png",
                                                          gRenderer)) {
-                                    printf("Failed to load player texture from path: %s\n", respawnTexturePath.c_str());
+                                    printf("Failed to load player texture\n");
                                     return 1;
                                 }
                             }
@@ -345,7 +316,7 @@ int main(int argc, char* args[]) {
         SDL_Texture* levelTexture =
             SDL_CreateTextureFromSurface(gRenderer, levelSurface);
         SDL_Rect levelRect = {10, 10, levelSurface->w, levelSurface->h};
-        SDL_RenderCopy(gRenderer, levelTexture, NULL, &levelRect);
+        SDL_RenderCopy(gRenderer, levelTexture, nullptr, &levelRect);
         SDL_FreeSurface(levelSurface);
         SDL_DestroyTexture(levelTexture);
 

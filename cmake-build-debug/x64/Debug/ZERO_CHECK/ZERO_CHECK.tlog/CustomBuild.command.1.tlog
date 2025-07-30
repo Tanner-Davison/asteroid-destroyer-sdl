@@ -1,0 +1,10 @@
+^E:\SOURCE\REPOS\ASTEROID-DESTROYER-SDL\CMAKE-BUILD-DEBUG\CMAKEFILES\1D9C76B8010640F535CE6A6887BDC0DC\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SE:/source/repos/asteroid-destroyer-sdl -BE:/source/repos/asteroid-destroyer-sdl/cmake-build-debug --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file E:/source/repos/asteroid-destroyer-sdl/cmake-build-debug/asteroid-destroyer-sdl.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

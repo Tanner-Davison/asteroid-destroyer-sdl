@@ -14,9 +14,14 @@
 #define CREATE_DIR(dir) mkdir(dir, 0777)
 #endif
 
-// Define constants - use same values for both platforms
+// Define constants
+#ifdef _WIN32
+const int SCREEN_WIDTH = 1900;
+const int SCREEN_HEIGHT = 1200;
+#else
 const int SCREEN_WIDTH = 1500;
 const int SCREEN_HEIGHT = 900;
+#endif
 
 // Define global variables
 SDL_Window* gWindow = NULL;
@@ -35,7 +40,17 @@ bool init() {
         printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
         success = false;
     }
-    
+    // initializer for Fonts
+    if (TTF_Init() == -1) {
+        printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+        success = false;
+    }
+    // initializer for TTF_OpenFont
+    font = TTF_OpenFont("FiraCode-Regular.ttf", 24);
+    if (!font) {
+        printf("Failed to Load font! SDL_ttf Error: %s\n", TTF_GetError());
+        success = false; // You probably want to set success to false here
+    }
     // Initialize SDL_image
     int imgFlags = IMG_INIT_PNG;
     if (!(IMG_Init(imgFlags) & imgFlags)) {
@@ -89,6 +104,9 @@ void close() {
     // Destroy Renderer
     SDL_DestroyRenderer(gRenderer);
     gRenderer = NULL;
+    // TTF (font Cleanup)
+    TTF_CloseFont(font);
+    TTF_Quit();
     
     /*
      Destroy Window-

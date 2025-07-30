@@ -25,11 +25,20 @@ private:
     // Physics properties
     float velocityX;
     float velocityY;
+#ifdef _WIN32
+    const float MAX_VELOCITY = 5.4f;       // Maximum velocity
+    const float BASE_ACCELERATION = .70f;  // BASE_ACCELERATION
+    const float BOOST_ACCELERATION = 3.5f; // BOOST_ACCELERATION
+    const float DECELERATION = .9830;      // DECELERATION
+    float ACCELERATION = .05f;
+#else
     const float MAX_VELOCITY = 3.4f;       // Maximum velocity
     const float BASE_ACCELERATION = .40f;  // BASE_ACCELERATION
     const float BOOST_ACCELERATION = 3.5f; // BOOST_ACCELERATION
     const float DECELERATION = .9730;      // DECELERATION
     float ACCELERATION = .05f;
+
+#endif
     // Textures
     SDL_Rect playerRect;
     SDL_Texture* mTexture;
