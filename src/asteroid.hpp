@@ -1,6 +1,5 @@
 #pragma once
 #include "Player.hpp"
-#include "createwindow.hpp"
 #include <SDL2/SDL_render.h>
 #include <memory>
 #include <vector>
@@ -25,9 +24,9 @@ private:
     double rotationSpeed;
     float velocityX;
     float velocityY;
-    const float MAX_VELOCITY = 3.1f; // Fixed maximum velocity
-    const float ACCELERATION = .55f; // Fixed acceleration rate
-    const float DECELERATION = .992; // Consistent deceleration
+    const float MAX_VELOCITY = 3.1f;  // Fixed maximum velocity
+    const float ACCELERATION = .55f;  // Fixed acceleration rate
+    const float DECELERATION = .992;  // Consistent deceleration
     bool destroyed = false;
 
 public:

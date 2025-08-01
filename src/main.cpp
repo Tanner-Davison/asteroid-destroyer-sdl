@@ -6,6 +6,7 @@
 
 #ifndef SDL_MAIN_HANDLED
 #define SDL_MAIN_HANDLED
+#include <unordered_set>
 #endif
 
 // SDL headers
@@ -16,7 +17,9 @@
 #include <algorithm>
 #include <memory>
 #include <optional>
+#include <print>
 #include <ranges>
+#include <set>
 #include <string>
 #include <utility>
 #include <vector>
@@ -26,32 +29,6 @@
 #include "./asteroid.hpp"
 #include "./createwindow.hpp"
 #include "./score.hpp"
-
-std::vector<std::unique_ptr<Player>> createPlayers(int count) {
-    int centerX = static_cast<int>(SCREEN_WIDTH / 2);
-    int bottomY = static_cast<int>(SCREEN_HEIGHT - 100);
-    const int PLAYER_SPACING = 70;
-    const int VERTICAL_OFFSET = 50;
-    std::vector<std::unique_ptr<Player>> players;
-    if (count <= 0) {
-        return players;
-    }
-    if (count == 1) {
-        // Center on Single
-        players.push_back(std::make_unique<Player>(centerX, bottomY));
-    } else {
-        // V formation logic
-        int middleIndex = count / 2;
-        for (int i = 0; i < count; ++i) {
-            int offsetX = (i - middleIndex) * PLAYER_SPACING;
-            int offsetY = std::abs(i - middleIndex) * VERTICAL_OFFSET;
-            players.push_back(
-                std::make_unique<Player>(centerX + offsetX, bottomY - offsetY));
-        }
-    }
-
-    return players;
-}
 
 // Function to display level text
 void displayLevelText(SDL_Renderer* renderer, int level) {
@@ -92,7 +69,7 @@ std::vector<Asteroid> spawnAsteroids(
     for (int i = 0; i < count; i++) {
         asteroids.emplace_back(players);
         if (!asteroids.back().loadTexture("asteroid.png", renderer)) {
-            printf("Failed to load asteroid texture for asteroid %d\n", i);
+            std::println("Failed to load asteroid texture for asteroid {}", i);
             // Handle error - maybe return empty vector or throw exception
         }
     }
@@ -101,39 +78,43 @@ std::vector<Asteroid> spawnAsteroids(
 
 int main(int argc, char* args[]) {
     if (!init()) {
-        printf("Failed to initialize!\n");
+        std::println("Failed to initialize!");
         return 1;
     }
 
     int imgFlags = IMG_INIT_PNG;
 
     if (!(IMG_Init(imgFlags) & imgFlags)) {
-        printf("SDL_image could not initialize! SDL_image Error: %s\n",
-               IMG_GetError());
+        std::println("SDL_image could not initialize! SDL_image Error: {}",
+                     IMG_GetError());
         return 1;
     }
 
     // Initialize TTF
     if (TTF_Init() == -1) {
-        printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n",
-               TTF_GetError());
+        std::println("SDL_ttf could not initialize! SDL_ttf Error: {}",
+                     TTF_GetError());
         return 1;
     }
 
     // Load font
     font = TTF_OpenFont("FiraCode-Regular.ttf", 48);
-    if (font == NULL) {
-        printf("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError());
+    if (font == nullptr) {
+        std::println("Failed to load font! SDL_ttf Error: {}", TTF_GetError());
+        std::println(
+            "Current working directory might not contain the font file.");
         return 1;
     }
 
     int deathCount = 3;
     Score scoreDisplay;
-    auto players = createPlayers(3);
+    auto players = Player::createPlayers(3);
 
     for (auto& player : players) {
         if (!player->loadTexture("spaceship.png", gRenderer)) {
-            printf("Failed to load player texture\n");
+            std::println(
+                "Failed to load player texture. Make sure spaceship.png is in "
+                "the executable directory.");
             return 1;
         }
     }
@@ -191,38 +172,32 @@ int main(int argc, char* args[]) {
 
                 bool asteroidHit = false;
                 // BULLET <----> ASTEROID DETECTION
-                for (auto& player : players) {
-                    auto bulletIndex =
-                        player->getWeapon().checkBulletCollision(asteroidRect);
-                    if (bulletIndex.has_value()) {
-                        printf("Bullet %zu hit asteroid at position: %d, %d\n",
-                               bulletIndex.value(), asteroid.getRectX(),
-                               asteroid.getRectY());
-                        player->getWeapon().destroyBullet(bulletIndex.value());
-                        asteroid.destroy();
-                        scoreDisplay.setScore(100);
-                        asteroidHit = true;
-                        break;
+                for (auto it = asteroids.begin(); it != asteroids.end();) {
+                    SDL_Rect asteroidRect = {it->getRectX(), it->getRectY(),
+                                             it->getRectWidth(),
+                                             it->getRectHeight()};
+
+                    bool asteroidHit = false;
+                    for (auto& player : players) {
+                        auto bulletIndex =
+                            player->getWeapon().checkBulletCollision(
+                                asteroidRect);
+                        if (bulletIndex.has_value()) {
+                            player->getWeapon().destroyBullet(
+                                bulletIndex.value());
+                            scoreDisplay.setScore(100);
+                            it = asteroids.erase(
+                                it);  // Remove and get next iterator
+                            asteroidHit = true;
+                            break;
+                        }
+                    }
+
+                    if (!asteroidHit) {
+                        ++it;
                     }
                 }
-                if (asteroidHit)
-                    continue;
             }
-
-            // MARK DESTROYED ASTEROIDS
-            for (size_t i = 0; i < asteroids.size(); i++) {
-                if (asteroids[i].isDestroyed()) {
-                    asteroidsToRemove.push_back(i);
-                }
-            }
-
-            // REMOVE DESTROYED ASTROIDS IN REVERSE
-            for (auto& it : std::ranges::reverse_view(asteroidsToRemove)) {
-                if (it < asteroids.size()) {
-                    asteroids.erase(asteroids.begin() + it);
-                }
-            }
-
             // Check if all asteroids are destroyed - advance to next level
             if (asteroids.empty()) {
                 currentLevel++;
@@ -261,7 +236,8 @@ int main(int argc, char* args[]) {
                         // respawnj
                         if (players.size() == 1) {
                             players.clear();
-                            players = std::move(createPlayers(++deathCount));
+                            players =
+                                std::move(Player::createPlayers(++deathCount));
                             for (auto& player : players) {
                                 if (!player->loadTexture("spaceship.png",
                                                          gRenderer)) {
@@ -278,16 +254,11 @@ int main(int argc, char* args[]) {
             }
 
             // REMOVE DESTROYED PLAYERS
-            players.erase(
-                std::remove_if(
-                    players.begin(), players.end(),
-                    [&playersToRemove](const std::unique_ptr<Player>& player) {
-                        return std::find(playersToRemove.begin(),
-                                         playersToRemove.end(),
-                                         player.get()) != playersToRemove.end();
-                    }),
-                players.end());
-
+            std::erase_if(players, [&playersToRemove](
+                                       const std::unique_ptr<Player>& player) {
+                return std::find(playersToRemove.begin(), playersToRemove.end(),
+                                 player.get()) != playersToRemove.end();
+            });
             // UPDATE ASTEROID POSITIONS
             for (auto& asteroid : asteroids) {
                 asteroid.update();

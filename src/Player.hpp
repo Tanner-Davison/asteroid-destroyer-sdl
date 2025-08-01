@@ -1,9 +1,9 @@
 #pragma once
-#include <SDL2/SDL_rect.h>
 #include "weapon.hpp"
+#include <SDL2/SDL_rect.h>
 
 #include <SDL2/SDL_image.h>
-
+#include <memory>
 #include <utility>
 
 struct SDL_Renderer;
@@ -26,16 +26,16 @@ private:
     float velocityX;
     float velocityY;
 #ifdef _WIN32
-    const float MAX_VELOCITY = 5.4f;       // Maximum velocity
-    const float BASE_ACCELERATION = .70f;  // BASE_ACCELERATION
-    const float BOOST_ACCELERATION = 3.5f; // BOOST_ACCELERATION
-    const float DECELERATION = .9830;      // DECELERATION
+    const float MAX_VELOCITY = 5.4f;        // Maximum velocity
+    const float BASE_ACCELERATION = .70f;   // BASE_ACCELERATION
+    const float BOOST_ACCELERATION = 3.5f;  // BOOST_ACCELERATION
+    const float DECELERATION = .9830;       // DECELERATION
     float ACCELERATION = .05f;
 #else
-    const float MAX_VELOCITY = 3.4f;       // Maximum velocity
-    const float BASE_ACCELERATION = .40f;  // BASE_ACCELERATION
-    const float BOOST_ACCELERATION = 3.5f; // BOOST_ACCELERATION
-    const float DECELERATION = .9730;      // DECELERATION
+    const float MAX_VELOCITY = 3.4f;        // Maximum velocity
+    const float BASE_ACCELERATION = .40f;   // BASE_ACCELERATION
+    const float BOOST_ACCELERATION = 3.5f;  // BOOST_ACCELERATION
+    const float DECELERATION = .9730;       // DECELERATION
     float ACCELERATION = .05f;
 
 #endif
@@ -65,9 +65,10 @@ public:
     void handlePlayerInputAndPosition(const Uint8* keyState);
     void handleBoundsAndUpdatePosition(float nextX, float nextY);
     bool loadTexture(const char* path, SDL_Renderer* renderer);
-    void cleanup(); // Texture
+    void cleanup();  // Texture
     bool checkCollision(const SDL_Rect& a, const SDL_Rect& b);
 
+    static std::vector<std::unique_ptr<Player>> createPlayers(int count);
     const Weapon& getWeapon() const;
     Weapon& getWeapon();
     std::pair<int, int> getPosition() const;

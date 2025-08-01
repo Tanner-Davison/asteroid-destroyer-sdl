@@ -1,7 +1,7 @@
 #include "Player.hpp"
-#include <SDL2/SDL_render.h>
 #include "createwindow.hpp"
 #include <SDL2/SDL.h>
+#include <SDL2/SDL_render.h>
 
 // Most complete constructor
 Player::Player(int rectX, int rectY, int width, int height)
@@ -23,7 +23,8 @@ Player::Player(int rectX, int rectY, int width, int height)
       mTexture(nullptr),
       textureWidth(0),
       textureHeight(0) {
-    playerRect = {getPosition().first, getPosition().second, getWidth(), getHeight()};
+    playerRect = {getPosition().first, getPosition().second, getWidth(),
+                  getHeight()};
 }
 // Position constructor - delegates to full constructor with default dimensions
 Player::Player(int rectX, int rectY) : Player(rectX, rectY, 50, 50) {}
@@ -44,7 +45,9 @@ void Player::renderPlayer(SDL_Renderer* renderer) {
 }
 
 void Player::handleBoundsAndUpdatePosition(float nextX, float nextY) {
-    const bool hitLeftWall = nextX <= 0, hitRightWall = nextX >= SCREEN_WIDTH - rectWidth, hitTopWall = nextY <= 0,
+    const bool hitLeftWall = nextX <= 0,
+               hitRightWall = nextX >= SCREEN_WIDTH - rectWidth,
+               hitTopWall = nextY <= 0,
                hitBottomWall = nextY >= SCREEN_HEIGHT - rectHeight;
 
     if (hitLeftWall) {
@@ -83,12 +86,14 @@ bool Player::loadTexture(const char* path, SDL_Renderer* renderer) {
     // Load Image
     SDL_Surface* loadedSurface = IMG_Load(path);
     if (loadedSurface == nullptr) {
-        printf("Unable to laod image %s! SDL_image Error: %s\n", path, IMG_GetError());
+        printf("Unable to laod image %s! SDL_image Error: %s\n", path,
+               IMG_GetError());
         return false;
     }
     mTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
     if (mTexture == nullptr) {
-        printf("Unable to create Texture %s! SDL Error: %s\n", path, SDL_GetError());
+        printf("Unable to create Texture %s! SDL Error: %s\n", path,
+               SDL_GetError());
         return false;
     }
     // Main implementation
@@ -104,7 +109,8 @@ void Player::handlePlayerInputAndPosition(const Uint8* keyState) {
     const bool up = keyState[SDL_SCANCODE_W] || keyState[SDL_SCANCODE_UP],
                down = keyState[SDL_SCANCODE_S] || keyState[SDL_SCANCODE_DOWN],
                left = keyState[SDL_SCANCODE_A] || keyState[SDL_SCANCODE_LEFT],
-               right = keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT], boost = keyState[SDL_SCANCODE_LSHIFT],
+               right = keyState[SDL_SCANCODE_D] || keyState[SDL_SCANCODE_RIGHT],
+               boost = keyState[SDL_SCANCODE_LSHIFT],
                isShooting = keyState[SDL_SCANCODE_SPACE];
 
     ACCELERATION = boost ? BOOST_ACCELERATION : BASE_ACCELERATION;
@@ -185,7 +191,31 @@ void Player::cleanup() {
         mTexture = nullptr;
     }
 }
+std::vector<std::unique_ptr<Player>> Player::createPlayers(int count) {
+    int centerX = static_cast<int>(SCREEN_WIDTH / 2);
+    int bottomY = static_cast<int>(SCREEN_HEIGHT - 100);
+    const int PLAYER_SPACING = 70;
+    const int VERTICAL_OFFSET = 50;
+    std::vector<std::unique_ptr<Player>> players;
+    if (count <= 0) {
+        return players;
+    }
+    if (count == 1) {
+        // Center on Single
+        players.push_back(std::make_unique<Player>(centerX, bottomY));
+    } else {
+        // V formation logic
+        int middleIndex = count / 2;
+        for (int i = 0; i < count; ++i) {
+            int offsetX = (i - middleIndex) * PLAYER_SPACING;
+            int offsetY = std::abs(i - middleIndex) * VERTICAL_OFFSET;
+            players.emplace_back(
+                std::make_unique<Player>(centerX + offsetX, bottomY - offsetY));
+        }
+    }
 
+    return players;
+}
 Player::~Player() {
     cleanup();
 };
