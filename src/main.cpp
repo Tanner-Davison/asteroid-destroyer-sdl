@@ -1,7 +1,6 @@
 /*
- * Copyright 2024 Tanner Davison
- *
- * Asteroid Destroyer — SDL3
+ * Copyright © 2023 Tanner Davison
+ * SDL3_GAME: Asteroid Destroyer
  */
 
 #include <SDL3/SDL.h>
