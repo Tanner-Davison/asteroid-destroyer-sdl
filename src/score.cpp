@@ -1,18 +1,13 @@
 #include "score.hpp"
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_ttf.h>
 
 Score::Score()
-    : score(0),
-      textWidth(0),
-      textHeight(0),
-      x(50),
-      y(50) // Position wherever you want it
-{
+    : score(0), textWidth(0), textHeight(0), x(50), y(50) {
     messageToRender = "Score: 0";
 }
 
-Score::~Score() {
-    // No need to cleanup string
-}
+Score::~Score() {}
 
 void Score::setScore(int newScore) {
     score += newScore;
@@ -20,32 +15,30 @@ void Score::setScore(int newScore) {
 }
 
 void Score::renderScore(SDL_Renderer* renderer) {
-    SDL_Color textColor = {255, 255, 255, 255}; // White text
+    SDL_Color textColor = {255, 255, 255, 255};
 
-    // Create surface
-    SDL_Surface* textSurface = TTF_RenderText_Solid(font, messageToRender.c_str(), textColor);
-    if (textSurface == nullptr) {
-        printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+    SDL_Surface* textSurface = TTF_RenderText_Solid(font, messageToRender.c_str(), 0, textColor);
+    if (!textSurface) {
+        printf("Unable to render text surface! SDL_ttf Error: %s\n", SDL_GetError());
         return;
     }
-    // Create texture from surface
+
     SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-    if (textTexture == nullptr) {
-        printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
-        SDL_FreeSurface(textSurface);
+    if (!textTexture) {
+        printf("Unable to create texture from text! SDL Error: %s\n", SDL_GetError());
+        SDL_DestroySurface(textSurface);
         return;
     }
 
     textWidth = textSurface->w;
     textHeight = textSurface->h;
+    SDL_DestroySurface(textSurface);
 
-    // Setup rendering Rect
-    SDL_Rect renderQuad = {x, y, textWidth, textHeight};
+    SDL_FRect renderQuad = {
+        static_cast<float>(x), static_cast<float>(y),
+        static_cast<float>(textWidth), static_cast<float>(textHeight)
+    };
 
-    // Render
-    SDL_RenderCopy(renderer, textTexture, NULL, &renderQuad);
-
-    // Clean up
-    SDL_FreeSurface(textSurface);
+    SDL_RenderTexture(renderer, textTexture, nullptr, &renderQuad);
     SDL_DestroyTexture(textTexture);
 }

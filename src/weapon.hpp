@@ -1,10 +1,10 @@
 #pragma once
-#include <SDL2/SDL_rect.h>
-#include <SDL2/SDL_stdinc.h>
+#include <SDL3/SDL.h>
 #include <algorithm>
 #include <math.h>
 #include <optional>
 #include <vector>
+
 struct SDL_Renderer;
 
 class Bullet {
@@ -22,7 +22,7 @@ public:
     void render(SDL_Renderer* renderer);
     bool isOffScreen() const;
     bool isActive() const;
-    SDL_Rect getHitBox() const;
+    SDL_FRect getHitBox() const;
     void deactivate();
 };
 
@@ -31,7 +31,7 @@ class Weapon {
     float x;
     float y;
     float cooldown;
-    Uint32 lastShotTime;
+    Uint64 lastShotTime;
     float bulletSpeed;
     float angle;
 
@@ -39,11 +39,9 @@ public:
     Weapon();
     void update(float playerX, float playerY);
     void render(SDL_Renderer* renderer);
-    const std::vector<Bullet>& getBullets() const {
-        return bullets;
-    };
+    const std::vector<Bullet>& getBullets() const { return bullets; }
     void shoot();
     bool canShoot();
     void destroyBullet(size_t index);
-    std::optional<size_t> checkBulletCollision(const SDL_Rect& target);
+    std::optional<size_t> checkBulletCollision(const SDL_FRect& target);
 };

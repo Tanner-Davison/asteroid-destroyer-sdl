@@ -1,7 +1,7 @@
 #pragma once
 #include "createwindow.hpp"
-#include <SDL2/SDL_ttf.h>
-#include <string> // Add this for string handling
+#include <SDL3/SDL_ttf.h>
+#include <string>
 
 extern TTF_Font* font;
 
@@ -19,7 +19,5 @@ public:
     ~Score();
     void renderScore(SDL_Renderer* renderer);
     void setScore(int newScore);
-    int getScore() const {
-        return score;
-    }
+    int getScore() const { return score; }
 };
