@@ -13,7 +13,7 @@
 
 ## About
 
-Asteroid Destroyer is my first C++ game project — a multi-player space shooter with physics-based movement, a bullet weapon system, level progression, and a live score display. Built entirely with SDL3, CMake, and vcpkg with no bundled libraries.
+Asteroid Destroyer is my first C++ game project: a multi-player space shooter with physics-based movement, a bullet weapon system, level progression, and a live score display. Built entirely with SDL3, CMake, and vcpkg with no bundled libraries.
 
 **Features**
 - Multi-player V-formation spawn
