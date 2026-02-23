@@ -34,6 +34,27 @@ Asteroid Destroyer is my first C++ game project — a multi-player space shooter
 | vcpkg | latest |
 | GCC / Clang / MSVC | C++23 support |
 
+### Environment Setup
+
+Before cloning, make sure your system has a C++23 compiler and CMake installed.
+
+**macOS**
+```bash
+xcode-select --install
+brew install cmake
+```
+
+**Linux**
+```bash
+sudo apt install build-essential cmake git
+```
+
+**Windows**
+
+Install [Visual Studio 2022](https://visualstudio.microsoft.com/) with the **Desktop development with C++** workload. This includes MSVC, CMake, and the Windows SDK.
+
+---
+
 ### Install vcpkg
 
 ```bash
