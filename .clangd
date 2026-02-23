@@ -1,14 +1,9 @@
 CompileFlags:
-  Add: 
-    - "-I${workspaceFolder}/include"
-    - "-I${workspaceFolder}/include/SDL2"
-    - "-std=c++23"
-    - "-DSDL_MAIN_HANDLED"
-    - "-DWIN32"
-    - "-D_WINDOWS"
-    - "-DWIN32_LEAN_AND_MEAN"
+  CompilationDatabase: build/
+
 Index:
   Background: true
+
 Diagnostics:
   ClangTidy:
     Add:
@@ -16,4 +11,4 @@ Diagnostics:
       - performance-*
     Remove:
       - modernize-use-trailing-return-type
-      - readability-identifier-naming 
+      - readability-identifier-naming
