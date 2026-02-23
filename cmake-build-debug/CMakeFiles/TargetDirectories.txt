@@ -1,3 +1,0 @@
-E:/source/repos/asteroid-destroyer-sdl/cmake-build-debug/CMakeFiles/asteroid-destroyer-sdl.dir
-E:/source/repos/asteroid-destroyer-sdl/cmake-build-debug/CMakeFiles/ALL_BUILD.dir
-E:/source/repos/asteroid-destroyer-sdl/cmake-build-debug/CMakeFiles/ZERO_CHECK.dir

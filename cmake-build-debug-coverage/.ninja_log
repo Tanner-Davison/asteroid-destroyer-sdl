@@ -1,8 +1,0 @@
-# ninja log v6
-8	1094	7607558109584127	CMakeFiles/sdl-first-game.dir/src/createwindow.cpp.obj	859d46c60e773c23
-30	1157	7607558109799145	CMakeFiles/sdl-first-game.dir/src/score.cpp.obj	86679bfd30cc5ddb
-14	1170	7607558109644123	CMakeFiles/sdl-first-game.dir/src/Player.cpp.obj	c21cfba8a18b16b7
-19	1274	7607558109699139	CMakeFiles/sdl-first-game.dir/src/weapon.cpp.obj	a13c233ebb0b5a18
-24	1337	7607558109744125	CMakeFiles/sdl-first-game.dir/src/asteroid.cpp.obj	8902768d0fcf7896
-3	1599	7607558109529127	CMakeFiles/sdl-first-game.dir/src/main.cpp.obj	feae5c2de8be84e9
-1599	1890	7607558125494114	sdl-first-game.exe	907f3589261788f
