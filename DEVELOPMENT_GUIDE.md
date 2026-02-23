@@ -1,6 +1,9 @@
-# SDL2 Asteroid Destroyer - Development Guide
-please reach out to Tanner Davison / tanner.davison95@gmail.com for collaboration on this repo and to request changes to this guide.
+# Asteroid Destroyer - Development Guide
+
+For questions or collaboration reach out to Tanner Davison at tanner.davison95@gmail.com.
+
 ## Table of Contents
+
 1. [Project Overview](#project-overview)
 2. [Architecture Design](#architecture-design)
 3. [Setup Instructions](#setup-instructions)
@@ -9,583 +12,355 @@ please reach out to Tanner Davison / tanner.davison95@gmail.com for collaboratio
 6. [Game Systems](#game-systems)
 7. [Best Practices](#best-practices)
 8. [Troubleshooting](#troubleshooting)
-9. [Cross-Platform Considerations](#cross-platform-considerations)
+
+---
 
 ## Project Overview
 
-The Asteroid Destroyer is a 2D space shooter game built with SDL2, featuring:
-- **Multi-player support** with V-formation positioning
-- **Physics-based movement** with acceleration and deceleration
-- **Weapon system** with bullet collision detection
-- **Level progression** with increasing asteroid counts
-- **Score system** with visual display
-- **Cross-platform compatibility** (Windows & macOS)
+Asteroid Destroyer is a 2D space shooter built with SDL3. Features include multi-player V-formation, physics-based movement, a bullet weapon system, level progression, and a live score display.
 
-### Key Features
-- **Fixed timestep physics** (120 FPS simulation, 120 FPS rendering)
-- **Smooth player movement** with velocity-based physics
-- **Collision detection** between bullets, asteroids, and players
-- **Texture loading** and rendering system
-- **Font rendering** with TTF support
+**Stack:** C++23 · SDL3 · SDL3_image · SDL3_ttf · CMake · vcpkg
+
+---
 
 ## Architecture Design
 
 ### Core Design Principles
 
-1. **Separation of Concerns**: Each class handles a specific game component
-2. **Component-Based Architecture**: Game objects are composed of multiple systems
-3. **Fixed Timestep**: Physics updates at 120 FPS regardless of frame rate
-4. **Resource Management**: Proper cleanup of SDL resources
+- **Separation of Concerns** — each class owns a single game component
+- **Fixed Timestep** — physics runs at 120Hz independent of frame rate
+- **RAII** — SDL resources are cleaned up in destructors, no manual free calls scattered around
 
 ### Class Hierarchy
 
 ```
-Game Engine
-├── Window Management (createwindow.cpp/hpp)
-├── Player System (Player.cpp/hpp)
-│   └── Weapon System (weapon.cpp/hpp)
-├── Asteroid System (asteroid.cpp/hpp)
-├── Score System (score.cpp/hpp)
-└── Main Game Loop (main.cpp)
+Game
+├── createwindow.cpp/hpp   — SDL3 init, window, renderer, global RNG
+├── main.cpp               — game loop, collision orchestration
+├── Player.cpp/hpp         — movement, input, texture, collision
+│   └── weapon.cpp/hpp     — bullet pool, shoot cooldown
+├── asteroid.cpp/hpp       — spawn, physics, wrap-around, texture
+└── score.cpp/hpp          — score state, TTF rendering
 ```
 
 ### Data Flow
 
 ```
-Input → Player Movement → Physics Update → Collision Detection → Rendering
-  ↓           ↓              ↓                ↓              ↓
-Keyboard → Velocity → Position Update → Hit Detection → Screen Display
+Input → Player → Physics → Collision → Render
+  ↓        ↓        ↓          ↓          ↓
+Keyboard → Velocity → Position → Hit Test → Screen
 ```
+
+---
 
 ## Setup Instructions
 
 ### Prerequisites
 
-#### macOS
-```bash
-# Install SDL2 via Homebrew
-brew install sdl2 sdl2_image sdl2_ttf cmake
+| Tool               | Version       |
+| ------------------ | ------------- |
+| CMake              | 3.15+         |
+| vcpkg              | latest        |
+| GCC / Clang / MSVC | C++23 support |
 
-# Verify installation
-pkg-config --modversion sdl2
+### 1. Install vcpkg
+
+```bash
+git clone https://github.com/microsoft/vcpkg.git ~/vcpkg
+cd ~/vcpkg
+./bootstrap-vcpkg.sh   # macOS / Linux
+.\bootstrap-vcpkg.bat  # Windows
+```
+
+Add to your shell profile (`~/.zshrc`, `~/.bashrc`, or PowerShell `$PROFILE`):
+
+```bash
+export VCPKG_ROOT=~/vcpkg
+export CMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
+```
+
+### 2. Linux — install build dependencies
+
+```bash
+sudo apt install build-essential git cmake
+```
+
+### 3. macOS — install Xcode tools
+
+```bash
+xcode-select --install
+```
+
+### 4. Windows — install Visual Studio
+
+[Visual Studio 2022](https://visualstudio.microsoft.com/) with the **Desktop development with C++** workload.
+
+### Building
+
+vcpkg installs SDL3, SDL3_image, and SDL3_ttf automatically on first configure.
+
+#### macOS / Linux
+
+```bash
+mkdir build && cd build
+cmake .. -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
+make -j$(sysctl -n hw.logicalcpu)   # macOS
+make -j$(nproc)                     # Linux
 ```
 
 #### Windows
-1. Download SDL2 development libraries from [SDL2 Downloads](https://www.libsdl.org/download-2.0.php)
-2. Extract to project directories:
-   - `include/SDL2/` - Header files
-   - `lib/x64/` - Library files
-   - `bin/` - Runtime DLLs
+
+```powershell
+mkdir build && cd build
+cmake .. -G "Visual Studio 17 2022" -A x64
+cmake --build . --config Release
+```
+
+### Running
+
+Always run from inside the build directory so the binary can find its assets:
+
+```bash
+cd build
+./asteroid-destroyer        # macOS / Linux
+.\asteroid-destroyer.exe    # Windows
+```
 
 ### Project Structure
+
 ```
-asteroid-destroyer-sdl/
-├── src/                    # Source files
-│   ├── main.cpp           # Game loop and initialization
-│   ├── Player.cpp/hpp     # Player movement and rendering
-│   ├── weapon.cpp/hpp     # Bullet system
-│   ├── asteroid.cpp/hpp   # Asteroid physics and rendering
-│   ├── score.cpp/hpp      # Score display system
-│   ├── createwindow.cpp/hpp # SDL window management
-│   └── *.png              # Game assets
-├── include/SDL2/          # SDL2 headers
-├── lib/x64/              # Windows libraries
-├── bin/                  # Windows DLLs
-├── assets/fonts/         # Font files
-├── CMakeLists.txt        # Build configuration
-├── .clangd              # Language server config
-├── .clang-format        # Code formatting rules
-└── compile_commands.json # Compilation database
-```
-
-### Building the Project
-
-#### macOS
-```bash
-# Create build directory
-mkdir cmake-build-debug
-cd cmake-build-debug
-
-# Configure and build
-cmake ..
-make
-
-# Run the game
-./asteroid-destroyer-sdl
-```
-
-#### Windows
-```bash
-# Using Visual Studio
-cmake -S . -B build
-cmake --build build --config Release
-
-# Run the game
-.\build\Release\asteroid-destroyer-sdl.exe
-```
-
-## Development Environment
-
-### IDE Configuration
-
-#### Neovim Setup
-```lua
--- Required plugins
-require('lspconfig').clangd.setup({
-    cmd = { "clangd", "--background-index" },
-    filetypes = { "c", "cpp", "objc", "objcpp" },
-})
-
--- Format on save
-vim.api.nvim_create_autocmd("BufWritePre", {
-    pattern = { "*.cpp", "*.hpp", "*.c", "*.h" },
-    callback = function(args)
-        require("conform").format({ bufnr = args.buf })
-    end,
-})
-```
-
-#### Configuration Files
-
-**`.clangd`** - Language server configuration:
-```yaml
-CompileFlags:
-  Add: 
-    - "-I${workspaceFolder}/include"
-    - "-I${workspaceFolder}/include/SDL2"
-    - "-I/opt/homebrew/Cellar/sdl2/2.30.11/include/SDL2"
-    - "-std=c++20"
-    - "-D__APPLE__"
-    - "-DSDL_MAIN_HANDLED"
-```
-
-**`.clang-format`** - Code formatting rules:
-```yaml
-BasedOnStyle: LLVM
-IndentWidth: 4
-ColumnLimit: 80
-Standard: Cpp17
-```
-
-### Essential SDL2 Headers
-
-```cpp
-// Always include SDL_MAIN_HANDLED first
-#ifndef SDL_MAIN_HANDLED
-#define SDL_MAIN_HANDLED
-#endif
-
-// Core SDL2 headers
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_timer.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
-```
-
-## Code Organization
-
-### Header File Structure
-
-#### Standard Include Order
-```cpp
-// 1. SDL_MAIN_HANDLED definition
-#ifndef SDL_MAIN_HANDLED
-#define SDL_MAIN_HANDLED
-#endif
-
-// 2. Standard library headers
-#include <algorithm>
-#include <memory>
-#include <optional>
-#include <string>
-#include <utility>
-#include <vector>
-
-// 3. SDL2 headers
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_timer.h>
-
-// 4. Project headers
-#include "createwindow.hpp"
-#include "Player.hpp"
-#include "asteroid.hpp"
-#include "score.hpp"
-```
-
-### Class Design Patterns
-
-#### Resource Management
-```cpp
-class Player {
-private:
-    SDL_Texture* mTexture;  // Raw pointer for SDL resource
-    
-public:
-    ~Player() {
-        if (mTexture) {
-            SDL_DestroyTexture(mTexture);
-            mTexture = nullptr;
-        }
-    }
-    
-    bool loadTexture(const char* path, SDL_Renderer* renderer) {
-        // Clean up existing texture
-        if (mTexture) {
-            SDL_DestroyTexture(mTexture);
-            mTexture = nullptr;
-        }
-        
-        // Load new texture
-        SDL_Surface* surface = IMG_Load(path);
-        if (!surface) return false;
-        
-        mTexture = SDL_CreateTextureFromSurface(renderer, surface);
-        SDL_FreeSurface(surface);
-        
-        return mTexture != nullptr;
-    }
-};
-```
-
-#### Physics System
-```cpp
-class Player {
-private:
-    // Smooth movement with float precision
-    float rectXf, rectYf;
-    int rectX, rectY;  // Integer position for rendering
-    
-    // Physics properties
-    float velocityX, velocityY;
-    const float MAX_VELOCITY = 3.4f;
-    const float BASE_ACCELERATION = 0.40f;
-    const float DECELERATION = 0.9730f;
-    
-public:
-    void handlePlayerInputAndPosition(const Uint8* keyState) {
-        // Update velocity based on input
-        if (keyState[SDL_SCANCODE_RIGHT]) {
-            velocityX = std::min(velocityX + ACCELERATION, MAX_VELOCITY);
-        } else if (keyState[SDL_SCANCODE_LEFT]) {
-            velocityX = std::max(velocityX - ACCELERATION, -MAX_VELOCITY);
-        } else {
-            velocityX *= DECELERATION;  // Apply friction
-        }
-        
-        // Update position
-        float nextX = rectXf + velocityX;
-        float nextY = rectYf + velocityY;
-        handleBoundsAndUpdatePosition(nextX, nextY);
-    }
-};
-```
-
-## Game Systems
-
-### 1. Fixed Timestep Physics
-
-```cpp
-const float FIXED_TIME_STEP = 1.0F / 120.0F;  // 8.33ms
-float accumulator = 0.0F;
-
-while (!quit) {
-    Uint32 currentTime = SDL_GetTicks();
-    float deltaTime = (currentTime - lastTime) / 1000.0f;
-    lastTime = currentTime;
-    
-    accumulator += deltaTime;
-    
-    // Physics updates at fixed timestep
-    while (accumulator >= FIXED_TIME_STEP) {
-        updatePhysics();
-        accumulator -= FIXED_TIME_STEP;
-    }
-    
-    // Rendering happens every frame
-    render();
-}
-```
-
-### 2. Collision Detection
-
-```cpp
-// AABB (Axis-Aligned Bounding Box) collision
-bool checkCollision(const SDL_Rect& a, const SDL_Rect& b) {
-    return (a.x < b.x + b.w &&
-            a.x + a.w > b.x &&
-            a.y < b.y + b.h &&
-            a.y + a.h > b.y);
-}
-
-// Bullet collision with asteroids
-std::optional<size_t> checkBulletCollision(const SDL_Rect& target) {
-    for (size_t i = 0; i < bullets.size(); i++) {
-        SDL_Rect bulletRect = bullets[i].getHitBox();
-        if (SDL_HasIntersection(&bulletRect, &target)) {
-            return i;
-        }
-    }
-    return std::nullopt;
-}
-```
-
-### 3. Multi-Player V-Formation
-
-```cpp
-std::vector<std::unique_ptr<Player>> createPlayers(int count) {
-    int centerX = static_cast<int>(SCREEN_WIDTH / 2);
-    int bottomY = static_cast<int>(SCREEN_HEIGHT - 100);
-    const int PLAYER_SPACING = 70;
-    const int VERTICAL_OFFSET = 50;
-    
-    std::vector<std::unique_ptr<Player>> players;
-    
-    if (count == 1) {
-        players.push_back(std::make_unique<Player>(centerX, bottomY));
-    } else {
-        int middleIndex = count / 2;
-        for (int i = 0; i < count; ++i) {
-            int offsetX = (i - middleIndex) * PLAYER_SPACING;
-            int offsetY = std::abs(i - middleIndex) * VERTICAL_OFFSET;
-            players.push_back(
-                std::make_unique<Player>(centerX + offsetX, bottomY - offsetY));
-        }
-    }
-    
-    return players;
-}
-```
-
-### 4. Weapon System
-
-```cpp
-class Weapon {
-private:
-    std::vector<Bullet> bullets;
-    float cooldown = 350.0f;
-    Uint32 lastShotTime;
-    float bulletSpeed = 600.0f;
-    
-public:
-    void shoot() {
-        if (!canShoot()) return;
-        
-        float velX = bulletSpeed * cos(angle);
-        float velY = bulletSpeed * sin(angle);
-        bullets.emplace_back(x, y, velX, velY);
-        lastShotTime = SDL_GetTicks();
-    }
-    
-    bool canShoot() {
-        return (SDL_GetTicks() - lastShotTime >= cooldown);
-    }
-};
-```
-
-## Best Practices
-
-### 1. SDL2 Resource Management
-
-```cpp
-// Always check for null pointers
-SDL_Surface* surface = IMG_Load(path);
-if (!surface) {
-    printf("Failed to load image: %s\n", IMG_GetError());
-    return false;
-}
-
-// Create texture and immediately free surface
-SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
-SDL_FreeSurface(surface);  // Free immediately after use
-
-if (!texture) {
-    printf("Failed to create texture: %s\n", SDL_GetError());
-    return false;
-}
-```
-
-### 2. Error Handling
-
-```cpp
-// Initialize SDL subsystems
-if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
-    printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
-    return false;
-}
-
-// Initialize SDL_image
-int imgFlags = IMG_INIT_PNG;
-if (!(IMG_Init(imgFlags) & imgFlags)) {
-    printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
-    return false;
-}
-```
-
-### 3. Performance Optimization
-
-```cpp
-// Use const references for large objects
-void updateAsteroids(const std::vector<std::unique_ptr<Player>>& players) {
-    // Avoid copying large vectors
-}
-
-// Pre-allocate vectors when size is known
-std::vector<Asteroid> asteroids;
-asteroids.reserve(asteroidCount);  // Avoid reallocations
-
-// Use range-based for loops
-for (auto& asteroid : asteroids) {
-    asteroid.update();
-}
-```
-
-### 4. Memory Management
-
-```cpp
-// Use smart pointers for ownership
-std::vector<std::unique_ptr<Player>> players;
-
-// Use RAII for resource management
-class TextureManager {
-private:
-    SDL_Texture* texture;
-    
-public:
-    TextureManager(SDL_Renderer* renderer, const char* path) {
-        texture = loadTexture(renderer, path);
-    }
-    
-    ~TextureManager() {
-        if (texture) SDL_DestroyTexture(texture);
-    }
-    
-    // Delete copy constructor and assignment
-    TextureManager(const TextureManager&) = delete;
-    TextureManager& operator=(const TextureManager&) = delete;
-};
-```
-
-## Troubleshooting
-
-### Common Issues
-
-#### 1. SDL_MAIN_HANDLED Redefinition
-```cpp
-// Solution: Add guard at the very top
-#ifndef SDL_MAIN_HANDLED
-#define SDL_MAIN_HANDLED
-#endif
-```
-
-#### 2. Missing SDL2 Headers
-```bash
-# Check if SDL2 is properly installed
-pkg-config --cflags --libs sdl2
-
-# Verify include paths in .clangd
-CompileFlags:
-  Add: 
-    - "-I/opt/homebrew/include/SDL2"
-```
-
-#### 3. Runtime DLL Errors (Windows)
-- Ensure SDL2.dll is in the same directory as the executable
-- Check that all required DLLs are present: SDL2.dll, SDL2_image.dll, SDL2_ttf.dll
-
-#### 4. Compilation Database Issues
-```bash
-# Regenerate compile_commands.json
-rm -rf cmake-build-debug
-mkdir cmake-build-debug
-cd cmake-build-debug
-cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-```
-
-### Debugging Tips
-
-#### 1. Enable SDL Error Logging
-```cpp
-SDL_LogSetAllPriority(SDL_LOG_PRIORITY_VERBOSE);
-SDL_Log("Debug message: %s", SDL_GetError());
-```
-
-#### 2. Visual Debugging
-```cpp
-// Draw collision boxes
-SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
-SDL_RenderDrawRect(renderer, &collisionRect);
-```
-
-#### 3. Performance Monitoring
-```cpp
-Uint32 frameStart = SDL_GetTicks();
-// ... render code ...
-Uint32 frameTime = SDL_GetTicks() - frameStart;
-if (frameTime < 16) {  // Cap at ~60 FPS
-    SDL_Delay(16 - frameTime);
-}
-```
-
-## Cross-Platform Considerations
-
-### Platform-Specific Code
-
-```cpp
-#ifdef _WIN32
-    const float MAX_VELOCITY = 5.4f;
-    const float BASE_ACCELERATION = 0.70f;
-#else
-    const float MAX_VELOCITY = 3.4f;
-    const float BASE_ACCELERATION = 0.40f;
-#endif
-```
-
-### CMake Platform Detection
-
-```cmake
-if(APPLE)
-    # macOS specific settings
-    target_link_libraries(${PROJECT_NAME} PRIVATE
-        "-framework Cocoa"
-        "-framework IOKit"
-        "-framework CoreVideo"
-    )
-elseif(WIN32)
-    # Windows specific settings
-    target_link_libraries(${PROJECT_NAME} PRIVATE
-        ${SDL2_LIB}
-        ${SDL2_IMAGE_LIB}
-        ${SDL2_TTF_LIB}
-    )
-endif()
-```
-
-### File Paths
-
-```cpp
-// Use forward slashes for cross-platform compatibility
-const char* texturePath = "src/spaceship.png";
-
-// Or use platform-specific paths
-#ifdef _WIN32
-    const char* fontPath = "assets\\fonts\\FiraCode-Regular.ttf";
-#else
-    const char* fontPath = "assets/fonts/FiraCode-Regular.ttf";
-#endif
+asteroid-destroyer/
+├── src/
+│   ├── main.cpp
+│   ├── Player.cpp/hpp
+│   ├── weapon.cpp/hpp
+│   ├── asteroid.cpp/hpp
+│   ├── score.cpp/hpp
+│   ├── createwindow.cpp/hpp
+│   ├── spaceship.png
+│   └── asteroid.png
+├── assets/
+│   └── fonts/
+│       └── FiraCode-Regular.ttf
+├── CMakeLists.txt
+├── vcpkg.json
+├── .clangd
+└── .clang-format
 ```
 
 ---
 
-## Quick Start Checklist
+## Development Environment
 
-- [ ] Install SDL2 development libraries
-- [ ] Set up CMake build system
-- [ ] Configure IDE with clangd
-- [ ] Set up code formatting with clang-format
-- [ ] Test compilation on target platform
-- [ ] Verify asset loading
-- [ ] Test game functionality
-- [ ] Set up version control
+### Neovim + clangd
 
-This guide provides a comprehensive foundation for building and maintaining your SDL2 game project. The architecture is designed to be scalable, maintainable, and cross-platform compatible. 
+clangd picks up include paths automatically from `compile_commands.json` generated by CMake. The `.clangd` file points to the build directory:
+
+```yaml
+CompileFlags:
+  CompilationDatabase: build/
+
+Index:
+  Background: true
+
+Diagnostics:
+  ClangTidy:
+    Add:
+      - modernize-*
+      - performance-*
+    Remove:
+      - modernize-use-trailing-return-type
+      - readability-identifier-naming
+```
+
+Regenerate the compilation database after any CMake change:
+
+```bash
+cd build
+cmake .. -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
+```
+
+### SDL3 Include Paths
+
+SDL3_image and SDL3_ttf use their own subdirectories when installed via vcpkg:
+
+```cpp
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
+#include <SDL3_ttf/SDL_ttf.h>
+```
+
+---
+
+## Code Organization
+
+### Include Order
+
+```cpp
+// SDL3
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
+#include <SDL3_ttf/SDL_ttf.h>
+
+// Standard library
+#include <algorithm>
+#include <memory>
+#include <optional>
+#include <vector>
+
+// Project headers
+#include "createwindow.hpp"
+#include "Player.hpp"
+```
+
+### Resource Management
+
+SDL resources use raw pointers with manual cleanup in destructors. Always null after destroying:
+
+```cpp
+bool Player::loadTexture(const char* path, SDL_Renderer* renderer) {
+    if (mTexture) {
+        SDL_DestroyTexture(mTexture);
+        mTexture = nullptr;
+    }
+    SDL_Surface* surface = IMG_Load(path);
+    if (!surface) return false;
+
+    mTexture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_DestroySurface(surface);
+    return mTexture != nullptr;
+}
+```
+
+### SDL3 API Notes
+
+Key differences from SDL2 that apply throughout this codebase:
+
+- `SDL_Init` returns `bool` — check with `if (!SDL_Init(...))`
+- `SDL_CreateRenderer` takes no index or flags — `SDL_CreateRenderer(window, nullptr)`
+- `SDL_RenderCopy` → `SDL_RenderTexture`
+- `SDL_FreeSurface` → `SDL_DestroySurface`
+- `SDL_HasIntersection` → `SDL_GetRectIntersectionFloat`
+- `SDL_Rect` → `SDL_FRect` for all rendering and collision
+- `SDL_GetKeyboardState` returns `const bool*`
+- `SDL_QUIT` → `SDL_EVENT_QUIT`
+
+---
+
+## Game Systems
+
+### Fixed Timestep
+
+Physics updates at a fixed 120Hz step regardless of rendering frame rate:
+
+```cpp
+const float FIXED_TIME_STEP = 1.0f / 120.0f;
+float accumulator = 0.0f;
+Uint64 lastTime = SDL_GetTicks();
+
+while (!quit) {
+    Uint64 currentTime = SDL_GetTicks();
+    float deltaTime = (currentTime - lastTime) / 1000.0f;
+    lastTime = currentTime;
+    deltaTime = std::min(deltaTime, 0.25f);
+    accumulator += deltaTime;
+
+    while (accumulator >= FIXED_TIME_STEP) {
+        updatePhysics();
+        accumulator -= FIXED_TIME_STEP;
+    }
+
+    render();
+}
+```
+
+### Collision Detection
+
+All collision uses `SDL_GetRectIntersectionFloat` with `SDL_FRect`:
+
+```cpp
+SDL_FRect result;
+if (SDL_GetRectIntersectionFloat(&rectA, &rectB, &result)) {
+    // collision occurred
+}
+```
+
+### V-Formation Spawn
+
+Players spawn in a symmetric V pattern around screen center:
+
+```cpp
+int middleIndex = count / 2;
+for (int i = 0; i < count; ++i) {
+    int offsetX = (i - middleIndex) * PLAYER_SPACING;
+    int offsetY = std::abs(i - middleIndex) * VERTICAL_OFFSET;
+    players.emplace_back(std::make_unique<Player>(centerX + offsetX, bottomY - offsetY));
+}
+```
+
+### Weapon System
+
+Bullets are pooled in a `std::vector` and erased when off-screen or deactivated:
+
+```cpp
+void Weapon::shoot() {
+    if (!canShoot()) return;
+    float velX = bulletSpeed * cos(angle);
+    float velY = bulletSpeed * sin(angle);
+    bullets.emplace_back(x, y, velX, velY);
+    lastShotTime = SDL_GetTicks();
+}
+
+bool Weapon::canShoot() {
+    return (SDL_GetTicks() - lastShotTime >= static_cast<Uint64>(cooldown));
+}
+```
+
+---
+
+## Best Practices
+
+**Always free surfaces immediately** after creating a texture from them — surfaces are CPU memory and textures are GPU memory, holding both wastes resources.
+
+**Use `SDL_FRect` throughout** — SDL3 moved rendering to float coordinates. Mixing `SDL_Rect` and `SDL_FRect` will cause compile errors or silent precision loss.
+
+**Pre-allocate vectors** when the count is known ahead of time to avoid reallocations during the game loop.
+
+**Never call `SDL_GetError` for SDL3_ttf or SDL3_image errors** — those libraries set their own error strings accessible via `SDL_GetError()` in SDL3, but double check the function return value first.
+
+---
+
+## Troubleshooting
+
+**`Unsupported image format` on PNG load**
+Make sure `vcpkg.json` requests the `png` feature for sdl3-image:
+
+```json
+{ "name": "sdl3-image", "features": ["png"] }
+```
+
+Then delete the build directory and reconfigure from scratch.
+
+**`file not found` for font or images at runtime**
+Run the binary from inside the build directory. CMake copies assets there at build time.
+
+**clangd showing incorrect errors / missing includes**
+Regenerate `compile_commands.json`:
+
+```bash
+cd build
+cmake .. -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
+```
+
+Then restart your LSP.
+
+**Duplicate library warning on macOS**
+
+```
+ld: warning: ignoring duplicate libraries: 'libSDL3.a'
+```
+
+This is harmless — vcpkg links SDL3 twice through different targets. The binary is fine.
+
+**Windows — missing DLLs at runtime**
+vcpkg handles DLL copying automatically when using the CMake toolchain. If DLLs are missing, ensure `CMAKE_TOOLCHAIN_FILE` is set and reconfigure.
