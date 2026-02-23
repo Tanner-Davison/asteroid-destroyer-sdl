@@ -22,19 +22,19 @@
 
 void displayLevelText(SDL_Renderer* renderer, int level) {
     std::string text = "LEVEL " + std::to_string(level);
-    SDL_Surface* textSurface = TTF_RenderText_Solid(font, text.c_str(), 0, {255, 255, 255, 255});
-    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+    SDL_Surface* textSurface =
+        TTF_RenderText_Solid(font, text.c_str(), 0, {255, 255, 255, 255});
+    SDL_Texture* textTexture =
+        SDL_CreateTextureFromSurface(renderer, textSurface);
 
     int textWidth = textSurface->w;
     int textHeight = textSurface->h;
     SDL_DestroySurface(textSurface);
 
-    SDL_FRect textRect = {
-        static_cast<float>((SCREEN_WIDTH - textWidth) / 2),
-        static_cast<float>((SCREEN_HEIGHT - textHeight) / 2),
-        static_cast<float>(textWidth),
-        static_cast<float>(textHeight)
-    };
+    SDL_FRect textRect = {static_cast<float>((SCREEN_WIDTH - textWidth) / 2),
+                          static_cast<float>((SCREEN_HEIGHT - textHeight) / 2),
+                          static_cast<float>(textWidth),
+                          static_cast<float>(textHeight)};
 
     const int DISPLAY_FRAMES = 120;
     for (int i = 0; i < DISPLAY_FRAMES; i++) {
@@ -49,10 +49,8 @@ void displayLevelText(SDL_Renderer* renderer, int level) {
 }
 
 std::vector<Asteroid> spawnAsteroids(
-    int count,
-    const std::vector<std::unique_ptr<Player>>& players,
+    int count, const std::vector<std::unique_ptr<Player>>& players,
     SDL_Renderer* renderer) {
-
     std::vector<Asteroid> asteroids;
     for (int i = 0; i < count; i++) {
         asteroids.emplace_back(players);
@@ -88,7 +86,8 @@ int main(int argc, char* args[]) {
 
     int currentLevel = 1;
     int asteroidsForLevel = 19;
-    std::vector<Asteroid> asteroids = spawnAsteroids(asteroidsForLevel, players, gRenderer);
+    std::vector<Asteroid> asteroids =
+        spawnAsteroids(asteroidsForLevel, players, gRenderer);
 
     SDL_Event EVENT;
     bool quit = false;
@@ -127,12 +126,12 @@ int main(int argc, char* args[]) {
                     static_cast<float>(it->getRectX()),
                     static_cast<float>(it->getRectY()),
                     static_cast<float>(it->getRectWidth()),
-                    static_cast<float>(it->getRectHeight())
-                };
+                    static_cast<float>(it->getRectHeight())};
 
                 bool asteroidHit = false;
                 for (auto& player : players) {
-                    auto bulletIndex = player->getWeapon().checkBulletCollision(asteroidRect);
+                    auto bulletIndex =
+                        player->getWeapon().checkBulletCollision(asteroidRect);
                     if (bulletIndex.has_value()) {
                         player->getWeapon().destroyBullet(bulletIndex.value());
                         scoreDisplay.setScore(100);
@@ -141,7 +140,8 @@ int main(int argc, char* args[]) {
                         break;
                     }
                 }
-                if (!asteroidHit) ++it;
+                if (!asteroidHit)
+                    ++it;
             }
 
             // Level advancement
@@ -150,7 +150,8 @@ int main(int argc, char* args[]) {
                 if (currentLevel == 2) {
                     asteroidsForLevel = 80;
                     displayLevelText(gRenderer, currentLevel);
-                    asteroids = spawnAsteroids(asteroidsForLevel, players, gRenderer);
+                    asteroids =
+                        spawnAsteroids(asteroidsForLevel, players, gRenderer);
                 }
             }
 
@@ -161,25 +162,26 @@ int main(int argc, char* args[]) {
                     static_cast<float>(player->getPosition().first),
                     static_cast<float>(player->getPosition().second),
                     static_cast<float>(player->getWidth()),
-                    static_cast<float>(player->getHeight())
-                };
+                    static_cast<float>(player->getHeight())};
 
                 for (const auto& asteroid : asteroids) {
                     SDL_FRect asteroidRect = {
                         static_cast<float>(asteroid.getRectX()),
                         static_cast<float>(asteroid.getRectY()),
                         static_cast<float>(asteroid.getRectWidth()),
-                        static_cast<float>(asteroid.getRectHeight())
-                    };
+                        static_cast<float>(asteroid.getRectHeight())};
 
                     SDL_FRect result;
-                    if (SDL_GetRectIntersectionFloat(&playerRect, &asteroidRect, &result)) {
+                    if (SDL_GetRectIntersectionFloat(&playerRect, &asteroidRect,
+                                                     &result)) {
                         if (players.size() == 1) {
                             players.clear();
                             players = Player::createPlayers(++deathCount);
                             for (auto& p : players) {
-                                if (!p->loadTexture("spaceship.png", gRenderer)) {
-                                    printf("Failed to load player texture\n");
+                                if (!p->loadTexture("spaceship.png",
+                                                    gRenderer)) {
+                                    std::print(
+                                        "Failed to load player texture\n");
                                     return 1;
                                 }
                             }
@@ -191,8 +193,10 @@ int main(int argc, char* args[]) {
                 }
             }
 
-            std::erase_if(players, [&playersToRemove](const std::unique_ptr<Player>& p) {
-                return std::find(playersToRemove.begin(), playersToRemove.end(), p.get()) != playersToRemove.end();
+            std::erase_if(players, [&playersToRemove](
+                                       const std::unique_ptr<Player>& p) {
+                return std::find(playersToRemove.begin(), playersToRemove.end(),
+                                 p.get()) != playersToRemove.end();
             });
 
             for (auto& asteroid : asteroids) {
@@ -216,9 +220,13 @@ int main(int argc, char* args[]) {
 
         // Level indicator
         std::string levelText = "Level: " + std::to_string(currentLevel);
-        SDL_Surface* levelSurface = TTF_RenderText_Solid(font, levelText.c_str(), 0, {255, 255, 255, 255});
-        SDL_Texture* levelTexture = SDL_CreateTextureFromSurface(gRenderer, levelSurface);
-        SDL_FRect levelRect = {10.0f, 10.0f, static_cast<float>(levelSurface->w), static_cast<float>(levelSurface->h)};
+        SDL_Surface* levelSurface = TTF_RenderText_Solid(
+            font, levelText.c_str(), 0, {255, 255, 255, 255});
+        SDL_Texture* levelTexture =
+            SDL_CreateTextureFromSurface(gRenderer, levelSurface);
+        SDL_FRect levelRect = {10.0f, 10.0f,
+                               static_cast<float>(levelSurface->w),
+                               static_cast<float>(levelSurface->h)};
         SDL_RenderTexture(gRenderer, levelTexture, nullptr, &levelRect);
         SDL_DestroySurface(levelSurface);
         SDL_DestroyTexture(levelTexture);
@@ -226,7 +234,7 @@ int main(int argc, char* args[]) {
         SDL_RenderPresent(gRenderer);
 
         Uint64 endTime = SDL_GetTicks();
-        float elapsedMS = static_cast<float>(endTime - currentTime);
+        auto elapsedMS = static_cast<float>(endTime - currentTime);
         if (frameDelay > elapsedMS) {
             SDL_Delay(static_cast<Uint32>(frameDelay - elapsedMS));
         }

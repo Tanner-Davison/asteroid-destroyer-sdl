@@ -2,7 +2,8 @@
 #include <SDL3/SDL.h>
 #include <SDL3_image/SDL_image.h>
 #include <SDL3_ttf/SDL_ttf.h>
-#include <stdio.h>
+#include <print>
+#include <unistd.h>
 
 #ifdef _WIN32
 const int SCREEN_WIDTH = 1900;
@@ -20,32 +21,42 @@ std::random_device GameRNG::rd;
 std::mt19937 GameRNG::gen(GameRNG::rd());
 
 bool init() {
+    // Set working directory to the executable's location so assets are always
+    // found
+    const char* basePath = SDL_GetBasePath();
+    if (basePath) {
+        chdir(basePath);
+    }
+
     if (!SDL_Init(SDL_INIT_VIDEO)) {
-        printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
+        std::print("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
         return false;
     }
 
     if (!TTF_Init()) {
-        printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", SDL_GetError());
+        std::print("SDL_ttf could not initialize! SDL_ttf Error: %s\n",
+                   SDL_GetError());
         return false;
     }
 
     font = TTF_OpenFont("FiraCode-Regular.ttf", 24);
     if (!font) {
-        printf("Failed to load font! SDL_ttf Error: %s\n", SDL_GetError());
+        std::print("Failed to load font! SDL_ttf Error: %s\n", SDL_GetError());
         return false;
     }
 
-
-    gWindow = SDL_CreateWindow("Asteroid Destroyer", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE);
+    gWindow = SDL_CreateWindow("Asteroid Destroyer", SCREEN_WIDTH,
+                               SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE);
     if (!gWindow) {
-        printf("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+        std::print("Window could not be created! SDL_Error: %s\n",
+                   SDL_GetError());
         return false;
     }
 
     gRenderer = SDL_CreateRenderer(gWindow, nullptr);
     if (!gRenderer) {
-        printf("Renderer could not be created! SDL Error: %s\n", SDL_GetError());
+        std::print("Renderer could not be created! SDL Error: %s\n",
+                   SDL_GetError());
         return false;
     }
 
@@ -55,13 +66,16 @@ bool init() {
 bool loadMedia(const char* path) {
     SDL_Surface* loadedSurface = IMG_Load(path);
     if (!loadedSurface) {
-        printf("Unable to load image %s! SDL_image Error: %s\n", path, SDL_GetError());
+        std::print("Unable to load image %s! SDL_image Error: %s\n", path,
+                   SDL_GetError());
         return false;
     }
 
-    SDL_Texture* newTexture = SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
+    SDL_Texture* newTexture =
+        SDL_CreateTextureFromSurface(gRenderer, loadedSurface);
     if (!newTexture) {
-        printf("Unable to create texture from %s! SDL Error: %s\n", path, SDL_GetError());
+        std::print("Unable to create texture from %s! SDL Error: %s\n", path,
+                   SDL_GetError());
         SDL_DestroySurface(loadedSurface);
         return false;
     }
