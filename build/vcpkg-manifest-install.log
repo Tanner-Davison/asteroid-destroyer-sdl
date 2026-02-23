@@ -1,6 +1,6 @@
 Detecting compiler hash for triplet arm64-osx...
 Compiler found: /usr/bin/c++
-The following packages will be built and installed:
+The following packages are already installed:
   * brotli:arm64-osx@1.1.0#1
   * bzip2[core,tool]:arm64-osx@1.0.8#6
   * freetype[brotli,bzip2,core,png,zlib]:arm64-osx@2.13.3
@@ -11,62 +11,6 @@ The following packages will be built and installed:
   * vcpkg-cmake:arm64-osx@2024-04-23
   * vcpkg-cmake-config:arm64-osx@2024-05-23
   * zlib:arm64-osx@1.3.1
-Additional packages (*) will be modified to complete this operation.
-Restored 9 package(s) from /Users/tanner.davison/.cache/vcpkg/archives in 256 ms. Use --debug to see more details.
-Installing 1/10 vcpkg-cmake-config:arm64-osx@2024-05-23...
-Elapsed time to handle vcpkg-cmake-config:arm64-osx: 7.2 ms
-vcpkg-cmake-config:arm64-osx package ABI: 9fe0b2f8d8630c5fa593ebe4f613132a3ca58b035afb703ad8d55dd556078d1e
-Installing 2/10 vcpkg-cmake:arm64-osx@2024-04-23...
-Elapsed time to handle vcpkg-cmake:arm64-osx: 7.32 ms
-vcpkg-cmake:arm64-osx package ABI: 632d012c95143c6cfc3f4839486a4b9c3f901b04a5c798df41ba967fc9b19066
-Installing 3/10 sdl3:arm64-osx@3.2.20...
-Elapsed time to handle sdl3:arm64-osx: 38.5 ms
-sdl3:arm64-osx package ABI: cd5e709f13e3a0aa98280e19ca896b6ce3e612ca244591e74ab8b1bf7146b181
-Installing 4/10 zlib:arm64-osx@1.3.1...
-Elapsed time to handle zlib:arm64-osx: 12.8 ms
-zlib:arm64-osx package ABI: 8690bb50f7513d945cbc582f297f6c7dbc45db1404327bbc6f456deedb7af0d2
-Installing 5/10 libpng:arm64-osx@1.6.50...
-Elapsed time to handle libpng:arm64-osx: 19.4 ms
-libpng:arm64-osx package ABI: 552f12c4e5057ac5558f7f210f735898c59fed60b2e393cdd22ac59d7e91c71e
-Installing 6/10 sdl3-image[core,png]:arm64-osx@3.2.4...
-Building sdl3-image[core,png]:arm64-osx@3.2.4...
--- Using cached libsdl-org-SDL_image-release-3.2.4.tar.gz
--- Cleaning sources at /Users/tanner.davison/tools/vcpkg/buildtrees/sdl3-image/src/ease-3.2.4-f22def61fe.clean. Use --editable to skip cleaning for the packages you specify.
--- Extracting source /Users/tanner.davison/tools/vcpkg/downloads/libsdl-org-SDL_image-release-3.2.4.tar.gz
--- Applying patch dependencies.diff
--- Applying patch pkgconfig-libname.diff
--- Using source at /Users/tanner.davison/tools/vcpkg/buildtrees/sdl3-image/src/ease-3.2.4-f22def61fe.clean
--- Configuring arm64-osx
--- Building arm64-osx-dbg
--- Building arm64-osx-rel
--- Fixing pkgconfig file: /Users/tanner.davison/tools/vcpkg/packages/sdl3-image_arm64-osx/lib/pkgconfig/sdl3-image.pc
--- Fixing pkgconfig file: /Users/tanner.davison/tools/vcpkg/packages/sdl3-image_arm64-osx/debug/lib/pkgconfig/sdl3-image.pc
--- Installing: /Users/tanner.davison/tools/vcpkg/packages/sdl3-image_arm64-osx/share/sdl3-image/usage
--- Installing: /Users/tanner.davison/tools/vcpkg/packages/sdl3-image_arm64-osx/share/sdl3-image/copyright
--- Performing post-build validation
-Starting submission of sdl3-image[core,png]:arm64-osx@3.2.4 to 1 binary cache(s) in the background
-Elapsed time to handle sdl3-image:arm64-osx: 3.1 s
-sdl3-image:arm64-osx package ABI: b28b7f33c4715b2db943af81689db49c81ead84d5a0ee0bd50409adb9a6c8741
-Installing 7/10 bzip2[core,tool]:arm64-osx@1.0.8#6...
-Elapsed time to handle bzip2:arm64-osx: 4.51 ms
-bzip2:arm64-osx package ABI: 4fc25b47829719ee89049886246d541d78035d351ca8f57ef22a246fd6b723df
-Installing 8/10 brotli:arm64-osx@1.1.0#1...
-Elapsed time to handle brotli:arm64-osx: 8.08 ms
-brotli:arm64-osx package ABI: adf586a3a278b6d9041a2b70fd2eabf82cd5c3908e555240b1ba320e3e296a09
-Installing 9/10 freetype[brotli,bzip2,core,png,zlib]:arm64-osx@2.13.3...
-Elapsed time to handle freetype:arm64-osx: 20.1 ms
-freetype:arm64-osx package ABI: 996873cbc01e60391d933a676db23446e5df1210f7be48b870ffd0f078706e06
-Installing 10/10 sdl3-ttf:arm64-osx@3.2.2#1...
-Elapsed time to handle sdl3-ttf:arm64-osx: 6.46 ms
-sdl3-ttf:arm64-osx package ABI: 5d5e0f17730be9216cc2697eb9019b7d618b7c07565733c94b53a5f24ff6e6de
-Installed contents are licensed to you by owners. Microsoft is not responsible for, nor does it grant any licenses to, third-party packages.
-Packages installed in this vcpkg installation declare the following licenses:
-(FTL OR GPL-2.0-or-later)
-Apache-2.0
-MIT
-Zlib
-bzip2-1.0.6
-libpng-2.0
 sdl3 provides CMake targets:
 
   find_package(SDL3 CONFIG REQUIRED)
@@ -87,5 +31,4 @@ sdl3-ttf provides CMake targets:
   find_package(SDL3_ttf CONFIG REQUIRED)
   target_link_libraries(main PRIVATE SDL3_ttf::SDL3_ttf)
 
-Completed submission of sdl3-image[core,png]:arm64-osx@3.2.4 to 1 binary cache(s) in 37.6 ms
-All requested installations completed successfully in: 3.3 s
+All requested installations completed successfully in: 117 us

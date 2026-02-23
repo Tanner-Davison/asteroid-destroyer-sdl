@@ -178,7 +178,6 @@ asteroid-destroyer: CMakeFiles/asteroid-destroyer.dir/build.make
 asteroid-destroyer: vcpkg_installed/arm64-osx/debug/lib/libSDL3.a
 asteroid-destroyer: vcpkg_installed/arm64-osx/debug/lib/libSDL3_image.a
 asteroid-destroyer: vcpkg_installed/arm64-osx/debug/lib/libSDL3_ttf.a
-asteroid-destroyer: vcpkg_installed/arm64-osx/lib/libpng16.a
 asteroid-destroyer: vcpkg_installed/arm64-osx/debug/lib/libSDL3.a
 asteroid-destroyer: vcpkg_installed/arm64-osx/lib/libpng16.a
 asteroid-destroyer: vcpkg_installed/arm64-osx/debug/lib/libfreetyped.a
