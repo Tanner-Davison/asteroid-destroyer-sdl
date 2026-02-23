@@ -5,8 +5,8 @@
  */
 
 #include <SDL3/SDL.h>
-#include <SDL3/SDL_image.h>
-#include <SDL3/SDL_ttf.h>
+#include <SDL3_image/SDL_image.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 #include <algorithm>
 #include <memory>
@@ -66,11 +66,6 @@ std::vector<Asteroid> spawnAsteroids(
 int main(int argc, char* args[]) {
     if (!init()) {
         std::println("Failed to initialize!");
-        return 1;
-    }
-
-    if (!TTF_Init()) {
-        std::println("SDL_ttf could not initialize! Error: {}", SDL_GetError());
         return 1;
     }
 

@@ -1,6 +1,6 @@
 #pragma once
 #include "createwindow.hpp"
-#include <SDL3/SDL_ttf.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <string>
 
 extern TTF_Font* font;

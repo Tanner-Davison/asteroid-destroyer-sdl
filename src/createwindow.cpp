@@ -1,7 +1,7 @@
 #include "createwindow.hpp"
 #include <SDL3/SDL.h>
-#include <SDL3/SDL_image.h>
-#include <SDL3/SDL_ttf.h>
+#include <SDL3_image/SDL_image.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <stdio.h>
 
 #ifdef _WIN32
@@ -35,6 +35,7 @@ bool init() {
         printf("Failed to load font! SDL_ttf Error: %s\n", SDL_GetError());
         return false;
     }
+
 
     gWindow = SDL_CreateWindow("Asteroid Destroyer", SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_RESIZABLE);
     if (!gWindow) {

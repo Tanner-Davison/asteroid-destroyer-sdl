@@ -1,6 +1,6 @@
 #include "score.hpp"
 #include <SDL3/SDL.h>
-#include <SDL3/SDL_ttf.h>
+#include <SDL3_ttf/SDL_ttf.h>
 
 Score::Score()
     : score(0), textWidth(0), textHeight(0), x(50), y(50) {

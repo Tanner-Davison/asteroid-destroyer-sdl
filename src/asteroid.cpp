@@ -1,7 +1,7 @@
 #include "asteroid.hpp"
 #include "createwindow.hpp"
 #include <SDL3/SDL.h>
-#include <SDL3/SDL_image.h>
+#include <SDL3_image/SDL_image.h>
 #include <random>
 
 Asteroid::Asteroid(const std::vector<std::unique_ptr<Player>>& players)
